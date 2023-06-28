@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,9 +33,22 @@ class AuthController extends Controller
         ], 'Successfully Login');
     }
 
+
     public function me(Request $request)
     {
-        $admin = Auth::guard('admin')->user();
-        return $this->success($admin, 'Login Detail');
+        $query = Admin::query();
+        $query->where('id', Auth::id());
+        $data =  $query->first();
+        return $this->success([
+            'user' => $data,
+        ], 'Admin Account Detail');
+    }
+
+
+    public function logout()
+    {
+        $admin = Auth::user();
+        $admin->currentAccessToken()->delete();
+        return $this->success(null, 'Successfully Logout');
     }
 }

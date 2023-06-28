@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         return $this->success([
             'user' => $user,
-            'token' => $user->createToken('API Token of admin id ' . $user->id)->plainTextToken
+            'token' => $user->createToken('API Token of admin id ' . $user->id, ['user'])->plainTextToken
         ], 'Successfully Login');
     }
 
@@ -49,8 +49,25 @@ class AuthController extends Controller
 
         return $this->success([
             'user' => $user,
-            'token' => $user->createToken('API Token of user id ' . $user->id)->plainTextToken
+            'token' => $user->createToken('API Token of user id ' . $user->id, ['user'])->plainTextToken
         ], 'Successfully Registered');
 
+    }
+
+    public function me(Request $request)
+    {
+        $query = User::query();
+        $query->where('id', Auth::id());
+        $data =  $query->first();
+        return $this->success([
+            'user' => $data,
+        ], 'User Account Detail');
+    }
+
+    public function logout()
+    {
+        $user = Auth::user();
+        $user->currentAccessToken()->delete();
+        return $this->success(null, 'Successfully Logout');
     }
 }
