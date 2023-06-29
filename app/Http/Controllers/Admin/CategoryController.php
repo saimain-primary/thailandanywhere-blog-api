@@ -23,8 +23,13 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $limit = $request->query('limit', 10);
+        $search = $request->query('search');
 
         $query = Category::query();
+
+        if($search) {
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
 
         $data = $query->paginate($limit);
         return $this->success(CategoryResource::collection($data)
