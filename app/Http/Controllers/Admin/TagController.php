@@ -14,7 +14,7 @@ class TagController extends Controller
 
     public function getTagList()
     {
-        $tags = Tag::select('name')->get();
-        return $this->success(TagResource::collection($tags), 'Tag List');
+        $tags = Tag::pluck('name');
+        return $this->success($tags, 'Tag List');
     }
 }

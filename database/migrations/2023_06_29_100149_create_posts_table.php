@@ -20,7 +20,7 @@ return new class () extends Migration {
             $table->string('status')->default('draft');
             $table->timestamp('published_at')->nullable();
             $table->string('featured_image')->nullable();
-            $table->json('images');
+            $table->json('images')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

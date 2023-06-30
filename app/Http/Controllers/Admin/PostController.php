@@ -11,10 +11,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
+use App\Models\Tag;
+use App\Traits\ImageManager;
 
 class PostController extends Controller
 {
     use HttpResponses;
+    use ImageManager;
     /**
      * Display a listing of the resource.
      */
@@ -58,7 +61,33 @@ class PostController extends Controller
         $post->slug = Str::slug($request->title . '_' . now()->format('Y-m-d H:i:s') . '_' . rand(0000, 9999));
         $post->content = $request->content;
         $post->category_id = $request->category_id;
-        $post->tags  = json_encode(explode(',', $request->tags));
+
+        $tags = explode(',', $request->tags);
+
+        foreach ($tags as $tag) {
+            if(!Tag::where('name', $tag)->first()) {
+                Tag::create(['name' => $tag , 'slug' => Str::slug($tag)]);
+            }
+        }
+
+        $post->tags  = json_encode($tags);
+
+
+        if($file = $request->file('feature_image')) {
+            $fileData = $this->uploads($file, 'images/');
+            $post->featured_image = $fileData['fileName'];
+        }
+
+        $imagesArr = [];
+
+        if($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                $imagesArr[] = $fileData['fileName'];
+            }
+        }
+
+        $post->images = json_encode($imagesArr);
         $post->save();
 
         return $this->success($post, 'Successfully created');
