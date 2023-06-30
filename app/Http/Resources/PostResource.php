@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostResource extends JsonResource
@@ -19,7 +20,8 @@ class PostResource extends JsonResource
             'slug' => $this->slug,
             'title' => $this->title,
             'content' => $this->content,
-            'featured_image' => $this->featured_image,
+            'featured_image' => env('APP_URL') . Storage::url('images/' . $this->featured_image),
+            'images' => $this->images,
             'category' => new CategoryResource($this->category),
             'tags' => json_decode($this->tags, true),
             'created_at' => $this->created_at,
