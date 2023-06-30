@@ -15,6 +15,9 @@ return new class () extends Migration {
             $table->string('title');
             $table->string('slug')->unique();
             $table->text('content');
+            $table->unsignedBigInteger('category_id');
+            $table->json('tags');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

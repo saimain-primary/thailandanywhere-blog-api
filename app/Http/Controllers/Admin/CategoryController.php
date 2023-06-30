@@ -133,4 +133,10 @@ class CategoryController extends Controller
         return $this->success(null, 'Successfully deleted', 200);
 
     }
+
+    public function getCategoryList()
+    {
+        $category = Category::all();
+        return $this->success(CategoryResource::collection($category), 'Category List');
+    }
 }

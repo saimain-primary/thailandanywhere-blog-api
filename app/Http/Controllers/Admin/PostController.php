@@ -57,6 +57,8 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->slug = Str::slug($request->title . '_' . now()->format('Y-m-d H:i:s') . '_' . rand(0000, 9999));
         $post->content = $request->content;
+        $post->category_id = $request->category_id;
+        $post->tags  = json_encode(explode(',', $request->tags));
         $post->save();
 
         return $this->success($post, 'Successfully created');
@@ -95,7 +97,9 @@ class PostController extends Controller
 
         $post->title = $request->title ?? $post->title;
         $post->slug = $request->title ? Str::slug($request->title . '_' . now()->format('Y-m-d H:i:s') . '_' . rand(0000, 9999)) : $post->slug;
-        $post->content = $request->content ?? $request->content;
+        $post->content = $request->content ?? $post->content;
+        $post->category_id = $request->category_id ?? $post->content;
+        $post->tags  =  $request->tags ? json_encode(explode(',', $request->tags)) : $post->tags;
         $post->update();
 
         return $this->success(new PostResource($post), 'Successfully updated');
