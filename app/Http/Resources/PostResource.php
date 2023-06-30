@@ -18,9 +18,11 @@ class PostResource extends JsonResource
 
         $imagesArr = [];
 
-        $postImage = json_decode($request->images);
-        foreach ($postImage as $image) {
-            array_push($imagesArr, env('APP_URL') . Storage::url('images/' . $image));
+        if($this->images) {
+            $postImage = json_decode($this->images);
+            foreach ($postImage as $image) {
+                array_push($imagesArr, env('APP_URL') . Storage::url('images/' . $image));
+            }
         }
 
         return [
