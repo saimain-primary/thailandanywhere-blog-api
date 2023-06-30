@@ -53,11 +53,11 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $purifier = new HTMLPurifier();
+        // $purifier = new HTMLPurifier();
         $post = new Post();
         $post->title = $request->title;
         $post->slug = Str::slug($request->title . '_' . now()->format('Y-m-d H:i:s') . '_' . rand(0000, 9999));
-        $post->content = $purifier->purify($request->content);
+        $post->content = $request->content;
         $post->save();
 
         return $this->success($post, 'Successfully created');
