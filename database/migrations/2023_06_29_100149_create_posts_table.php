@@ -17,6 +17,10 @@ return new class () extends Migration {
             $table->text('content');
             $table->unsignedBigInteger('category_id');
             $table->json('tags');
+            $table->string('status')->default('draft');
+            $table->timestamp('published_at')->nullable();
+            $table->string('featured_image')->nullable();
+            $table->json('images');
             $table->softDeletes();
             $table->timestamps();
         });

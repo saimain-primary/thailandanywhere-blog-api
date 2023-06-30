@@ -11,6 +11,7 @@ Route::post('/register', [AuthController::class,'register']);
 
 Route::get('categories', [CategoryController::class,'getList']);
 Route::get('posts', [PostController::class,'getPost']);
+Route::get('posts/{slug}', [PostController::class,'getDetail']);
 
 Route::middleware(['auth:sanctum', 'abilities:user'])->group(function () {
     Route::get('/me', [AuthController::class,'me']);
