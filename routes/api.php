@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\CategoryController;
 
 Route::post('/login', [AuthController::class,'login']);
@@ -16,6 +17,9 @@ Route::get('posts/{slug}', [PostController::class,'getDetail']);
 Route::middleware(['auth:sanctum', 'abilities:user'])->group(function () {
     Route::get('/me', [AuthController::class,'me']);
     Route::post('/logout', [AuthController::class,'logout']);
+    Route::post('posts/{id}/comments', [CommentController::class,'addComment']);
+    Route::post('posts/{id}/react', [CommentController::class,'toggleReact']);
+    Route::delete('comments/{id}', [CommentController::class,'deleteComment']);
 });
 
 

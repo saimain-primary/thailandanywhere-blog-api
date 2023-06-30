@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use HTMLPurifier;
+use App\Models\Tag;
 use App\Models\Post;
 use Illuminate\Support\Str;
+use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use App\Http\Resources\PostResource;
-use App\Models\Tag;
-use App\Traits\ImageManager;
 
 class PostController extends Controller
 {
@@ -87,6 +88,7 @@ class PostController extends Controller
             }
         }
 
+        $post->published_at = now();
         $post->images = json_encode($imagesArr);
         $post->save();
 
@@ -99,9 +101,12 @@ class PostController extends Controller
     public function show(string $slug)
     {
         $post = Post::where('slug', $slug)->first();
+
+
         if(!$post) {
             return $this->error(null, 'Data not found', 404);
         }
+
 
         return $this->success(new PostResource($post), 'Post Detail');
     }
@@ -123,6 +128,7 @@ class PostController extends Controller
         if(!$post) {
             return $this->error(null, 'Data not found', 404);
         }
+
 
         $post->title = $request->title ?? $post->title;
         $post->slug = $request->title ? Str::slug($request->title . '_' . now()->format('Y-m-d H:i:s') . '_' . rand(0000, 9999)) : $post->slug;

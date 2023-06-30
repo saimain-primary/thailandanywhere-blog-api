@@ -41,14 +41,18 @@ class PostController extends Controller
             ->getData(), 'Post List');
     }
 
-    public function getDetail(string $slug){
+    public function getDetail(string $slug)
+    {
         $query = Post::query();
         $post = $query->where('slug', $slug)->first();
 
-        if(!$post){
+        if(!$post) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        return $this->success(new PostResource($post),'Post Detail');
+        $post->increment('views');
+
+
+        return $this->success(new PostResource($post), 'Post Detail');
     }
 }

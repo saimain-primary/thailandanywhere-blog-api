@@ -30,12 +30,17 @@ class PostResource extends JsonResource
             'slug' => $this->slug,
             'title' => $this->title,
             'content' => $this->content,
+            'views' => $this->views,
             'featured_image' => env('APP_URL') . Storage::url('images/' . $this->featured_image),
             'images' => $imagesArr,
             'category' => new CategoryResource($this->category),
             'tags' => json_decode($this->tags, true),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'comments' => CommentResource::collection($this->comments),
+            'reacts' => count($this->reacts),
+            'published_by' => $this->publishedBy,
+            'published_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
     }
 }

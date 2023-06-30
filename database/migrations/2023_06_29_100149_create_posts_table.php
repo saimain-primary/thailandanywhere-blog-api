@@ -21,6 +21,8 @@ return new class () extends Migration {
             $table->timestamp('published_at')->nullable();
             $table->string('featured_image')->nullable();
             $table->json('images')->nullable();
+            $table->integer('views')->default(0);
+            $table->unsignedBigInteger('published_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
