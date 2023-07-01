@@ -14,6 +14,7 @@ Route::get('categories', [CategoryController::class,'getList']);
 Route::get('posts', [PostController::class,'getPost']);
 Route::get('popular-posts', [PostController::class,'getPopularPost']);
 Route::get('recent-posts', [PostController::class,'getRecentPost']);
+Route::get('feature-posts', [PostController::class,'getFeaturePost']);
 Route::get('posts/{slug}', [PostController::class,'getDetail']);
 
 Route::middleware(['auth:sanctum', 'abilities:user'])->group(function () {

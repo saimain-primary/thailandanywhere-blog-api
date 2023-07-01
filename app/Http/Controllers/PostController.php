@@ -66,6 +66,25 @@ class PostController extends Controller
             ->getData(), 'Popular Post List');
     }
 
+
+    public function getFeaturePost(Request $request)
+    {
+        $query = Post::query();
+        $limit = $request->query('limit', 10);
+
+        $query->orderBy('views', 'desc');
+        $data = $query->paginate($limit);
+
+        return $this->success(PostResource::collection($data)
+            ->additional([
+                'meta' => [
+                    'total_page' => (int) ceil($data->total() / $data->perPage()),
+                ],
+            ])
+            ->response()
+            ->getData(), 'Popular Post List');
+    }
+
     public function getRecentPost(Request $request)
     {
         $query = Post::query();
