@@ -82,7 +82,7 @@ class PostController extends Controller
                 ],
             ])
             ->response()
-            ->getData(), 'Popular Post List');
+            ->getData(), 'Feature Post List');
     }
 
     public function getRecentPost(Request $request)
