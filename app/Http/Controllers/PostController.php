@@ -12,6 +12,7 @@ class PostController extends Controller
 {
     use HttpResponses;
 
+
     public function getPost(Request $request)
     {
         $limit = $request->query('limit', 10);
@@ -36,6 +37,7 @@ class PostController extends Controller
         }
 
         $data = $query->paginate($limit);
+
         return $this->success(PostResource::collection($data)
             ->additional([
                 'meta' => [
@@ -44,6 +46,24 @@ class PostController extends Controller
             ])
             ->response()
             ->getData(), 'Post List');
+    }
+
+    public function getPopularPost(Request $request)
+    {
+        $query = Post::query();
+        $limit = $request->query('limit', 10);
+
+        $query->orderBy('views', 'desc');
+        $data = $query->paginate($limit);
+
+        return $this->success(PostResource::collection($data)
+            ->additional([
+                'meta' => [
+                    'total_page' => (int) ceil($data->total() / $data->perPage()),
+                ],
+            ])
+            ->response()
+            ->getData(), 'Popular Post List');
     }
 
     public function getDetail(string $slug)

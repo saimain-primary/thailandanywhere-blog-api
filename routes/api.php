@@ -12,6 +12,7 @@ Route::post('/register', [AuthController::class,'register']);
 
 Route::get('categories', [CategoryController::class,'getList']);
 Route::get('posts', [PostController::class,'getPost']);
+Route::get('popular-posts', [PostController::class,'getPopularPost']);
 Route::get('posts/{slug}', [PostController::class,'getDetail']);
 
 Route::middleware(['auth:sanctum', 'abilities:user'])->group(function () {
