@@ -19,11 +19,16 @@ class PostController extends Controller
 
         $query = Post::query();
 
-
         if($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
+        if($request->query('tags')) {
+            $tagArr = explode(',', $request->query('tags'));
+            foreach ($tagArr as $tag) {
+                $query->orWhereRaw('JSON_CONTAINS(tags, ?)', [json_encode($tag)]);
+            }
+        }
 
         if($request->query('category')) {
             $c = Category::where('slug', $request->query('category'))->first();
