@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:5173','https://sales-admin.thanywhere.com','https://kaungblogui.netlify.app','https://blog.thanywhere.com'],
+    'allowed_origins' => ['http://localhost:5173','https://sales-admin.thanywhere.com','https://blog.thanywhere.com'],
 
     'allowed_origins_patterns' => [],
 
