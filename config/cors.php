@@ -15,11 +15,11 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie', 'admin/*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'admin/*' , 'api'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ["*"],
+    'allowed_origins' => ['https://sales-admin.thanywhere.com','https://blog.thanywhere.com',"http://localhost:5173"],
 
     'allowed_origins_patterns' => [],
 
