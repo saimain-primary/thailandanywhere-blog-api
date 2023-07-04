@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://sales-admin.thanywhere.com','https://blog.thanywhere.com'],
+    'allowed_origins' => ['https://sales-admin.thanywhere.com','https://blog.thanywhere.com',"http://localhost:5173"],
 
     'allowed_origins_patterns' => [],
 
