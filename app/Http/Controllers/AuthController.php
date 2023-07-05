@@ -29,7 +29,7 @@ class AuthController extends Controller
         $user->tokens()->delete();
 
         return $this->success([
-            'user' => $user,
+            'user' =>  new UserResource($user),
             'token' => $user->createToken('API Token of admin id ' . $user->id, ['user'])->plainTextToken
         ], 'Successfully Login');
     }
@@ -49,7 +49,7 @@ class AuthController extends Controller
         $user->save();
 
         return $this->success([
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => $user->createToken('API Token of user id ' . $user->id, ['user'])->plainTextToken
         ], 'Successfully Registered');
 
