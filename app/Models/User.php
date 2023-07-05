@@ -51,7 +51,7 @@ class User extends Authenticatable
     protected function profile(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => env('APP_URL') . Storage::url('images/' . $value)
+            get: fn (string $value) => $value ? env('APP_URL') . Storage::url('images/' . $value) : null
         );
     }
 }
