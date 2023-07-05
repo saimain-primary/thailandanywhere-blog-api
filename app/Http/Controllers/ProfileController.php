@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use App\Traits\ImageManager;
@@ -27,7 +28,7 @@ class ProfileController extends Controller
         }
 
         $user->update();
-        return $this->success($user, 'Successfully updated profile');
+        return $this->success(new UserResource($user), 'Successfully updated profile');
     }
 
     public function changePassword(Request $request)
