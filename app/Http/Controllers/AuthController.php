@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
@@ -60,7 +61,7 @@ class AuthController extends Controller
         $query->where('id', Auth::id());
         $data =  $query->first();
         return $this->success([
-            'user' => $data,
+            'user' => new UserResource($data),
         ], 'User Account Detail');
     }
 

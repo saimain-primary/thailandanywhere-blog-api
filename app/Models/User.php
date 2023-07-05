@@ -48,10 +48,5 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // protected function profile(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn (string $value) => $value ? env('APP_URL') . Storage::url('images/' . $value) : null
-    //     );
-    // }
+
 }
