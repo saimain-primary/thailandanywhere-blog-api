@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
-use App\Models\ProductCategory;
+use App\Models\PrivateVanTour;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductCategoryResource;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\PrivateVanTourResource;
 
-class ProductCategoryController extends Controller
+class PrivateVanTourController extends Controller
 {
     use ImageManager;
     use HttpResponses;
@@ -23,21 +23,21 @@ class ProductCategoryController extends Controller
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
 
-        $query = ProductCategory::query();
+        $query = PrivateVanTour::query();
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
         $data = $query->paginate($limit);
-        return $this->success(ProductCategoryResource::collection($data)
+        return $this->success(PrivateVanTourResource::collection($data)
             ->additional([
                 'meta' => [
                     'total_page' => (int) ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
-            ->getData(), 'Product Category List');
+            ->getData(), 'Private Van Tour List');
     }
 
 
@@ -48,20 +48,36 @@ class ProductCategoryController extends Controller
     {
         $request->validate([
             'name'  => 'required',
-            'icon' => 'sometimes|image|max:2048'  // 2 MB
+            'description' => 'required|string|max:225',
+            'cover_image' => 'required|image|max:2048',
+            'city_ids' => 'required',
+            'car_ids' => 'required',
+            'tag_ids' => 'required',
+            'destination_ids' => 'required',
+            'sku_code' => 'required|' . Rule::unique('private_van_tours'),
         ]);
 
+
         $data = [
-            'name' => $request->name
+            'name' => $request->name,
+            'description' => $request->description,
+            'sku_code' => $request->sku_code,
+            'long_description' => $request->long_description,
         ];
 
-        if ($file = $request->file('icon')) {
+        if ($file = $request->file('cover_image')) {
             $fileData = $this->uploads($file, 'images/');
-            $data['icon'] = $fileData['fileName'];
+            $data['cover_image'] = $fileData['fileName'];
         }
 
-        $save = ProductCategory::create($data);
-        return $this->success(new ProductCategoryResource($save), 'Successfully created');
+        $save = PrivateVanTour::create($data);
+
+        if ($request->tag_ids) {
+            $save->tags()->sync($request->tag_ids);
+        }
+
+
+        return $this->success(new PrivateVanTourResource($save), 'Successfully created');
     }
 
     /**
@@ -69,12 +85,12 @@ class ProductCategoryController extends Controller
      */
     public function show(string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = PrivateVanTour::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        return $this->success(new ProductCategoryResource($find), 'Product Category Detail');
+        return $this->success(new PrivateVanTourResource($find), 'Product Category Detail');
     }
 
 
@@ -83,7 +99,7 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = PrivateVanTour::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
@@ -104,7 +120,7 @@ class ProductCategoryController extends Controller
 
         $find->update($data);
 
-        return $this->success(new ProductCategoryResource($find), 'Successfully updated');
+        return $this->success(new PrivateVanTourResource($find), 'Successfully updated');
     }
 
     /**
@@ -112,7 +128,7 @@ class ProductCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = PrivateVanTour::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }

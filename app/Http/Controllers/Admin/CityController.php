@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\City;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
-use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductCategoryResource;
+use App\Http\Resources\CityResource;
 use Illuminate\Support\Facades\Storage;
 
-class ProductCategoryController extends Controller
+class CityController extends Controller
 {
     use ImageManager;
     use HttpResponses;
@@ -23,21 +23,21 @@ class ProductCategoryController extends Controller
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
 
-        $query = ProductCategory::query();
+        $query = City::query();
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
         $data = $query->paginate($limit);
-        return $this->success(ProductCategoryResource::collection($data)
+        return $this->success(CityResource::collection($data)
             ->additional([
                 'meta' => [
                     'total_page' => (int) ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
-            ->getData(), 'Product Category List');
+            ->getData(), 'City List');
     }
 
 
@@ -48,20 +48,20 @@ class ProductCategoryController extends Controller
     {
         $request->validate([
             'name'  => 'required',
-            'icon' => 'sometimes|image|max:2048'  // 2 MB
+            'image' => 'sometimes|image|max:2048'  // 2 MB
         ]);
 
         $data = [
-            'name' => $request->name
+            'name' => $request->name,
         ];
 
-        if ($file = $request->file('icon')) {
+        if ($file = $request->file('image')) {
             $fileData = $this->uploads($file, 'images/');
-            $data['icon'] = $fileData['fileName'];
+            $data['image'] = $fileData['fileName'];
         }
 
-        $save = ProductCategory::create($data);
-        return $this->success(new ProductCategoryResource($save), 'Successfully created');
+        $save = City::create($data);
+        return $this->success(new CityResource($save), 'Successfully created');
     }
 
     /**
@@ -69,12 +69,12 @@ class ProductCategoryController extends Controller
      */
     public function show(string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = City::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        return $this->success(new ProductCategoryResource($find), 'Product Category Detail');
+        return $this->success(new CityResource($find), 'City Detail');
     }
 
 
@@ -83,7 +83,7 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = City::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
@@ -92,19 +92,20 @@ class ProductCategoryController extends Controller
             'name' => $request->name ?? $find->name
         ];
 
-        if ($file = $request->file('icon')) {
+        if ($file = $request->file('image')) {
             // delete old icon
-            if ($find->icon) {
-                Storage::delete($find->icon);
+            if ($find->image) {
+                Storage::delete($find->image);
             }
 
             $fileData = $this->uploads($file, 'images/');
-            $data['icon'] = $fileData['fileName'];
+            $data['image'] = $fileData['fileName'];
         }
+
 
         $find->update($data);
 
-        return $this->success(new ProductCategoryResource($find), 'Successfully updated');
+        return $this->success(new CityResource($find), 'Successfully updated');
     }
 
     /**
@@ -112,7 +113,7 @@ class ProductCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = City::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }

@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
-use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductCategoryResource;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\CarResource;
+use App\Models\Car;
 
-class ProductCategoryController extends Controller
+class CarController extends Controller
 {
     use ImageManager;
     use HttpResponses;
@@ -23,21 +22,21 @@ class ProductCategoryController extends Controller
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
 
-        $query = ProductCategory::query();
+        $query = Car::query();
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
         $data = $query->paginate($limit);
-        return $this->success(ProductCategoryResource::collection($data)
+        return $this->success(CarResource::collection($data)
             ->additional([
                 'meta' => [
                     'total_page' => (int) ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
-            ->getData(), 'Product Category List');
+            ->getData(), 'Car List');
     }
 
 
@@ -47,21 +46,17 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'  => 'required',
-            'icon' => 'sometimes|image|max:2048'  // 2 MB
+            'name'  => 'required|string|max:225',
+            'max_person' => 'required|string|max:225'
         ]);
 
         $data = [
-            'name' => $request->name
+            'name' => $request->name,
+            'max_person' => $request->max_person,
         ];
 
-        if ($file = $request->file('icon')) {
-            $fileData = $this->uploads($file, 'images/');
-            $data['icon'] = $fileData['fileName'];
-        }
-
-        $save = ProductCategory::create($data);
-        return $this->success(new ProductCategoryResource($save), 'Successfully created');
+        $save = Car::create($data);
+        return $this->success(new CarResource($save), 'Successfully created');
     }
 
     /**
@@ -69,12 +64,12 @@ class ProductCategoryController extends Controller
      */
     public function show(string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = Car::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        return $this->success(new ProductCategoryResource($find), 'Product Category Detail');
+        return $this->success(new CarResource($find), 'Car Detail');
     }
 
 
@@ -83,28 +78,20 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = Car::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
         $data = [
-            'name' => $request->name ?? $find->name
+            'name' => $request->name ?? $find->name,
+            'max_person' => $request->max_person ?? $find->max_person,
         ];
 
-        if ($file = $request->file('icon')) {
-            // delete old icon
-            if ($find->icon) {
-                Storage::delete($find->icon);
-            }
-
-            $fileData = $this->uploads($file, 'images/');
-            $data['icon'] = $fileData['fileName'];
-        }
 
         $find->update($data);
 
-        return $this->success(new ProductCategoryResource($find), 'Successfully updated');
+        return $this->success(new CarResource($find), 'Successfully updated');
     }
 
     /**
@@ -112,7 +99,7 @@ class ProductCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = Car::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }

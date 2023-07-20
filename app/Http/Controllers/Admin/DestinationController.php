@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
-use App\Models\ProductCategory;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductCategoryResource;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\DestinationResource;
+use App\Models\Destination;
 
-class ProductCategoryController extends Controller
+class DestinationController extends Controller
 {
     use ImageManager;
     use HttpResponses;
@@ -23,21 +22,21 @@ class ProductCategoryController extends Controller
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
 
-        $query = ProductCategory::query();
+        $query = Destination::query();
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
         $data = $query->paginate($limit);
-        return $this->success(ProductCategoryResource::collection($data)
+        return $this->success(DestinationResource::collection($data)
             ->additional([
                 'meta' => [
                     'total_page' => (int) ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
-            ->getData(), 'Product Category List');
+            ->getData(), 'Destination List');
     }
 
 
@@ -47,21 +46,18 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'  => 'required',
-            'icon' => 'sometimes|image|max:2048'  // 2 MB
+            'name'  => 'required'
         ]);
 
         $data = [
-            'name' => $request->name
+            'name' => $request->name,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'entry_fee' => $request->entry_fee,
         ];
 
-        if ($file = $request->file('icon')) {
-            $fileData = $this->uploads($file, 'images/');
-            $data['icon'] = $fileData['fileName'];
-        }
-
-        $save = ProductCategory::create($data);
-        return $this->success(new ProductCategoryResource($save), 'Successfully created');
+        $save = Destination::create($data);
+        return $this->success(new DestinationResource($save), 'Successfully created');
     }
 
     /**
@@ -69,12 +65,12 @@ class ProductCategoryController extends Controller
      */
     public function show(string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = Destination::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        return $this->success(new ProductCategoryResource($find), 'Product Category Detail');
+        return $this->success(new DestinationResource($find), 'Destination Detail');
     }
 
 
@@ -83,28 +79,22 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = Destination::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
         $data = [
-            'name' => $request->name ?? $find->name
+            'name' => $request->name ?? $find->name,
+            'category_id' => $request->category_id ?? $find->category_id,
+            'description' => $request->description ?? $find->description,
+            'entry_fee' => $request->entry_fee ?? $find->entry_fee,
         ];
 
-        if ($file = $request->file('icon')) {
-            // delete old icon
-            if ($find->icon) {
-                Storage::delete($find->icon);
-            }
-
-            $fileData = $this->uploads($file, 'images/');
-            $data['icon'] = $fileData['fileName'];
-        }
 
         $find->update($data);
 
-        return $this->success(new ProductCategoryResource($find), 'Successfully updated');
+        return $this->success(new DestinationResource($find), 'Successfully updated');
     }
 
     /**
@@ -112,7 +102,7 @@ class ProductCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = Destination::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }

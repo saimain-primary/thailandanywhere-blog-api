@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\ProductTag;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
-use App\Models\ProductCategory;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductCategoryResource;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\ProductTagResource;
 
-class ProductCategoryController extends Controller
+class ProductTagController extends Controller
 {
     use ImageManager;
     use HttpResponses;
@@ -23,21 +23,21 @@ class ProductCategoryController extends Controller
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
 
-        $query = ProductCategory::query();
+        $query = ProductTag::query();
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
         $data = $query->paginate($limit);
-        return $this->success(ProductCategoryResource::collection($data)
+        return $this->success(ProductTagResource::collection($data)
             ->additional([
                 'meta' => [
                     'total_page' => (int) ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
-            ->getData(), 'Product Category List');
+            ->getData(), 'Product Tag List');
     }
 
 
@@ -47,21 +47,15 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'  => 'required',
-            'icon' => 'sometimes|image|max:2048'  // 2 MB
+            'name'  => 'required|' . Rule::unique('product_tags')
         ]);
 
         $data = [
-            'name' => $request->name
+            'name' => $request->name,
         ];
 
-        if ($file = $request->file('icon')) {
-            $fileData = $this->uploads($file, 'images/');
-            $data['icon'] = $fileData['fileName'];
-        }
-
-        $save = ProductCategory::create($data);
-        return $this->success(new ProductCategoryResource($save), 'Successfully created');
+        $save = ProductTag::create($data);
+        return $this->success(new ProductTagResource($save), 'Successfully created');
     }
 
     /**
@@ -69,12 +63,12 @@ class ProductCategoryController extends Controller
      */
     public function show(string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = ProductTag::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        return $this->success(new ProductCategoryResource($find), 'Product Category Detail');
+        return $this->success(new ProductTagResource($find), 'Product Tag Detail');
     }
 
 
@@ -83,28 +77,24 @@ class ProductCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $find = ProductCategory::find($id);
+
+        $request->validate([
+            'name'  => 'required|' . Rule::unique('product_tags')->ignore($id)
+        ]);
+
+        $find = ProductTag::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
         $data = [
-            'name' => $request->name ?? $find->name
-        ];
+            'name' => $request->name ?? $find->name,
+        ];  
 
-        if ($file = $request->file('icon')) {
-            // delete old icon
-            if ($find->icon) {
-                Storage::delete($find->icon);
-            }
-
-            $fileData = $this->uploads($file, 'images/');
-            $data['icon'] = $fileData['fileName'];
-        }
 
         $find->update($data);
 
-        return $this->success(new ProductCategoryResource($find), 'Successfully updated');
+        return $this->success(new ProductTagResource($find), 'Successfully updated');
     }
 
     /**
@@ -112,7 +102,7 @@ class ProductCategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $find = ProductCategory::find($id);
+        $find = ProductTag::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }

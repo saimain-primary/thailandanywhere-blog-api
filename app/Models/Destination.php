@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductSubCategory extends Model
+class Destination extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name', 'category_id'];
+    protected $fillable = ['name', 'description', 'category_id', 'entry_fee'];
 
     public function category()
     {
