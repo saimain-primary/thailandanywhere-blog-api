@@ -30,7 +30,10 @@ class PrivateVanTour extends Model
             ->withTimestamps();
     }
 
-
+    public function images()
+    {
+        return $this->hasMany(PrivateVanTourImage::class, 'private_van_tour_id', 'id');
+    }
 
     public function destinations()
     {

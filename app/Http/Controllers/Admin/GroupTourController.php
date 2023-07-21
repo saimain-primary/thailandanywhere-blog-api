@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\GroupTour;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
-use App\Models\PrivateVanTour;
-use Illuminate\Validation\Rule;
-use App\Models\PrivateVanTourImage;
+use App\Models\GroupTourImage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Resources\PrivateVanTourResource;
-use App\Http\Requests\StorePrivateVanTourRequest;
-use App\Http\Requests\UpdatePrivateVanTourRequest;
+use App\Http\Resources\GroupTourResource;
+use App\Http\Requests\StoreGroupTourRequest;
+use App\Http\Requests\UpdateGroupTourRequest;
 
-class PrivateVanTourController extends Controller
+class GroupTourController extends Controller
 {
     use ImageManager;
     use HttpResponses;
@@ -27,7 +26,7 @@ class PrivateVanTourController extends Controller
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
 
-        $query = PrivateVanTour::query();
+        $query = GroupTour::query();
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
@@ -36,27 +35,29 @@ class PrivateVanTourController extends Controller
         $query->orderBy('created_at', 'desc');
 
         $data = $query->paginate($limit);
-        return $this->success(PrivateVanTourResource::collection($data)
+        return $this->success(GroupTourResource::collection($data)
             ->additional([
                 'meta' => [
                     'total_page' => (int) ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
-            ->getData(), 'Private Van Tour List');
+            ->getData(), 'Group Tour List');
     }
 
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePrivateVanTourRequest $request)
+    public function store(StoreGroupTourRequest $request)
     {
+
         $data = [
             'name' => $request->name,
             'description' => $request->description,
             'sku_code' => $request->sku_code,
-            'long_description' => $request->long_description,
+            'price' => $request->price,
+            'cancellation_policy_id' => $request->cancellation_policy_id,
         ];
 
         if ($file = $request->file('cover_image')) {
@@ -64,8 +65,7 @@ class PrivateVanTourController extends Controller
             $data['cover_image'] = $fileData['fileName'];
         }
 
-
-        $save = PrivateVanTour::create($data);
+        $save = GroupTour::create($data);
 
         if ($request->tag_ids) {
             $save->tags()->sync($request->tag_ids);
@@ -79,24 +79,13 @@ class PrivateVanTourController extends Controller
             $save->destinations()->sync($request->destination_ids);
         }
 
-
-        $prices = $request->prices;
-        $agent_prices = $request->agent_prices;
-        $data = array_combine($request->car_ids, array_map(function ($price, $agent_price) {
-            return ['price' => $price, 'agent_price' => $agent_price];
-        }, $prices, $agent_prices));
-
-
-        $save->cars()->sync($data);
-
-
         foreach ($request->file('images') as $image) {
             $fileData = $this->uploads($image, 'images/');
-            PrivateVanTourImage::create(['private_van_tour_id' => $save->id, 'image' => $fileData['fileName']]);
+            GroupTourImage::create(['group_tour_id' => $save->id, 'image' => $fileData['fileName']]);
         };
 
 
-        return $this->success(new PrivateVanTourResource($save), 'Successfully created');
+        return $this->success(new GroupTourResource($save), 'Successfully created');
     }
 
     /**
@@ -104,21 +93,21 @@ class PrivateVanTourController extends Controller
      */
     public function show(string $id)
     {
-        $find = PrivateVanTour::find($id);
+        $find = GroupTour::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        return $this->success(new PrivateVanTourResource($find), 'Private Van Tour Detail');
+        return $this->success(new GroupTourResource($find), 'Group Tour Detail');
     }
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePrivateVanTourRequest $request, string $id)
+    public function update(UpdateGroupTourRequest $request, string $id)
     {
-        $find = PrivateVanTour::find($id);
+        $find = GroupTour::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
@@ -128,7 +117,8 @@ class PrivateVanTourController extends Controller
             'name' => $request->name ?? $find->name,
             'description' => $request->description ?? $find->description,
             'sku_code' => $request->sku_code ?? $find->sku_code,
-            'long_description' => $request->long_description ?? $find->long_description,
+            'price' => $request->price ?? $find->price,
+            'cancellation_policy_id' => $request->cancellation_policy_id ?? $find->cancellation_policy_id,
         ];
 
         if ($file = $request->file('cover_image')) {
@@ -155,6 +145,7 @@ class PrivateVanTourController extends Controller
             $find->destinations()->sync($request->destination_ids);
         }
 
+
         if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
                 // Delete existing images
@@ -168,22 +159,11 @@ class PrivateVanTourController extends Controller
                 }
 
                 $fileData = $this->uploads($image, 'images/');
-                PrivateVanTourImage::create(['private_van_tour_id' => $find->id, 'image' => $fileData['fileName']]);
+                GroupTourImage::create(['group_tour_id' => $find->id, 'image' => $fileData['fileName']]);
             };
         }
 
-
-
-        $prices = $request->prices;
-        $agent_prices = $request->agent_prices;
-        $data = array_combine($request->car_ids, array_map(function ($price, $agent_price) {
-            return ['price' => $price, 'agent_price' => $agent_price];
-        }, $prices, $agent_prices));
-
-
-        $find->cars()->sync($data);
-
-        return $this->success(new PrivateVanTourResource($find), 'Successfully updated');
+        return $this->success(new GroupTourResource($find), 'Successfully updated');
     }
 
     /**
@@ -191,12 +171,11 @@ class PrivateVanTourController extends Controller
      */
     public function destroy(string $id)
     {
-        $find = PrivateVanTour::find($id);
+        $find = GroupTour::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        $find->cars()->detach();
         $find->tags()->detach();
         $find->destinations()->detach();
         $find->cities()->detach();
