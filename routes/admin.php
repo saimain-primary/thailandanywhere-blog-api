@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\DestinationController;
+use App\Http\Controllers\Admin\EntranceTicketController;
 use App\Http\Controllers\Admin\GroupTourController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PrivateVanTourController;
@@ -35,4 +36,5 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::apiResource('product-tags', ProductTagController::class);
     Route::apiResource('private-van-tours', PrivateVanTourController::class);
     Route::apiResource('group-tours', GroupTourController::class);
+    Route::apiResource('entrance-tickets', EntranceTicketController::class);
 });
