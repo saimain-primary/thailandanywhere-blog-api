@@ -12,4 +12,11 @@ class Car extends Model
     use SoftDeletes;
 
     protected $fillable = ['name', 'max_person'];
+
+    public function privateVanTours()
+    {
+        return $this->belongsToMany(PrivateVanTour::class, 'private_van_tour_cars')
+            ->withPivot('price', 'agent_price')
+            ->withTimestamps();
+    }
 }
