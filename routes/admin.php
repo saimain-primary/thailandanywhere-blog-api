@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AirportPickupController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -37,4 +38,5 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::apiResource('private-van-tours', PrivateVanTourController::class);
     Route::apiResource('group-tours', GroupTourController::class);
     Route::apiResource('entrance-tickets', EntranceTicketController::class);
+    Route::apiResource('airport-pickups', AirportPickupController::class);
 });

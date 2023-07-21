@@ -4,17 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
+use App\Models\AirportPickup;
 use App\Traits\HttpResponses;
-use App\Models\EntranceTicket;
-use App\Models\EntranceTicketImage;
+use App\Models\AirportPickupImage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Resources\EntranceTicketResource;
-use App\Http\Requests\StoreEntranceTicketRequest;
-use App\Http\Requests\UpdateEntranceTicketRequest;
-use App\Models\EntranceTicketVariation;
+use App\Http\Resources\AirportPickupResource;
+use App\Http\Requests\StoreAirportPickupRequest;
+use App\Http\Requests\UpdateAirportPickupRequest;
 
-class EntranceTicketController extends Controller
+class AirportPickupController extends Controller
 {
     use ImageManager;
     use HttpResponses;
@@ -27,7 +26,7 @@ class EntranceTicketController extends Controller
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
 
-        $query = EntranceTicket::query();
+        $query = AirportPickup::query();
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
@@ -36,28 +35,26 @@ class EntranceTicketController extends Controller
         $query->orderBy('created_at', 'desc');
 
         $data = $query->paginate($limit);
-        return $this->success(EntranceTicketResource::collection($data)
+        return $this->success(AirportPickupResource::collection($data)
             ->additional([
                 'meta' => [
                     'total_page' => (int) ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
-            ->getData(), 'Entrance Ticket List');
+            ->getData(), 'Airport Pickup List');
     }
 
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEntranceTicketRequest $request)
+    public function store(StoreAirportPickupRequest $request)
     {
 
         $data = [
             'name' => $request->name,
             'description' => $request->description,
-            'provider' => $request->provider,
-            'cancellation_policy_id' => $request->cancellation_policy_id,
         ];
 
         if ($file = $request->file('cover_image')) {
@@ -65,7 +62,8 @@ class EntranceTicketController extends Controller
             $data['cover_image'] = $fileData['fileName'];
         }
 
-        $save = EntranceTicket::create($data);
+
+        $save = AirportPickup::create($data);
 
         if ($request->tag_ids) {
             $save->tags()->sync($request->tag_ids);
@@ -75,20 +73,28 @@ class EntranceTicketController extends Controller
             $save->cities()->sync($request->city_ids);
         }
 
-        if ($request->category_ids) {
-            $save->categories()->sync($request->category_ids);
+        if ($request->destination_ids) {
+            $save->destinations()->sync($request->destination_ids);
         }
+
+
+        $prices = $request->prices;
+        $agent_prices = $request->agent_prices;
+        $data = array_combine($request->car_ids, array_map(function ($price, $agent_price) {
+            return ['price' => $price, 'agent_price' => $agent_price];
+        }, $prices, $agent_prices));
+
+
+        $save->cars()->sync($data);
+
 
         foreach ($request->file('images') as $image) {
             $fileData = $this->uploads($image, 'images/');
-            EntranceTicketImage::create(['entrance_ticket_id' => $save->id, 'image' => $fileData['fileName']]);
+            AirportPickupImage::create(['airport_pickup_id' => $save->id, 'image' => $fileData['fileName']]);
         };
 
-        foreach ($request->variations as $variation) {
-            EntranceTicketVariation::create(['entrance_ticket_id' => $save->id, 'name' => $variation['name'], 'age_group' => $variation['age_group'], 'price' => $variation['price']]);
-        };
 
-        return $this->success(new EntranceTicketResource($save), 'Successfully created');
+        return $this->success(new AirportPickupResource($save), 'Successfully created');
     }
 
     /**
@@ -96,21 +102,21 @@ class EntranceTicketController extends Controller
      */
     public function show(string $id)
     {
-        $find = EntranceTicket::find($id);
+        $find = AirportPickup::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        return $this->success(new EntranceTicketResource($find), 'Entrance Ticket Detail');
+        return $this->success(new AirportPickupResource($find), 'Airport Pickup Detail');
     }
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEntranceTicketRequest $request, string $id)
+    public function update(UpdateAirportPickupRequest $request, string $id)
     {
-        $find = EntranceTicket::find($id);
+        $find = AirportPickup::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
@@ -118,11 +124,8 @@ class EntranceTicketController extends Controller
 
         $data = [
             'name' => $request->name ?? $find->name,
-            'description' => $request->description  ?? $find->description,
-            'provider' => $request->provider ?? $find->provider,
-            'cancellation_policy_id' => $request->cancellation_policy_id ?? $find->cancellation_policy_id,
+            'description' => $request->description ?? $find->description,
         ];
-
 
         if ($file = $request->file('cover_image')) {
             $fileData = $this->uploads($file, 'images/');
@@ -144,11 +147,9 @@ class EntranceTicketController extends Controller
             $find->cities()->sync($request->city_ids);
         }
 
-        if ($request->category_ids) {
-            $find->categories()->sync($request->category_ids);
+        if ($request->destination_ids) {
+            $find->destinations()->sync($request->destination_ids);
         }
-
-
 
         if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
@@ -163,23 +164,22 @@ class EntranceTicketController extends Controller
                 }
 
                 $fileData = $this->uploads($image, 'images/');
-                EntranceTicketImage::create(['entrance_ticket_id' => $find->id, 'image' => $fileData['fileName']]);
-            };
-        }
-
-        if ($request->variations) {
-            foreach ($request->variations as $variation) {
-                if (count($find->variations) > 0) {
-                    foreach ($find->variations as $v) {
-                        $v->delete();
-                    }
-                }
-                EntranceTicketVariation::create(['entrance_ticket_id' => $find->id, 'name' => $variation['name'], 'age_group' => $variation['age_group'], 'price' => $variation['price']]);
+                AirportPickupImage::create(['airport_pickup_id' => $find->id, 'image' => $fileData['fileName']]);
             };
         }
 
 
-        return $this->success(new EntranceTicketResource($find), 'Successfully updated');
+
+        $prices = $request->prices;
+        $agent_prices = $request->agent_prices;
+        $data = array_combine($request->car_ids, array_map(function ($price, $agent_price) {
+            return ['price' => $price, 'agent_price' => $agent_price];
+        }, $prices, $agent_prices));
+
+
+        $find->cars()->sync($data);
+
+        return $this->success(new AirportPickupResource($find), 'Successfully updated');
     }
 
     /**
@@ -187,13 +187,14 @@ class EntranceTicketController extends Controller
      */
     public function destroy(string $id)
     {
-        $find = EntranceTicket::find($id);
+        $find = AirportPickup::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
+        $find->cars()->detach();
         $find->tags()->detach();
-        $find->categories()->detach();
+        $find->destinations()->detach();
         $find->cities()->detach();
 
         Storage::delete('public/images/' . $find->cover_image);
@@ -203,10 +204,6 @@ class EntranceTicketController extends Controller
             Storage::delete('public/images/' . $image->image);
             // Delete the image from the database
             $image->delete();
-        }
-
-        foreach ($find->variations as $variation) {
-            $variation->delete();
         }
 
         $find->delete();
