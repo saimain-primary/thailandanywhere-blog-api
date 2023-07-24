@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AirportPickupController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\CarController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CityController;
@@ -41,4 +42,5 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::apiResource('entrance-tickets', EntranceTicketController::class);
     Route::apiResource('airport-pickups', AirportPickupController::class);
     Route::apiResource('customers', CustomerController::class);
+    Route::apiResource('bookings', BookingController::class);
 });
