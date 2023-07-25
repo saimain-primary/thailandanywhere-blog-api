@@ -44,6 +44,5 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::apiResource('airport-pickups', AirportPickupController::class);
     Route::apiResource('customers', CustomerController::class);
     Route::apiResource('bookings', BookingController::class);
-
     Route::apiResource('reservations', ReservationController::class);
 });

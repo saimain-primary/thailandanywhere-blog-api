@@ -146,6 +146,7 @@ class BookingController extends Controller
             'money_exchange_rate' => $request->money_exchange_rate ?? $find->money_exchange_rate,
             'discount' => $request->discount ?? $find->discount,
             'comment' => $request->comment ?? $find->comment,
+            "reservation_status" => 'awaiting',
 
         ];
 

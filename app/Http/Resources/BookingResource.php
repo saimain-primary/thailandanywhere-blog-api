@@ -26,6 +26,7 @@ class BookingResource extends JsonResource
             'money_exchange_rate' => $this->money_exchange_rate,
             'discount' => $this->discount,
             'comment' => $this->comment,
+            'reservation_status' => $this->reservation_status,
             'items' => BookingItemResource::collection($this->items),
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),

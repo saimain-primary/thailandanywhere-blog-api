@@ -11,7 +11,7 @@ class Booking extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['crm_id', 'customer_id', 'sold_from', 'payment_method', 'payment_status', 'booking_date', 'money_exchange_rate', 'discount', 'comment'];
+    protected $fillable = ['crm_id', 'customer_id', 'sold_from', 'payment_method', 'payment_status', 'booking_date', 'money_exchange_rate', 'discount', 'comment', 'reservation_status'];
 
     public function customer()
     {

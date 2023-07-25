@@ -36,7 +36,9 @@ class BookingItemResource extends JsonResource
         }
         return [
             'id' => $this->id,
+            'booking' => $this->booking,
             'product_type' => $this->product_type,
+            'product_id' => $this->product_id,
             'product' => $product,
             'service_date' => $this->service_date,
             'quantity' => $this->quantity,
