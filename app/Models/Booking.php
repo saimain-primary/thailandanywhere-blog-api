@@ -22,4 +22,30 @@ class Booking extends Model
     {
         return $this->hasMany(BookingItem::class);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->crm_id = $model->generateInvoiceNumber();
+        });
+    }
+
+    public function generateInvoiceNumber()
+    {
+        $number = date('YmdHis');
+
+        // ensure unique
+        while ($this->invoiceNumberExists($number)) {
+            $number = str_pad((int) $number + 1, 12, '0', STR_PAD_LEFT);
+        }
+
+        return $number;
+    }
+
+    public function invoiceNumberExists($number)
+    {
+        return static::where('crm_id', $number)->exists();
+    }
 }

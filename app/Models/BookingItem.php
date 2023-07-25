@@ -11,4 +11,8 @@ class BookingItem extends Model
 
     protected $fillable = ['booking_id', 'product_type', 'product_id', 'service_date', 'quantity', 'duration', 'selling_price', 'comment', 'reservation_status', 'receipt_image'];
 
+    public function product()
+    {
+        return $this->morphTo();
+    }
 }

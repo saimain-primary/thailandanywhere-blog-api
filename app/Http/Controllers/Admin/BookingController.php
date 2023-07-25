@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Booking;
+use App\Models\BookingItem;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookingResource;
-use App\Models\Booking;
-use App\Models\BookingItem;
+use Illuminate\Support\Facades\Storage;
 
 class BookingController extends Controller
 {
@@ -48,7 +49,6 @@ class BookingController extends Controller
     {
 
         $request->validate([
-            'crm_id'  => 'required|string|max:225|unique:bookings,crm_id',
             'customer_id' => 'required',
             'sold_from' => 'required|string',
             'payment_method' => 'required|string',
@@ -85,11 +85,14 @@ class BookingController extends Controller
                 'reservation_status' => $item['reservation_status'],
             ];
 
-            $receiptImage = $request->items[$key]['receipt_image'];
-            if ($receiptImage) {
-                $fileData = $this->uploads($receiptImage, 'images/');
-                $data['receipt_image'] = $fileData['fileName'];
+            if (isset($request->items[$key]['receipt_image'])) {
+                $receiptImage = $request->items[$key]['receipt_image'];
+                if ($receiptImage) {
+                    $fileData = $this->uploads($receiptImage, 'images/');
+                    $data['receipt_image'] = $fileData['fileName'];
+                }
             }
+
 
             BookingItem::create($data);
         }
@@ -102,12 +105,12 @@ class BookingController extends Controller
      */
     public function show(string $id)
     {
-        $find = Car::find($id);
+        $find = Booking::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        return $this->success(new CarResource($find), 'Car Detail');
+        return $this->success(new BookingResource($find), 'Booking Detail');
     }
 
 
@@ -116,20 +119,62 @@ class BookingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $find = Car::find($id);
+
+        $find = Booking::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
 
-        $data = [
-            'name' => $request->name ?? $find->name,
-            'max_person' => $request->max_person ?? $find->max_person,
-        ];
 
+        $data = [
+            'customer_id' => $request->customer_id ?? $find->customer_id,
+            'sold_from' => $request->sold_from ?? $find->sold_from,
+            'payment_method' => $request->payment_method ?? $find->payment_method,
+            'payment_status' => $request->payment_status ?? $find->payment_status,
+            'booking_date' => $request->booking_date ?? $find->booking_date,
+            'money_exchange_rate' => $request->money_exchange_rate ?? $find->money_exchange_rate,
+            'discount' => $request->discount ?? $find->discount,
+            'comment' => $request->comment ?? $find->comment,
+        ];
 
         $find->update($data);
 
-        return $this->success(new CarResource($find), 'Successfully updated');
+        if ($request->items) {
+
+            foreach ($find->items as $key => $item) {
+                if ($item->receipt_image) {
+                    Storage::delete('public/images/' . $item->receipt_image);
+                }
+
+                BookingItem::where('id', $item->id)->delete();
+            }
+
+            foreach ($request->items as $key => $item) {
+                $data = [
+                    'booking_id' => $find->id,
+                    'product_type' => $item['product_type'],
+                    'product_id' => $item['product_id'],
+                    'service_date' => $item['service_date'],
+                    'quantity' => $item['quantity'],
+                    'duration' => $item['duration'],
+                    'selling_price' => $item['selling_price'],
+                    'comment' => $item['comment'],
+                    'reservation_status' => $item['reservation_status'],
+                ];
+
+                if (isset($request->items[$key]['receipt_image'])) {
+                    $receiptImage = $request->items[$key]['receipt_image'];
+                    if ($receiptImage) {
+                        $fileData = $this->uploads($receiptImage, 'images/');
+                        $data['receipt_image'] = $fileData['fileName'];
+                    }
+                }
+
+                BookingItem::create($data);
+            }
+        }
+
+        return $this->success(new BookingResource($find), 'Successfully updated');
     }
 
     /**
@@ -137,10 +182,18 @@ class BookingController extends Controller
      */
     public function destroy(string $id)
     {
-        $find = Car::find($id);
+        $find = Booking::find($id);
         if (!$find) {
             return $this->error(null, 'Data not found', 404);
         }
+
+        foreach ($find->items as $key => $item) {
+            if ($item->receipt_image) {
+                Storage::delete('public/images/' . $item->receipt_image);
+            }
+            BookingItem::where('id', $item->id)->delete();
+        }
+
 
         $find->delete();
         return $this->success(null, 'Successfully deleted');
