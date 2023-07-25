@@ -59,7 +59,6 @@ class BookingController extends Controller
 
 
         $data = [
-            'crm_id' => $request->crm_id,
             'customer_id' => $request->customer_id,
             'sold_from' => $request->sold_from,
             'payment_method' => $request->payment_method,
@@ -81,6 +80,10 @@ class BookingController extends Controller
                 'quantity' => $item['quantity'],
                 'duration' => $item['duration'],
                 'selling_price' => $item['selling_price'],
+                'cost_price' => $item['cost_price'],
+                'payment_method' => $item['payment_method'],
+                'payment_status' => $item['payment_status'],
+                'exchange_rate' => $item['exchange_rate'],
                 'comment' => $item['comment'],
                 'reservation_status' => $item['reservation_status'],
             ];
@@ -90,6 +93,14 @@ class BookingController extends Controller
                 if ($receiptImage) {
                     $fileData = $this->uploads($receiptImage, 'images/');
                     $data['receipt_image'] = $fileData['fileName'];
+                }
+            }
+
+            if (isset($request->items[$key]['confirmation_letter'])) {
+                $file = $request->items[$key]['confirmation_letter'];
+                if ($file) {
+                    $fileData = $this->uploads($file, 'files/');
+                    $data['confirmation_letter'] = $fileData['fileName'];
                 }
             }
 
