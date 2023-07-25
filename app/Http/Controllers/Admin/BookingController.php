@@ -146,6 +146,7 @@ class BookingController extends Controller
             'money_exchange_rate' => $request->money_exchange_rate ?? $find->money_exchange_rate,
             'discount' => $request->discount ?? $find->discount,
             'comment' => $request->comment ?? $find->comment,
+
         ];
 
         $find->update($data);
@@ -155,6 +156,9 @@ class BookingController extends Controller
             foreach ($find->items as $key => $item) {
                 if ($item->receipt_image) {
                     Storage::delete('public/images/' . $item->receipt_image);
+                }
+                if ($item->confirmation_letter) {
+                    Storage::delete('public/files/' . $item->confirmation_letter);
                 }
 
                 BookingItem::where('id', $item->id)->delete();
@@ -169,6 +173,10 @@ class BookingController extends Controller
                     'quantity' => $item['quantity'],
                     'duration' => $item['duration'],
                     'selling_price' => $item['selling_price'],
+                    'cost_price' => $item['cost_price'],
+                    'payment_method' => $item['payment_method'],
+                    'payment_status' => $item['payment_status'],
+                    'exchange_rate' => $item['exchange_rate'],
                     'comment' => $item['comment'],
                     'reservation_status' => $item['reservation_status'],
                 ];
@@ -178,6 +186,14 @@ class BookingController extends Controller
                     if ($receiptImage) {
                         $fileData = $this->uploads($receiptImage, 'images/');
                         $data['receipt_image'] = $fileData['fileName'];
+                    }
+                }
+
+                if (isset($request->items[$key]['confirmation_letter'])) {
+                    $file = $request->items[$key]['confirmation_letter'];
+                    if ($file) {
+                        $fileData = $this->uploads($file, 'files/');
+                        $data['confirmation_letter'] = $fileData['fileName'];
                     }
                 }
 

@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\PrivateVanTourController;
 use App\Http\Controllers\Admin\ProductCategoryController;
 use App\Http\Controllers\Admin\ProductSubCategoryController;
 use App\Http\Controllers\Admin\ProductTagController;
+use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\TagController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,4 +44,6 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::apiResource('airport-pickups', AirportPickupController::class);
     Route::apiResource('customers', CustomerController::class);
     Route::apiResource('bookings', BookingController::class);
+
+    Route::apiResource('reservations', ReservationController::class);
 });
