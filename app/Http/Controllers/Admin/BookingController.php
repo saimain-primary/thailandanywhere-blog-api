@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\BookingResource;
 use Illuminate\Support\Facades\Storage;
 
@@ -68,6 +69,7 @@ class BookingController extends Controller
             'money_exchange_rate' => $request->money_exchange_rate,
             'discount' => $request->discount,
             'comment' => $request->comment,
+            'created_by' => Auth::id()
         ];
 
         $save = Booking::create($data);
@@ -231,7 +233,9 @@ class BookingController extends Controller
     public function printReceipt(string $id)
     {
         $booking = Booking::where('id', $id)->with(['customer', 'items'])->first();
-        $pdf = Pdf::loadView('pdf.booking_receipt', compact($booking));
-        return $pdf->download($booking->crm_id . '_receipt.pdf');
+        $data = new BookingResource($booking);
+        $pdf = Pdf::loadView('pdf.booking_receipt', compact('data'));
+        return $pdf->stream();
+        // return $pdf->download($booking->crm_id . '_receipt.pdf');
     }
 }

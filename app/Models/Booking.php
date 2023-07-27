@@ -11,11 +11,16 @@ class Booking extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['crm_id', 'customer_id', 'sold_from', 'payment_method', 'payment_status', 'booking_date', 'money_exchange_rate', 'discount', 'comment', 'reservation_status'];
+    protected $fillable = ['crm_id', 'customer_id', 'sold_from', 'payment_method', 'payment_status', 'booking_date', 'money_exchange_rate', 'discount', 'comment', 'reservation_status', 'created_by'];
 
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(Admin::class, 'created_by');
     }
 
     public function items()
