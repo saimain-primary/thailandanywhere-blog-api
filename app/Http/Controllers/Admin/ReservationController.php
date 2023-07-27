@@ -10,6 +10,7 @@ use App\Traits\HttpResponses;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\BookingItemResource;
+use App\Http\Resources\BookingResource;
 
 class ReservationController extends Controller
 {
@@ -24,21 +25,21 @@ class ReservationController extends Controller
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
 
-        $query = BookingItem::query();
+        $query = Booking::query();
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
         $data = $query->paginate($limit);
-        return $this->success(BookingItemResource::collection($data)
+        return $this->success(BookingResource::collection($data)
             ->additional([
                 'meta' => [
                     'total_page' => (int) ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
-            ->getData(), 'Booking Item List');
+            ->getData(), 'Reservation List');
     }
 
 
