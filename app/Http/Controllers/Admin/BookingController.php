@@ -7,6 +7,7 @@ use App\Models\BookingItem;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BookingResource;
 use Illuminate\Support\Facades\Storage;
@@ -225,5 +226,12 @@ class BookingController extends Controller
 
         $find->delete();
         return $this->success(null, 'Successfully deleted');
+    }
+
+    public function printReceipt(string $id)
+    {
+        $booking = Booking::where('id', $id)->with(['customer', 'items'])->first();
+        $pdf = Pdf::loadView('pdf.booking_receipt', compact($booking));
+        return $pdf->download($booking->crm_id . '_receipt.pdf');
     }
 }

@@ -30,6 +30,9 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::get('tags-list', [TagController::class, 'getTagList']);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('posts', PostController::class);
+    
+    Route::get('bookings/{id}/receipt', [BookingController::class, 'printReceipt']);
+
 
 
     Route::apiResource('product-categories', ProductCategoryController::class);
