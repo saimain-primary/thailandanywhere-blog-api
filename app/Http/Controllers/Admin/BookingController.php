@@ -230,9 +230,11 @@ class BookingController extends Controller
         return $this->success(null, 'Successfully deleted');
     }
 
-    public function printReceipt(string $id)
+    public function printReceipt(Request $request, string $id)
     {
-        $booking = Booking::where('id', $id)->with(['customer', 'items','createdBy'])->first();
+        if ($request->query('paid') && $request->query('paid') === 1) {
+        }
+        $booking = Booking::where('id', $id)->with(['customer', 'items', 'createdBy'])->first();
         $data = new BookingResource($booking);
         $pdf = Pdf::loadView('pdf.booking_receipt', compact('data'));
         return $pdf->stream();
