@@ -232,7 +232,7 @@ class BookingController extends Controller
 
     public function printReceipt(string $id)
     {
-        $booking = Booking::where('id', $id)->with(['customer', 'items'])->first();
+        $booking = Booking::where('id', $id)->with(['customer', 'items','createdBy'])->first();
         $data = new BookingResource($booking);
         $pdf = Pdf::loadView('pdf.booking_receipt', compact('data'));
         return $pdf->stream();
