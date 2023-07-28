@@ -33,6 +33,7 @@ class BookingResource extends JsonResource
             'reservation_status' => $this->reservation_status,
             'balance_due' => $balanceDue,
             'created_by' => $this->createdBy,
+            'bill_to' => $this->createdBy->name,
             'items' => BookingItemResource::collection($this->items),
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
