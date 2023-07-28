@@ -233,8 +233,12 @@ class BookingController extends Controller
     public function printReceipt(Request $request, string $id)
     {
         if ($request->query('paid') && $request->query('paid') === 1) {
+            $booking = Booking::where('id', $id)->with(['customer', 'items' => function ($q) {
+                $q->where('payment_status', 'fully_paid');
+            }, 'createdBy'])->first();
+        } else {
+            $booking = Booking::where('id', $id)->with(['customer', 'items', 'createdBy'])->first();
         }
-        $booking = Booking::where('id', $id)->with(['customer', 'items', 'createdBy'])->first();
         $data = new BookingResource($booking);
         $pdf = Pdf::loadView('pdf.booking_receipt', compact('data'));
         return $pdf->stream();
