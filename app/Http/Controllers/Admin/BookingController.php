@@ -234,7 +234,6 @@ class BookingController extends Controller
     {
         $booking = Booking::where('id', $id)->with(['customer', 'items','createdBy'])->first();
         $data = new BookingResource($booking);
-        return $data;
         $pdf = Pdf::loadView('pdf.booking_receipt', compact('data'));
         return $pdf->stream();
         // return $pdf->download($booking->crm_id . '_receipt.pdf');
