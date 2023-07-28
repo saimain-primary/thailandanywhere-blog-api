@@ -113,7 +113,7 @@
                     <td>{{ $data->crm_id }}</td>
                 </tr>
                 <tr>
-                    <td style="width:70%">Bil{{ $data->bill_to }}</td>
+                    <td style="width:70%">{{ $data->bill_to }}</td>
                     <th>Date</th>
                     <td>{{ $data->created_at->format('d-m-Y') }}</td>
                 </tr>
