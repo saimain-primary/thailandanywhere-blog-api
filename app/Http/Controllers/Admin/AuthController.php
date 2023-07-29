@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         $admin = Auth::guard('admin')->user();
 
-        $admin->tokens()->delete();
+        // $admin->tokens()->delete();
 
         return $this->success([
             'user' => $admin,
