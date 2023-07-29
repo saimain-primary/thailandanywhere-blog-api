@@ -16,7 +16,7 @@ class BookingResource extends JsonResource
     {
 
         $balanceDue = $this->items ?  $this->items->sum(function ($item) {
-            return $item->selling_price * $item->quantity;
+            return (float)$item->selling_price * (int)$item->quantity;
         }) : 0;
 
         return [
