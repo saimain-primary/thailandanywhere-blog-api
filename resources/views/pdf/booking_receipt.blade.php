@@ -148,7 +148,7 @@
                 </tr>
                 @foreach ($data->items as $row)
                     <tr>
-                        <td>{{ $row->id }}</td>
+                        <td>{{ $row->service_date }}</td>
                         <td style="max-width: 100px">{{ $row->product->name }}</td>
                         <td style="max-width: 120px">{{ $row->product->description }}</td>
                         <td>{{ $row->quantity }}</td>
