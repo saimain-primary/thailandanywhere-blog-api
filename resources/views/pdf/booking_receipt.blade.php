@@ -152,8 +152,8 @@
                         <td style="max-width: 100px">{{ $row->product->name }}</td>
                         <td style="max-width: 120px">{{ $row->product->description }}</td>
                         <td>{{ $row->quantity }}</td>
-                        <td>{{ number_format($row->selling_price) }}</td>
-                        <td>{{ number_format($row->selling_price * $row->quantity) }}</td>
+                        <td>{{ number_format((float) $row->selling_price) }}</td>
+                        <td>{{ number_format((float) $row->selling_price * (float) $row->quantity) }}</td>
                     </tr>
                 @endforeach
             </tbody>
