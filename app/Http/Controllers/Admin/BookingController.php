@@ -11,6 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\BookingResource;
+use App\Models\BookingReceipt;
 use Illuminate\Support\Facades\Storage;
 
 class BookingController extends Controller
@@ -56,7 +57,11 @@ class BookingController extends Controller
             'payment_method' => 'required|string',
             'payment_status' => 'required|string',
             'booking_date' => 'required|string',
-            'items' => 'required'
+            'items' => 'required',
+            'sub_total' => 'required',
+            'grand_total' => 'required',
+            'balance_due' => 'required',
+            'balance_due_date' => 'required'
         ]);
 
 
@@ -67,6 +72,11 @@ class BookingController extends Controller
             'payment_status' => $request->payment_status,
             'booking_date' => $request->booking_date,
             'money_exchange_rate' => $request->money_exchange_rate,
+            'sub_total' => $request->sub_total,
+            'grand_total' => $request->grand_total,
+            'deposit' => $request->deposit,
+            'balance_due' => $request->balance_due,
+            'balance_due_date' => $request->balance_due_date,
             'discount' => $request->discount,
             'comment' => $request->comment,
             'created_by' => Auth::id()
@@ -74,12 +84,17 @@ class BookingController extends Controller
 
         $save = Booking::create($data);
 
+        if ($file = $request->file('receipt_image')) {
+            $fileData = $this->uploads($file, 'images/');
+            BookingReceipt::create(['booking_id' => $save->id, 'image' => $fileData['fileName']]);
+        }
+
         foreach ($request->items as $key => $item) {
             $data = [
                 'booking_id' => $save->id,
                 'product_type' => $item['product_type'],
                 'product_id' => $item['product_id'],
-                'car_id' => $item['car_id'],
+                'car_id' => isset($item['car_id']) ? $item['car_id'] : null,
                 'service_date' => $item['service_date'],
                 'quantity' => $item['quantity'],
                 'duration' => $item['duration'],
@@ -155,6 +170,12 @@ class BookingController extends Controller
         ];
 
         $find->update($data);
+
+
+        if ($file = $request->file('receipt_image')) {
+            $fileData = $this->uploads($file, 'images/');
+            BookingReceipt::create(['booking_id' => $find->id, 'image' => $fileData['fileName']]);
+        }
 
         if ($request->items) {
 
