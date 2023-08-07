@@ -186,7 +186,7 @@
                     <td></td>
                     <td>BALANCE DUE</td>
                     <td style="font-weight: bold; font-size:14px;">THB
-                        {{ number_format($data->grand_total) }}
+                        {{ number_format($data->balance_due) }}
                     </td>
                 </tr>
             </tbody>
