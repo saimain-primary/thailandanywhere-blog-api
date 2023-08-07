@@ -179,6 +179,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>DEPOSIT</td>
+                    <td style="font-weight: bold; font-size:14px;">
+                        {{ $data->deposit }}
+                    </td>
+                </tr>
+                <tr>
                     <td>Thank you for booking with Thailand Anywhere. We are with you every step of the way.</td>
                     <td>BALANCE DUE</td>
                     <td style="font-weight: bold; font-size:14px;">THB
