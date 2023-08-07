@@ -28,6 +28,12 @@ class Booking extends Model
         return $this->hasMany(BookingItem::class);
     }
 
+    public function receipts()
+    {
+        return $this->hasMany(BookingReceipt::class);
+    }
+
+
     public static function boot()
     {
         parent::boot();

@@ -39,6 +39,7 @@ class BookingResource extends JsonResource
             'balance_due_date' => $this->balance_due_date,
             'created_by' => $this->createdBy,
             'bill_to' => $this->createdBy ? $this->createdBy->name : "-",
+            'receipts' => $this->receipts,
             'items' => BookingItemResource::collection($this->items),
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
