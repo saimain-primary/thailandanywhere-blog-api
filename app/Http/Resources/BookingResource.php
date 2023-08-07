@@ -15,9 +15,9 @@ class BookingResource extends JsonResource
     public function toArray(Request $request): array
     {
 
-        $balanceDue = $this->items ?  $this->items->sum(function ($item) {
-            return (float)$item->selling_price * (int)$item->quantity;
-        }) : 0;
+        // $balanceDue = $this->items ?  $this->items->sum(function ($item) {
+        //     return (float)$item->selling_price * (int)$item->quantity;
+        // }) : 0;
 
         return [
             'id' => $this->id,
@@ -28,10 +28,15 @@ class BookingResource extends JsonResource
             'payment_status' => $this->payment_status,
             'booking_date' => $this->booking_date,
             'money_exchange_rate' => $this->money_exchange_rate,
+            'sub_total' => $this->sub_total,
+            'grand_total' => $this->grand_total,
+            'deposit' => $this->deposit,
+            'discount' => $this->discount,
             'discount' => $this->discount,
             'comment' => $this->comment,
             'reservation_status' => $this->reservation_status,
-            'balance_due' => $balanceDue,
+            'balance_due' => $this->balance_due,
+            'balance_due_date' => $this->balance_due_date,
             'created_by' => $this->createdBy,
             'bill_to' => $this->createdBy ? $this->createdBy->name : "-",
             'items' => BookingItemResource::collection($this->items),
