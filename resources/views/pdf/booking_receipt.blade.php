@@ -161,24 +161,28 @@
         <table class="footer-table">
             <tbody>
                 <tr>
+                    <td></td>
                     <td>DUE Date</td>
                     <td style="font-weight: bold; font-size:14px;">
                         {{ $data->balance_due_date }}
                     </td>
                 </tr>
                 <tr>
+                    <td></td>
                     <td>SUB TOTAL</td>
-                    <td style="font-weight: bold; font-size:14px;">THB
+                    <td style="font-weight: bold; font-size:14px;">
                         {{ number_format($data->sub_total) }}
                     </td>
                 </tr>
                 <tr>
+                    <td></td>
                     <td>DISCOUNT</td>
                     <td style="font-weight: bold; font-size:14px;">
                         {{ $data->discount }}
                     </td>
                 </tr>
                 <tr>
+                    <td></td>
                     <td>DEPOSIT</td>
                     <td style="font-weight: bold; font-size:14px;">
                         {{ $data->deposit }}
