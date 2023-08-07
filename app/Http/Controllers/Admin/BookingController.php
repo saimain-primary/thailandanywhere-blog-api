@@ -165,8 +165,13 @@ class BookingController extends Controller
             'payment_currency' => $request->payment_currency ?? $find->payment_currency,
             'booking_date' => $request->booking_date ?? $find->booking_date,
             'money_exchange_rate' => $request->money_exchange_rate ?? $find->money_exchange_rate,
-            'discount' => $request->discount ?? $find->discount,
             'comment' => $request->comment ?? $find->comment,
+            'sub_total' => $request->sub_total ?? $find->sub_total,
+            'grand_total' => $request->grand_total ?? $find->grand_total,
+            'deposit' => $request->deposit ?? $find->deposit,
+            'balance_due' => $request->balance_due ?? $find->balance_due,
+            'balance_due_date' => $request->balance_due_date ?? $find->balance_due_date,
+            'discount' => $request->discount ?? $find->discount,
             "reservation_status" => 'awaiting',
 
         ];
