@@ -144,7 +144,7 @@
                     <th>SERVICE</th>
                     <th style="max-width:140px">DESCRIPTION</th>
                     <th>QTY</th>
-                    <th>RATE</th>
+                    <th>PRICE</th>
                     <th>AMOUNT</th>
                 </tr>
                 @foreach ($data->items as $row)
