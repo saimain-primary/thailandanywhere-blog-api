@@ -95,6 +95,7 @@
 </head>
 
 <body>
+    <img width="100px" height="100px" style="margin-bottom: 10px" src="{{ asset('assets/logo.jpg') }}" />
     <h1 class="header-title">Thailand Anywhere</h1>
     <span class="header-desc">39 Chaospanraya . Jewelry Building Floor 4, spanhaya Thai Road, Thanon Phaya Thai
         Sub-District,
