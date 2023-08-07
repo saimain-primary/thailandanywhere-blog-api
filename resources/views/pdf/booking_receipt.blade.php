@@ -161,6 +161,24 @@
         <table class="footer-table">
             <tbody>
                 <tr>
+                    <td>DUE Date</td>
+                    <td style="font-weight: bold; font-size:14px;">
+                        {{ $data->balance_due_date }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>SUB TOTAL</td>
+                    <td style="font-weight: bold; font-size:14px;">THB
+                        {{ number_format($data->sub_total) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>DISCOUNT</td>
+                    <td style="font-weight: bold; font-size:14px;">
+                        {{ $data->discount }}
+                    </td>
+                </tr>
+                <tr>
                     <td>Thank you for booking with Thailand Anywhere. We are with you every step of the way.</td>
                     <td>BALANCE DUE</td>
                     <td style="font-weight: bold; font-size:14px;">THB
