@@ -125,7 +125,7 @@
                 <tr>
                     <td style="width:70%"></td>
                     <th>DUE DATE</th>
-                    <td></td>
+                    <td>{{ $data->balance_due_date }}</td>
                 </tr>
                 {{-- @foreach ($data as $row)
                     <tr>
@@ -162,13 +162,6 @@
             <tbody>
                 <tr>
                     <td>Thank you for booking with Thailand Anywhere. We are with you every step of the way.</td>
-                    <td>DUE Date</td>
-                    <td style="font-size:14px;">
-                        {{ $data->balance_due_date }}
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
                     <td>SUB TOTAL</td>
                     <td style="font-size:14px;">
                         {{ number_format($data->sub_total) }}
