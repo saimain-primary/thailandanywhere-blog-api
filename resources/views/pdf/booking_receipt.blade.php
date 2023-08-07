@@ -150,7 +150,7 @@
                     <tr>
                         <td>{{ $row->service_date }}</td>
                         <td style="max-width: 100px">{{ $row->product->name }}</td>
-                        <td style="max-width: 120px">{{ $row->product->description }}</td>
+                        <td style="max-width: 120px">{{ $row->comment }}</td>
                         <td>{{ $row->quantity }}</td>
                         <td>{{ number_format((float) $row->selling_price) }}</td>
                         <td>{{ number_format((float) $row->selling_price * (float) $row->quantity) }}</td>
@@ -164,11 +164,7 @@
                     <td>Thank you for booking with Thailand Anywhere. We are with you every step of the way.</td>
                     <td>BALANCE DUE</td>
                     <td style="font-weight: bold; font-size:14px;">THB
-                        {{ number_format(
-                            $data->items->sum(function ($item) {
-                                return $item->selling_price * $item->quantity;
-                            }),
-                        ) }}
+                        {{ number_format($data->grand_total) }}
                     </td>
                 </tr>
             </tbody>
