@@ -11,6 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\BookingResource;
+use App\Http\Resources\InclusiveResource;
 use App\Models\BookingReceipt;
 use Illuminate\Support\Facades\Storage;
 
@@ -269,6 +270,7 @@ class BookingController extends Controller
         } else {
             $booking = Booking::where('id', $id)->with(['customer', 'items', 'createdBy'])->first();
         }
+
         $data = new BookingResource($booking);
         $pdf = Pdf::loadView('pdf.booking_receipt', compact('data'));
         return $pdf->stream();

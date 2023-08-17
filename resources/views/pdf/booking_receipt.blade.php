@@ -95,7 +95,7 @@
 </head>
 
 <body>
-    <img width="100px" height="100px" style="margin-bottom: 10px" src="{{ asset('assets/logo.jpg') }}" />
+    {{-- <img width="100px" height="100px" style="margin-bottom: 10px" src="{{ asset('assets/logo.jpg') }}" /> --}}
     <h1 class="header-title">Thailand Anywhere</h1>
     <span class="header-desc">39 Chaospanraya . Jewelry Building Floor 4, spanhaya Thai Road, Thanon Phaya Thai
         Sub-District,
@@ -148,14 +148,29 @@
                     <th>AMOUNT</th>
                 </tr>
                 @foreach ($data->items as $row)
-                    <tr>
-                        <td>{{ $row->service_date }}</td>
-                        <td style="max-width: 100px">{{ $row->product->name }}</td>
-                        <td style="max-width: 120px">{{ $row->comment }}</td>
-                        <td>{{ $row->quantity }}</td>
-                        <td>{{ number_format((float) $row->selling_price) }}</td>
-                        <td>{{ number_format((float) $row->selling_price * (float) $row->quantity) }}</td>
-                    </tr>
+                    @if ($row->product_type === 'App\Models\Inclusive')
+                        @if ($row->product->privateVanTours)
+                            @foreach ($row->product->privateVanTours as $pvt)
+                                <tr>
+                                    <td>{{ $row->service_date }}</td>
+                                    <td style="max-width: 100px">{{ $pvt->product->name }}</td>
+                                    <td style="max-width: 120px">{{ $row->comment }}</td>
+                                    <td>{{ $row->quantity }}</td>
+                                    <td>t{{ number_format((float) $row->selling_price) }}</td>
+                                    <td>{{ number_format((float) $row->selling_price * (float) $row->quantity) }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    @else
+                        <tr>
+                            <td>{{ $row->service_date }}</td>
+                            <td style="max-width: 100px">{{ $row->product->name }} {{ $row->product_type }}</td>
+                            <td style="max-width: 120px">{{ $row->comment }}</td>
+                            <td>{{ $row->quantity }}</td>
+                            <td>t{{ number_format((float) $row->selling_price) }}</td>
+                            <td>{{ number_format((float) $row->selling_price * (float) $row->quantity) }}</td>
+                        </tr>
+                    @endif
                 @endforeach
             </tbody>
         </table>

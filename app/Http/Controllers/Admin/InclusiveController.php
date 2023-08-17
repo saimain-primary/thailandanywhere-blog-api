@@ -157,13 +157,9 @@ class InclusiveController extends Controller
 
             Storage::delete('public/images/' . $find->cover_image);
 
-
             $fileData = $this->uploads($file, 'images/');
             $data['cover_image'] = $fileData['fileName'];
         }
-
-
-
 
         if ($request->file('images')) {
             foreach ($find->images as $image) {
@@ -172,12 +168,14 @@ class InclusiveController extends Controller
                 // Delete the image from the database
                 $image->delete();
             }
+
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                InclusiveImage::create(['inclusive_id' => $find->id, 'image' => $fileData['fileName']]);
+            };
         }
 
-        foreach ($request->file('images') as $image) {
-            $fileData = $this->uploads($image, 'images/');
-            InclusiveImage::create(['inclusive_id' => $find->id, 'image' => $fileData['fileName']]);
-        };
+
 
         if ($request->products) {
 

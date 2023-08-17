@@ -22,7 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('bookings/{id}/receipt', [BookingController::class, 'printReceipt']);
+Route::get('/bookings/{id}/receipt', [BookingController::class, 'printReceipt']);
 
 Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
