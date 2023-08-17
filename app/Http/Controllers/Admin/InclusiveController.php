@@ -151,14 +151,13 @@ class InclusiveController extends Controller
         $find->sku_code = $request->sku_code ?? $find->sku_code;
         $find->price = $request->price ?? $find->price;
         $find->agent_price = $request->agent_price ?? $find->agent_price;
-        $find->update();
 
         if ($file = $request->file('cover_image')) {
 
             Storage::delete('public/images/' . $find->cover_image);
 
             $fileData = $this->uploads($file, 'images/');
-            $data['cover_image'] = $fileData['fileName'];
+            $find->cover_image = $fileData['fileName'];
         }
 
         if ($request->file('images')) {
@@ -174,6 +173,9 @@ class InclusiveController extends Controller
                 InclusiveImage::create(['inclusive_id' => $find->id, 'image' => $fileData['fileName']]);
             };
         }
+
+        $find->update();
+
 
 
         if ($request->products) {
