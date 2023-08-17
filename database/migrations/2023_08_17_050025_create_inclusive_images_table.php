@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->string('payment_currency')->nullable()->after('payment_status');
+        Schema::create('inclusive_images', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('inclusive_id');
+            $table->string('image');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('inclusive_images');
     }
 };

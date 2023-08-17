@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DestinationController;
 use App\Http\Controllers\Admin\EntranceTicketController;
 use App\Http\Controllers\Admin\GroupTourController;
+use App\Http\Controllers\Admin\InclusiveController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PrivateVanTourController;
 use App\Http\Controllers\Admin\ProductCategoryController;
@@ -45,6 +46,7 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::apiResource('group-tours', GroupTourController::class);
     Route::apiResource('entrance-tickets', EntranceTicketController::class);
     Route::apiResource('airport-pickups', AirportPickupController::class);
+    Route::apiResource('inclusive', InclusiveController::class);
     Route::apiResource('customers', CustomerController::class);
     Route::apiResource('bookings', BookingController::class);
     Route::apiResource('reservations', ReservationController::class);

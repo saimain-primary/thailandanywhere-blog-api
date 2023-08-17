@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
-            $table->string('payment_currency')->nullable()->after('payment_status');
+        Schema::table('inclusives', function (Blueprint $table) {
+            $table->string('sku_code')->nullable()->after('name');
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
+        Schema::table('inclusives', function (Blueprint $table) {
             //
         });
     }
