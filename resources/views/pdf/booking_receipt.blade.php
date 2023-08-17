@@ -148,29 +148,39 @@
                     <th>AMOUNT</th>
                 </tr>
                 @foreach ($data->items as $row)
-                    @if ($row->product_type === 'App\Models\Inclusive')
-                        @if ($row->product->privateVanTours)
-                            @foreach ($row->product->privateVanTours as $pvt)
-                                <tr>
-                                    <td>{{ $row->service_date }}</td>
-                                    <td style="max-width: 100px">{{ $pvt->product->name }}</td>
-                                    <td style="max-width: 120px">{{ $row->comment }}</td>
-                                    <td>{{ $row->quantity }}</td>
-                                    <td>t{{ number_format((float) $row->selling_price) }}</td>
-                                    <td>{{ number_format((float) $row->selling_price * (float) $row->quantity) }}</td>
-                                </tr>
-                            @endforeach
-                        @endif
-                    @else
-                        <tr>
-                            <td>{{ $row->service_date }}</td>
-                            <td style="max-width: 100px">{{ $row->product->name }} {{ $row->product_type }}</td>
-                            <td style="max-width: 120px">{{ $row->comment }}</td>
-                            <td>{{ $row->quantity }}</td>
-                            <td>t{{ number_format((float) $row->selling_price) }}</td>
-                            <td>{{ number_format((float) $row->selling_price * (float) $row->quantity) }}</td>
-                        </tr>
-                    @endif
+                    <tr>
+                        <td>{{ $row->service_date }}</td>
+                        <td style="max-width: 100px">{{ $row->product->name }}
+                            @if ($row->product_type === 'App\Models\Inclusive')
+                                (
+                                @if ($row->product->privateVanTours)
+                                    @foreach ($row->product->privateVanTours as $pvt)
+                                        {{ $pvt->product->name }} ,
+                                    @endforeach
+                                @endif
+                                @if ($row->product->groupTours)
+                                    @foreach ($row->product->groupTours as $gt)
+                                        {{ $gt->product->name }} ,
+                                    @endforeach
+                                @endif
+                                @if ($row->product->airportPickups)
+                                    @foreach ($row->product->airportPickups as $ap)
+                                        {{ $ap->product->name }} ,
+                                    @endforeach
+                                @endif
+                                @if ($row->product->entranceTickets)
+                                    @foreach ($row->product->entranceTickets as $et)
+                                        {{ $et->product->name }} ,
+                                    @endforeach
+                                @endif
+                                )
+                            @endif
+                        </td>
+                        <td style="max-width: 120px">{{ $row->comment }}</td>
+                        <td>{{ $row->quantity }}</td>
+                        <td>{{ number_format((float) $row->selling_price) }}</td>
+                        <td>{{ number_format((float) $row->selling_price * (float) $row->quantity) }}</td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
