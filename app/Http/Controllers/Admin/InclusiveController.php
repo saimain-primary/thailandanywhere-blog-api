@@ -162,19 +162,18 @@ class InclusiveController extends Controller
         }
 
         if ($request->file('images')) {
-            foreach ($find->images as $image) {
-                // Delete the file from storage
-                Storage::delete('public/images/' . $image->image);
-                // Delete the image from the database
-                $image->delete();
-            }
+            // foreach ($find->images as $image) {
+            //     // Delete the file from storage
+            //     Storage::delete('public/images/' . $image->image);
+            //     // Delete the image from the database
+            //     $image->delete();
+            // }
 
             foreach ($request->file('images') as $image) {
                 $fileData = $this->uploads($image, 'images/');
                 InclusiveImage::create(['inclusive_id' => $find->id, 'image' => $fileData['fileName']]);
             };
         }
-
 
 
         if ($request->products) {
