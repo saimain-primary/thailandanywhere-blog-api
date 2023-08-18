@@ -76,46 +76,52 @@ class InclusiveController extends Controller
             'agent_price' => $request->agent_price,
         ];
 
-        if ($file = $request->file('cover_image')) {
-            $fileData = $this->uploads($file, 'images/');
-            $data['cover_image'] = $fileData['fileName'];
+        if ($request->file('cover_image')) {
+            if ($file = $request->file('cover_image')) {
+                $fileData = $this->uploads($file, 'images/');
+                $data['cover_image'] = $fileData['fileName'];
+            }
         }
 
         $save = Inclusive::create($data);
 
-        foreach ($request->file('images') as $image) {
-            $fileData = $this->uploads($image, 'images/');
-            InclusiveImage::create(['inclusive_id' => $save->id, 'image' => $fileData['fileName']]);
-        };
+        if ($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                InclusiveImage::create(['inclusive_id' => $save->id, 'image' => $fileData['fileName']]);
+            };
+        }
 
-        foreach ($request->products as $product) {
-            if ($product['product_type'] === 'private_van_tour') {
-                $product = InclusivePrivateVanTour::create([
-                    'inclusive_id' => $save->id,
-                    'product_id' => $product['product_id'],
-                    'car_id' => isset($product['car_id']) ? $product['car_id'] : null
-                ]);
-            }
-            if ($product['product_type'] === 'group_tour') {
-                $product = InclusiveGroupTour::create([
-                    'inclusive_id' => $save->id,
-                    'product_id' => $product['product_id'],
-                    'car_id' => isset($product['car_id']) ? $product['car_id'] : null
-                ]);
-            }
-            if ($product['product_type'] === 'entrance_ticket') {
-                $product = InclusiveEntranceTicket::create([
-                    'inclusive_id' => $save->id,
-                    'product_id' => $product['product_id'],
-                    'car_id' => isset($product['car_id']) ? $product['car_id'] : null
-                ]);
-            }
-            if ($product['product_type'] === 'airport_pickup') {
-                $product = InclusiveAirportPickup::create([
-                    'inclusive_id' => $save->id,
-                    'product_id' => $product['product_id'],
-                    'car_id' => isset($product['car_id']) ? $product['car_id'] : null
-                ]);
+        if ($request->products) {
+            foreach ($request->products as $product) {
+                if ($product['product_type'] === 'private_van_tour') {
+                    $product = InclusivePrivateVanTour::create([
+                        'inclusive_id' => $save->id,
+                        'product_id' => $product['product_id'],
+                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                    ]);
+                }
+                if ($product['product_type'] === 'group_tour') {
+                    $product = InclusiveGroupTour::create([
+                        'inclusive_id' => $save->id,
+                        'product_id' => $product['product_id'],
+                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                    ]);
+                }
+                if ($product['product_type'] === 'entrance_ticket') {
+                    $product = InclusiveEntranceTicket::create([
+                        'inclusive_id' => $save->id,
+                        'product_id' => $product['product_id'],
+                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                    ]);
+                }
+                if ($product['product_type'] === 'airport_pickup') {
+                    $product = InclusiveAirportPickup::create([
+                        'inclusive_id' => $save->id,
+                        'product_id' => $product['product_id'],
+                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                    ]);
+                }
             }
         }
 
@@ -152,12 +158,14 @@ class InclusiveController extends Controller
         $find->price = $request->price ?? $find->price;
         $find->agent_price = $request->agent_price ?? $find->agent_price;
 
-        if ($file = $request->file('cover_image')) {
+        if ($request->file('cover_image')) {
+            if ($file = $request->file('cover_image')) {
 
-            Storage::delete('public/images/' . $find->cover_image);
+                Storage::delete('public/images/' . $find->cover_image);
 
-            $fileData = $this->uploads($file, 'images/');
-            $find->cover_image = $fileData['fileName'];
+                $fileData = $this->uploads($file, 'images/');
+                $find->cover_image = $fileData['fileName'];
+            }
         }
 
         if ($request->file('images')) {
