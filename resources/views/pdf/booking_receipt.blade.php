@@ -150,27 +150,27 @@
                 @foreach ($data->items as $row)
                     <tr>
                         <td>{{ $row->service_date }}</td>
-                        <td style="max-width: 100px">{{ $row->product->name }}
+                        <td style="max-width: 100px">{{ $row->product->name }} </br>
                             @if ($row->product_type === 'App\Models\Inclusive')
                                 (
                                 @if ($row->product->privateVanTours)
                                     @foreach ($row->product->privateVanTours as $pvt)
-                                        {{ $pvt->product->name }} ,
+                                        {{ $pvt->product->name }} </br>
                                     @endforeach
                                 @endif
                                 @if ($row->product->groupTours)
                                     @foreach ($row->product->groupTours as $gt)
-                                        {{ $gt->product->name }} ,
+                                        {{ $gt->product->name }} </br>
                                     @endforeach
                                 @endif
                                 @if ($row->product->airportPickups)
                                     @foreach ($row->product->airportPickups as $ap)
-                                        {{ $ap->product->name }} ,
+                                        {{ $ap->product->name }} </br>
                                     @endforeach
                                 @endif
                                 @if ($row->product->entranceTickets)
                                     @foreach ($row->product->entranceTickets as $et)
-                                        {{ $et->product->name }} ,
+                                        {{ $et->product->name }} </br>
                                     @endforeach
                                 @endif
                                 )
