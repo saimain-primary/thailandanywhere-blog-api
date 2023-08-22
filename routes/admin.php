@@ -34,8 +34,6 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::apiResource('posts', PostController::class);
 
 
-
-
     Route::apiResource('product-categories', ProductCategoryController::class);
     Route::apiResource('product-sub-categories', ProductSubCategoryController::class);
     Route::apiResource('destinations', DestinationController::class);
@@ -49,5 +47,7 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::apiResource('inclusive', InclusiveController::class);
     Route::apiResource('customers', CustomerController::class);
     Route::apiResource('bookings', BookingController::class);
+
+    Route::put('reservations/info/{id}', [ReservationController::class, 'updateInfo']);
     Route::apiResource('reservations', ReservationController::class);
 });

@@ -52,6 +52,8 @@ class BookingItemResource extends JsonResource
             'selling_price' => $this->selling_price,
             'comment' => $this->comment,
             'reservation_status' => $this->reservation_status,
+            'reservation_info' => $this->reservationInfo,
+            'reservation_car_info' => new ReservationCarInfoResource($this->reservationCarInfo),
             'receipt_image' => $this->receipt_image ? env('APP_URL', 'http://localhost:8000') . Storage::url('images/' . $this->receipt_image) : null,
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),

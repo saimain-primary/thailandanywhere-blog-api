@@ -26,4 +26,14 @@ class BookingItem extends Model
     {
         return $this->belongsTo(Booking::class);
     }
+
+    public function reservationInfo()
+    {
+        return $this->hasOne(ReservationInfo::class, 'booking_item_id');
+    }
+
+    public function reservationCarInfo()
+    {
+        return $this->hasOne(ReservationCarInfo::class, 'booking_item_id');
+    }
 }

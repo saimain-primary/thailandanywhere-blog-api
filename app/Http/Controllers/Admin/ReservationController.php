@@ -11,6 +11,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\BookingItemResource;
 use App\Http\Resources\BookingResource;
+use App\Models\ReservationCarInfo;
+use App\Models\ReservationInfo;
 
 class ReservationController extends Controller
 {
@@ -118,5 +120,67 @@ class ReservationController extends Controller
         }
 
         return $this->success(new BookingItemResource($find), 'Successfully updated');
+    }
+
+    public function updateInfo(Request $request, $id)
+    {
+        $bookingItem = BookingItem::find($id);
+
+        if (!$bookingItem) {
+            return $this->error(null, 'Data not found', 404);
+        }
+
+        $findInfo = ReservationInfo::where('booking_item_id', $bookingItem->id)->first();
+        if (!$findInfo) {
+            ReservationInfo::create([
+                'booking_item_id' => $bookingItem->id,
+                'customer_feedback' => $request->customer_feedback,
+                'customer_score' => $request->customer_score,
+                'special_request' => $request->special_request,
+                'other_info' => $request->other_info,
+            ]);
+        } else {
+            $findInfo->customer_feedback = $request->customer_feedback ?? $findInfo->customer_feedback;
+            $findInfo->customer_score = $request->customer_score ?? $findInfo->customer_score;
+            $findInfo->special_request = $request->special_request ?? $findInfo->special_request;
+            $findInfo->other_info = $request->other_info ?? $findInfo->other_info;
+            $findInfo->update();
+        }
+
+        $findCarInfo = ReservationCarInfo::where('booking_item_id', $bookingItem->id)->first();
+        if (!$findCarInfo) {
+            $data = [
+                'booking_item_id' => $bookingItem->id,
+                'driver_name' => $request->driver_name,
+                'driver_contact' => $request->driver_contact,
+                'supplier_name' => $request->supplier_name,
+                'car_number' => $request->car_number,
+            ];
+
+            if ($file = $request->file('car_photo')) {
+                $fileData = $this->uploads($file, 'images/');
+                $data['car_photo'] = $fileData['fileName'];
+            }
+            ReservationCarInfo::create($data);
+        } else {
+
+            $findCarInfo->driver_name = $request->driver_name ?? $findCarInfo->driver_name;
+            $findCarInfo->driver_contact = $request->driver_contact ?? $findCarInfo->driver_contact;
+            $findCarInfo->supplier_name = $request->supplier_name ?? $findCarInfo->supplier_name;
+            $findCarInfo->car_number = $request->car_number ?? $findCarInfo->car_number;
+
+            if ($file = $request->file('car_photo')) {
+                if ($findCarInfo->car_photo) {
+                    Storage::delete('public/images/' . $findCarInfo->car_photo);
+                }
+                $fileData = $this->uploads($file, 'images/');
+                $findCarInfo->car_photo = $fileData['fileName'];
+            }
+
+
+            $findCarInfo->update();
+        }
+
+        return $this->success(new BookingItemResource($bookingItem), 'Successfully updated');
     }
 }
