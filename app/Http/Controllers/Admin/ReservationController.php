@@ -33,6 +33,14 @@ class ReservationController extends Controller
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
+        $productType = $request->query('product_type');
+        
+        if ($productType) {
+            $query->whereHas('items', function ($q) use ($productType) {
+                return $q->where('product_type', $productType);
+            });
+        }
+
         $data = $query->paginate($limit);
         return $this->success(BookingResource::collection($data)
             ->additional([
