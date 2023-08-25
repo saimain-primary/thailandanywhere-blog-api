@@ -34,10 +34,10 @@ class ReservationController extends Controller
         }
 
         $productType = $request->query('product_type');
-        
+
         if ($productType) {
             $query->whereHas('items', function ($q) use ($productType) {
-                return $q->where('product_type', $productType);
+                $q->where('product_type', $productType);
             });
         }
 
