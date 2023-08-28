@@ -53,6 +53,7 @@ class BookingItemResource extends JsonResource
             'selling_price' => $this->selling_price,
             'comment' => $this->comment,
             'reservation_status' => $this->reservation_status,
+            'special_request' => $this->special_request,
             'reservation_info' => $this->reservationInfo,
             'reservation_car_info' => new ReservationCarInfoResource($this->reservationCarInfo),
             'receipt_image' => $this->receipt_image ? env('APP_URL', 'http://localhost:8000') . Storage::url('images/' . $this->receipt_image) : null,

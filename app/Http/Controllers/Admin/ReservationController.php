@@ -150,12 +150,16 @@ class ReservationController extends Controller
                 'customer_score' => $request->customer_score,
                 'special_request' => $request->special_request,
                 'other_info' => $request->other_info,
+                'route_plan' => $request->route_plan,
+                'pickup_location' => $request->pickup_location,
             ]);
         } else {
             $findInfo->customer_feedback = $request->customer_feedback ?? $findInfo->customer_feedback;
             $findInfo->customer_score = $request->customer_score ?? $findInfo->customer_score;
             $findInfo->special_request = $request->special_request ?? $findInfo->special_request;
             $findInfo->other_info = $request->other_info ?? $findInfo->other_info;
+            $findInfo->route_plan = $request->route_plan ?? $findInfo->route_plan;
+            $findInfo->pickup_location = $request->pickup_location ?? $findInfo->pickup_location;
             $findInfo->update();
         }
 
