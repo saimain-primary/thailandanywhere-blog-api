@@ -106,7 +106,7 @@ class BookingController extends Controller
                 'payment_status' => $item['payment_status'],
                 'exchange_rate' => $item['exchange_rate'],
                 'comment' => $item['comment'],
-                'special_request' => $item['special_request'],
+                'special_request' => isset($item['special_request']) ? $item['special_request'] : null,
                 'reservation_status' => $item['reservation_status'],
             ];
 
@@ -208,7 +208,7 @@ class BookingController extends Controller
                     'car_id' => $item['car_id'],
                     'service_date' => $item['service_date'],
                     'quantity' => $item['quantity'],
-                    'special_request' => $item['special_request'],
+                    'special_request' => isset($item['special_request']) ? $item['special_request'] : null,
                     'duration' => $item['duration'],
                     'selling_price' => $item['selling_price'],
                     'cost_price' => $item['cost_price'],
