@@ -48,6 +48,7 @@ class BookingItemResource extends JsonResource
             'product_id' => $this->product_id,
             'product' => $product,
             'car' => $this->car,
+            'variation' => $this->variation,
             'service_date' => $this->service_date,
             'quantity' => $this->quantity,
             'duration' => $this->duration,

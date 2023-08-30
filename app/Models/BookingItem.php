@@ -22,6 +22,12 @@ class BookingItem extends Model
         return $this->belongsTo(Car::class);
     }
 
+    public function variation()
+    {
+        return $this->belongsTo(EntranceTicketVariation::class);
+    }
+
+
     public function booking()
     {
         return $this->belongsTo(Booking::class);
