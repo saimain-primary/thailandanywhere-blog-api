@@ -152,6 +152,9 @@ class ReservationController extends Controller
                 'other_info' => $request->other_info,
                 'route_plan' => $request->route_plan,
                 'pickup_location' => $request->pickup_location,
+                'payment_method' => $request->payment_method,
+                'payment_status' => $request->payment_status,
+                'payment_due' => $request->payment_due,
             ]);
         } else {
             $findInfo->customer_feedback = $request->customer_feedback ?? $findInfo->customer_feedback;
@@ -160,6 +163,10 @@ class ReservationController extends Controller
             $findInfo->other_info = $request->other_info ?? $findInfo->other_info;
             $findInfo->route_plan = $request->route_plan ?? $findInfo->route_plan;
             $findInfo->pickup_location = $request->pickup_location ?? $findInfo->pickup_location;
+            $findInfo->payment_method = $request->payment_method ?? $findInfo->payment_method;
+            $findInfo->payment_status = $request->payment_status ?? $findInfo->payment_status;
+            $findInfo->payment_due = $request->payment_due ?? $findInfo->payment_due;
+            $findInfo->payment_receipt = $request->payment_receipt ?? $findInfo->payment_receipt;
             $findInfo->update();
         }
 

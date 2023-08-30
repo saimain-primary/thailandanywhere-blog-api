@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use App\Models\AirportPickup;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\BookingReceiptResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BookingItemResource extends JsonResource
@@ -36,6 +37,7 @@ class BookingItemResource extends JsonResource
         }
         return [
             'id' => $this->id,
+            'receipts' => BookingReceiptResource::collection($this->booking->receipts),
             'customer_info' => $this->booking->customer,
             'product_type' => $this->product_type,
             'product_id' => $this->product_id,
