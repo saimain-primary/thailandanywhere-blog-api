@@ -37,7 +37,12 @@ class BookingItemResource extends JsonResource
         }
         return [
             'id' => $this->id,
-            'receipts' => BookingReceiptResource::collection($this->booking->receipts),
+            'booking' => [
+                'receipts' => BookingReceiptResource::collection($this->booking->receipts),
+                'payment_currency' => $this->booking->payment_currency,
+                'payment_method' => $this->booking->payment_method,
+                'payment_status' => $this->booking->payment_status,
+            ],
             'customer_info' => $this->booking->customer,
             'product_type' => $this->product_type,
             'product_id' => $this->product_id,
