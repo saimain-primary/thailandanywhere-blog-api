@@ -9,7 +9,13 @@
 
     <style>
         body {
-            font-family: sans-serif
+            font-family: sans-serif,
+            background: url('path_to_your_background_image.jpg') no-repeat center center fixed;
+            background-size: cover; // Ensures that the background image covers the entire A4 page
+            width: 210mm;
+            height: 297mm;
+            margin: 0;
+            padding: 0;
         }
 
         .header-title {
