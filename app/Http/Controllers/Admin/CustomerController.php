@@ -48,11 +48,8 @@ class CustomerController extends Controller
     {
         $request->validate([
             'name'  => 'required|string|max:225',
-            'email' => 'required|email',
-            'line_id' => 'required|string',
-            'company_name' => 'required_if:is_corporate_customer,1'
+            'phone_number'  => 'required|string|max:225',
         ]);
-
 
         $data = [
             'name' => $request->name,

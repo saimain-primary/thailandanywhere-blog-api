@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('reservation_status')->nullable();
             $table->string('receipt_image')->nullable();
             $table->softDeletes();
-            $table->timestamps();
         });
     }
 
