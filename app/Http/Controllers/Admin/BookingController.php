@@ -53,6 +53,7 @@ class BookingController extends Controller
     {
 
         $request->validate([
+            'crm_id' => 'required',
             'customer_id' => 'required',
             'sold_from' => 'required|string',
             'payment_method' => 'required|string',
@@ -67,6 +68,7 @@ class BookingController extends Controller
 
 
         $data = [
+            'crm_id' => $request->crm_id,
             'customer_id' => $request->customer_id,
             'sold_from' => $request->sold_from,
             'payment_method' => $request->payment_method,
@@ -164,6 +166,7 @@ class BookingController extends Controller
 
 
         $data = [
+            'crm_id' => $request->crm_id,
             'customer_id' => $request->customer_id ?? $find->customer_id,
             'sold_from' => $request->sold_from ?? $find->sold_from,
             'payment_method' => $request->payment_method ?? $find->payment_method,
@@ -282,7 +285,9 @@ class BookingController extends Controller
 
         $data = new BookingResource($booking);
         $pdf = Pdf::setOption([
+            'fontDir' => public_path('/fonts')
         ])->loadView('pdf.booking_receipt', compact('data'));
+
         return $pdf->stream();
         // return $pdf->download($booking->crm_id . '_receipt.pdf');
     }
