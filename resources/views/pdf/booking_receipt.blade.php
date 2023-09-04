@@ -11,7 +11,7 @@
         body {
             font-family: sans-serif,
                 background: url('{{ asset('assets/template.png') }}') no-repeat center center fixed;
-            background-size: cover; // Ensures that the background image covers the entire A4 page
+            background-size: cover;
             width: 210mm;
             height: 297mm;
             margin: 0;
@@ -101,7 +101,8 @@
 </head>
 
 <body>
-    <img width="100px" height="100px" style="margin-bottom: 10px" src="{{ asset('assets/logo.jpg') }}" />
+    <img src="{{asset('assets/template.png')}}" alt="">
+    {{-- <img width="100px" height="100px" style="margin-bottom: 10px" src="{{ asset('assets/logo.jpg') }}" /> --}}
     <h1 class="header-title">Thailand Anywhere</h1>
     <span class="header-desc">39 Chaospanraya . Jewelry Building Floor 4, spanhaya Thai Road, Thanon Phaya Thai
         Sub-District,
