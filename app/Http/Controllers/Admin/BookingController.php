@@ -281,7 +281,8 @@ class BookingController extends Controller
         }
 
         $data = new BookingResource($booking);
-        $pdf = Pdf::loadView('pdf.booking_receipt', compact('data'));
+        $pdf = Pdf::setOption([
+        ])->loadView('pdf.booking_receipt', compact('data'));
         return $pdf->stream();
         // return $pdf->download($booking->crm_id . '_receipt.pdf');
     }
