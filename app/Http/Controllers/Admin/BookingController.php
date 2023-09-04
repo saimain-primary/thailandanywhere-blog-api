@@ -108,6 +108,9 @@ class BookingController extends Controller
                 'exchange_rate' => $item['exchange_rate'],
                 'comment' => $item['comment'],
                 'special_request' => isset($item['special_request']) ? $item['special_request'] : null,
+                'route_plan' => isset($item['route_plan']) ? $item['route_plan'] : null,
+                'pickup_location' => isset($item['pickup_location']) ? $item['pickup_location'] : null,
+                'dropoff_location' => isset($item['dropoff_location']) ? $item['dropoff_location'] : null,
                 'reservation_status' => $item['reservation_status'],
             ];
 
@@ -176,8 +179,6 @@ class BookingController extends Controller
             'balance_due_date' => $request->balance_due_date ?? $find->balance_due_date,
             'discount' => $request->discount ?? $find->discount,
             "reservation_status" => 'awaiting',
-
-
         ];
 
         $find->update($data);
@@ -211,6 +212,9 @@ class BookingController extends Controller
                     'service_date' => $item['service_date'],
                     'quantity' => $item['quantity'],
                     'special_request' => isset($item['special_request']) ? $item['special_request'] : null,
+                    'route_plan' => isset($item['route_plan']) ? $item['route_plan'] : null,
+                    'pickup_location' => isset($item['pickup_location']) ? $item['pickup_location'] : null,
+                    'dropoff_location' => isset($item['dropoff_location']) ? $item['dropoff_location'] : null,
                     'duration' => $item['duration'],
                     'selling_price' => $item['selling_price'],
                     'cost_price' => $item['cost_price'],
