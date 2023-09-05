@@ -96,7 +96,7 @@ class BookingController extends Controller
         foreach ($request->items as $key => $item) {
             $data = [
                 'booking_id' => $save->id,
-                'crm_id' => $save->crm_id . '_' . $key,
+                'crm_id' =>  $save->crm_id . '_' . str_pad($key + 1, 3, '0', STR_PAD_LEFT),
                 'product_type' => $item['product_type'],
                 'product_id' => $item['product_id'],
                 'car_id' => isset($item['car_id']) ? $item['car_id'] : null,
@@ -209,7 +209,7 @@ class BookingController extends Controller
             foreach ($request->items as $key => $item) {
                 $data = [
                     'booking_id' => $find->id,
-                    'crm_id' => $find->crm_id . '_' . $key,
+                    'crm_id' => $find->crm_id . '_' . str_pad($key + 1, 3, '0', STR_PAD_LEFT),
                     'product_type' => $item['product_type'],
                     'product_id' => $item['product_id'],
                     'car_id' => isset($item['car_id']) ? $item['car_id'] : null,
