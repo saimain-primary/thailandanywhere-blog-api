@@ -131,7 +131,7 @@
                     <tr>
                         <th style="width:70%">BILL TO</th>
                         <th>INVOICE</th>
-                        <td>{{ $data->crm_id }}</td>
+                        <td>{{ $data->invoice_number }}</td>
                     </tr>
                     <tr>
                         <td style="width:70%">{{ $data->customer->name }} / {{ $data->customer->phone_number }}</td>
@@ -236,7 +236,8 @@
                         <td></td>
                         <td>BALANCE MMK</td>
                         <td style="font-weight: bold; font-size:14px;">
-                            MMK {{ $data->balance_due * ($data->money_exchange_rate ? $data->money_exchange_rate : 1) }}
+                            MMK
+                            {{ $data->balance_due * ($data->money_exchange_rate ? $data->money_exchange_rate : 1) }}
                         </td>
                     </tr>
                 </tbody>

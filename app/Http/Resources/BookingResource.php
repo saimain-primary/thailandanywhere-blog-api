@@ -21,6 +21,7 @@ class BookingResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'invoice_number' => $this->invoice_number,
             'crm_id' => $this->crm_id,
             'customer' => $this->customer,
             'sold_from' => $this->sold_from,
