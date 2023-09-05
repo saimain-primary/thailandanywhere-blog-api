@@ -121,7 +121,7 @@
 
 <body>
     <div id="watermark">
-        <img src="{{ public_path() . '/assets/template.png' }}" height="100%" width="100%" />
+        <img src="{{ public_path() . '/assets/template.jpg' }}" height="100%" width="100%" />
     </div>
     <div style="margin-top: 300px; padding:10px 40px">
         <div>
@@ -134,37 +134,29 @@
                         <td>{{ $data->crm_id }}</td>
                     </tr>
                     <tr>
-                        <td style="width:70%">{{ $data->customer->name }}</td>
-                        <th>Date</th>
-                        <td>{{ $data->created_at->format('d-m-Y') }}</td>
+                        <td style="width:70%">{{ $data->customer->name }} / {{ $data->customer->phone_number }}</td>
+                        <th>CRMID</th>
+                        <td>{{ $data->crm_id }}</td>
                     </tr>
                     <tr>
-                        <td style="width:70%">{{ $data->customer->phone_number }}</td>
+                        <th style="width:70%">DATE</th>
                         <th>TERM</th>
-                        <td></td>
                     </tr>
                     <tr>
-                        <td style="width:70%"></td>
+                        <td style="width:70%">{{ $data->created_at->format('d-m-Y') }}</td>
                         <th>DUE DATE</th>
                         <td>{{ $data->balance_due_date }}</td>
                     </tr>
-                    {{-- @foreach ($data as $row)
-                    <tr>
-                        <td>{{ $row->id }}</td>
-                        <td>{{ $row->name }}</td>
-                        <!-- Add more columns as needed -->
-                    </tr>
-                @endforeach --}}
                 </tbody>
             </table>
             <table class="body-table">
                 <tbody>
                     <tr>
-                        <th>DATE</th>
+                        <th>SERVICE DATE</th>
                         <th>SERVICE</th>
                         <th style="max-width:140px">DESCRIPTION</th>
                         <th>QTY</th>
-                        <th>PRICE</th>
+                        <th>RATE</th>
                         <th>AMOUNT</th>
                     </tr>
                     @foreach ($data->items as $row)
@@ -203,6 +195,7 @@
                 </tbody>
             </table>
             <table class="footer-table">
+
                 <tbody>
                     <tr>
                         <td>Thank you for booking with Thailand Anywhere. We are with you every step of the way.</td>
@@ -230,6 +223,20 @@
                         <td>BALANCE DUE</td>
                         <td style="font-weight: bold; font-size:14px;">THB
                             {{ number_format($data->balance_due) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>EXCHANGE RATE</td>
+                        <td style="font-size:14px;">
+                            {{ $data->money_exchange_rate }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>BALANCE MMK</td>
+                        <td style="font-weight: bold; font-size:14px;">
+                            MMK {{ $data->balance_due * ($data->money_exchange_rate ? $data->money_exchange_rate : 1) }}
                         </td>
                     </tr>
                 </tbody>
