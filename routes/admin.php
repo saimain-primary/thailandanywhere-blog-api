@@ -18,6 +18,8 @@ use App\Http\Controllers\Admin\ProductSubCategoryController;
 use App\Http\Controllers\Admin\ProductTagController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\TagController;
+use App\Http\Controllers\HotelController;
+use App\Http\Controllers\RoomController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -50,4 +52,7 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
 
     Route::put('reservations/info/{id}', [ReservationController::class, 'updateInfo']);
     Route::apiResource('reservations', ReservationController::class);
+
+    Route::apiResource('hotels', HotelController::class);
+    Route::apiResource('rooms', RoomController::class);
 });
