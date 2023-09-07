@@ -20,6 +20,7 @@ class HotelResource extends JsonResource
             'name' => $this->name,
             'city' => new CityResource($this->city),
             'place' => $this->place,
+            'rooms' => $this->rooms,
             'deleted_at' => $this->deleted_at,
             'updated_at' => $this->updated_at,
             'updated_at' => $this->updated_at,

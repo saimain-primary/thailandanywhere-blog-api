@@ -31,6 +31,9 @@ class BookingItemResource extends JsonResource
             case 'App\Models\AirportPickup':
                 $product = new AirportPickupResource($this->product);
                 break;
+            case 'App\Models\Hotel':
+                $product = new HotelResource($this->product);
+                break;
             default:
                 $product = null;
                 break;
@@ -49,6 +52,7 @@ class BookingItemResource extends JsonResource
             'product_id' => $this->product_id,
             'product' => $product,
             'car' => $this->car,
+            'room' => $this->room,
             'variation' => $this->variation,
             'service_date' => $this->service_date,
             'quantity' => $this->quantity,
