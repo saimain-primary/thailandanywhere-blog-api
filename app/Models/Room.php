@@ -10,7 +10,7 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','hotel_id','extra_price','room_price','description'];
+    protected $fillable = ['name','hotel_id','extra_price','room_price','description','cost'];
 
     public function hotel(): BelongsTo
     {

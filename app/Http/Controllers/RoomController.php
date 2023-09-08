@@ -51,6 +51,7 @@ class RoomController extends Controller
         $save = Room::create([
             'hotel_id' => $request->hotel_id,
             'name' => $request->name,
+            'cost' => $request->cost,
             'extra_price' => $request->extra_price,
             'room_price' => $request->room_price,
             'description' => $request->description,
@@ -77,6 +78,7 @@ class RoomController extends Controller
         $room->update([
             'name' => $request->name ?? $room->name,
             'hotel_id' => $request->hotel_id ?? $room->hotel_id,
+            'cost' => $request->cost ?? $room->cost,
             'description' => $request->description ?? $room->description,
             'extra_price' => $request->extra_price ?? $room->extra_price,
             'room_price' => $request->room_price ?? $room->room_price,
