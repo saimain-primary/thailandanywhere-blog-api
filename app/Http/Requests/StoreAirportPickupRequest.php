@@ -28,7 +28,6 @@ class StoreAirportPickupRequest extends FormRequest
             'cover_image' => 'required|image|max:2048',
             'city_ids' => 'required|array',
             'car_ids' => 'required|array',
-            'images' => 'required|array',
             'prices' => ['required', 'array', function ($attribute, $value, $fail) {
                 if (count($value) !== count($this->input('car_ids'))) {
                     $fail($attribute . ' and cars must have the same number of elements.');

@@ -89,12 +89,13 @@ class PrivateVanTourController extends Controller
 
         $save->cars()->sync($data);
 
+        if($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                PrivateVanTourImage::create(['private_van_tour_id' => $save->id, 'image' => $fileData['fileName']]);
+            };
 
-        foreach ($request->file('images') as $image) {
-            $fileData = $this->uploads($image, 'images/');
-            PrivateVanTourImage::create(['private_van_tour_id' => $save->id, 'image' => $fileData['fileName']]);
-        };
-
+        }
 
         return $this->success(new PrivateVanTourResource($save), 'Successfully created');
     }

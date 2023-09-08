@@ -79,10 +79,12 @@ class EntranceTicketController extends Controller
             $save->categories()->sync($request->category_ids);
         }
 
-        foreach ($request->file('images') as $image) {
-            $fileData = $this->uploads($image, 'images/');
-            EntranceTicketImage::create(['entrance_ticket_id' => $save->id, 'image' => $fileData['fileName']]);
-        };
+        if($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                EntranceTicketImage::create(['entrance_ticket_id' => $save->id, 'image' => $fileData['fileName']]);
+            };
+        }
 
         foreach ($request->variations as $variation) {
             EntranceTicketVariation::create(['entrance_ticket_id' => $save->id, 'name' => $variation['name'], 'age_group' => $variation['age_group'], 'price' => $variation['price']]);

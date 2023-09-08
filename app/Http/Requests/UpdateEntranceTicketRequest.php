@@ -30,7 +30,6 @@ class UpdateEntranceTicketRequest extends FormRequest
             'category_ids' => 'sometimes|array',
             'tag_ids' => 'sometimes|array',
             'variations' => 'sometimes|array',
-            'images' => 'sometimes|array',
         ];
     }
 }

@@ -88,10 +88,12 @@ class AirportPickupController extends Controller
         $save->cars()->sync($data);
 
 
-        foreach ($request->file('images') as $image) {
-            $fileData = $this->uploads($image, 'images/');
-            AirportPickupImage::create(['airport_pickup_id' => $save->id, 'image' => $fileData['fileName']]);
-        };
+        if($request->images) {
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                AirportPickupImage::create(['airport_pickup_id' => $save->id, 'image' => $fileData['fileName']]);
+            };
+        }
 
 
         return $this->success(new AirportPickupResource($save), 'Successfully created');

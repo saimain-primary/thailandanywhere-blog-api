@@ -79,10 +79,12 @@ class GroupTourController extends Controller
             $save->destinations()->sync($request->destination_ids);
         }
 
-        foreach ($request->file('images') as $image) {
-            $fileData = $this->uploads($image, 'images/');
-            GroupTourImage::create(['group_tour_id' => $save->id, 'image' => $fileData['fileName']]);
-        };
+        if($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                GroupTourImage::create(['group_tour_id' => $save->id, 'image' => $fileData['fileName']]);
+            };
+        }
 
 
         return $this->success(new GroupTourResource($save), 'Successfully created');

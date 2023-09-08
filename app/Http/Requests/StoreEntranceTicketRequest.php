@@ -30,7 +30,6 @@ class StoreEntranceTicketRequest extends FormRequest
             'category_ids' => 'required|array',
             'tag_ids' => 'required|array',
             'variations' => 'required|array',
-            'images' => 'required|array',
         ];
     }
 

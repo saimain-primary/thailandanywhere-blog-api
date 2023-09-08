@@ -30,7 +30,6 @@ class StoreGroupTourRequest extends FormRequest
             'city_ids' => 'required|array',
             'tag_ids' => 'required|array',
             'destination_ids' => 'required|array',
-            'images' => 'required|array',
             'sku_code' => 'required|' . Rule::unique('group_tours'),
         ];
     }
