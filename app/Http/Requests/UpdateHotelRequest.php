@@ -23,7 +23,6 @@ class UpdateHotelRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'city_id' => 'required',
         ];
     }
 }

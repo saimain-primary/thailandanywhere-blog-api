@@ -23,12 +23,6 @@ class StoreEntranceTicketRequest extends FormRequest
     {
         return [
             'name'  => 'required',
-            'provider' => 'required',
-            'description' => 'required|string|max:225',
-            'cover_image' => 'required|image|max:2048',
-            'city_ids' => 'required|array',
-            'category_ids' => 'required|array',
-            'tag_ids' => 'required|array',
             'variations' => 'required|array',
         ];
     }
@@ -37,12 +31,7 @@ class StoreEntranceTicketRequest extends FormRequest
     {
         return [
             'name.required' => 'Name is required',
-            'provider.required' => 'Provider is required',
             'variations.required' => 'Variations is required',
-            'cover_image.required' => 'Cover Image is required',
-            'tag_ids.required' => 'Tags is required',
-            'city_ids.required' => 'Cities is required',
-            'category_ids.required' => 'Category is required',
         ];
     }
 }

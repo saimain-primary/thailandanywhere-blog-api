@@ -24,9 +24,6 @@ class StoreAirportPickupRequest extends FormRequest
     {
         return [
             'name'  => 'required',
-            'description' => 'required|string|max:225',
-            'cover_image' => 'required|image|max:2048',
-            'city_ids' => 'required|array',
             'car_ids' => 'required|array',
             'prices' => ['required', 'array', function ($attribute, $value, $fail) {
                 if (count($value) !== count($this->input('car_ids'))) {
@@ -38,18 +35,12 @@ class StoreAirportPickupRequest extends FormRequest
                     $fail($attribute . ' and cars must have the same number of elements.');
                 }
             }],
-            'tag_ids' => 'required|array',
-            'destination_ids' => 'required|array',
         ];
     }
 
     public function messages()
     {
         return [
-            'cover_image.required' => 'Cover Image is required',
-            'tag_ids.required' => 'Tags is required',
-            'destination_ids.required' => 'Destinations is required',
-            'city_ids.required' => 'Cities is required',
             'car_ids.required' => 'Cars is required',
             'prices.required' => 'Prices is required',
             'agent_prices.required' => 'Agent Prices is required',

@@ -23,12 +23,6 @@ class UpdateEntranceTicketRequest extends FormRequest
     {
         return [
             'name'  => 'sometimes',
-            'provider' => 'sometimes',
-            'description' => 'sometimes|string|max:225',
-            'cover_image' => 'sometimes|image|max:2048',
-            'city_ids' => 'sometimes|array',
-            'category_ids' => 'sometimes|array',
-            'tag_ids' => 'sometimes|array',
             'variations' => 'sometimes|array',
         ];
     }

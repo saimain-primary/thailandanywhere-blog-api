@@ -23,9 +23,6 @@ class UpdateAirportPickupRequest extends FormRequest
     {
         return [
             'name'  => 'sometimes',
-            'description' => 'sometimes|string|max:225',
-            'cover_image' => 'sometimes|image|max:2048',
-            'city_ids' => 'sometimes|array',
             'car_ids' => 'sometimes|array',
             'prices' => ['sometimes', 'array', function ($attribute, $value, $fail) {
                 if (count($value) !== count($this->input('car_ids'))) {
@@ -37,8 +34,6 @@ class UpdateAirportPickupRequest extends FormRequest
                     $fail($attribute . ' and cars must have the same number of elements.');
                 }
             }],
-            'tag_ids' => 'sometimes|array',
-            'destination_ids' => 'sometimes|array',
         ];
     }
 

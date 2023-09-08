@@ -25,11 +25,6 @@ class UpdateGroupTourRequest extends FormRequest
         return [
             'name'  => 'sometimes',
             'price'  => 'sometimes',
-            'description' => 'sometimes|string|max:225',
-            'cover_image' => 'sometimes|image|max:2048',
-            'city_ids' => 'sometimes|array',
-            'tag_ids' => 'sometimes|array',
-            'destination_ids' => 'sometimes|array',
             'sku_code' => 'sometimes|' . Rule::unique('group_tours')->ignore($this->group_tour),
         ];
     }

@@ -23,7 +23,6 @@ class StoreHotelRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'city_id' => ['required'],
         ];
     }
 }
