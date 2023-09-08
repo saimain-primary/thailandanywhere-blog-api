@@ -48,7 +48,6 @@ class CityController extends Controller
     {
         $request->validate([
             'name'  => 'required',
-            'image' => 'sometimes|image|max:2048'  // 2 MB
         ]);
 
         $data = [

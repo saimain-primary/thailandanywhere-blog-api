@@ -114,6 +114,7 @@ class BookingController extends Controller
                 'special_request' => isset($item['special_request']) ? $item['special_request'] : null,
                 'route_plan' => isset($item['route_plan']) ? $item['route_plan'] : null,
                 'pickup_location' => isset($item['pickup_location']) ? $item['pickup_location'] : null,
+                'pickup_time' => isset($item['pickup_time']) ? $item['pickup_time'] : null,
                 'dropoff_location' => isset($item['dropoff_location']) ? $item['dropoff_location'] : null,
                 'reservation_status' => $item['reservation_status'],
             ];
@@ -221,6 +222,7 @@ class BookingController extends Controller
                     'special_request' => isset($item['special_request']) ? $item['special_request'] : null,
                     'route_plan' => isset($item['route_plan']) ? $item['route_plan'] : null,
                     'pickup_location' => isset($item['pickup_location']) ? $item['pickup_location'] : null,
+                    'pickup_time' => isset($item['pickup_time']) ? $item['pickup_time'] : null,
                     'dropoff_location' => isset($item['dropoff_location']) ? $item['dropoff_location'] : null,
                     'duration' => $item['duration'],
                     'selling_price' => $item['selling_price'],

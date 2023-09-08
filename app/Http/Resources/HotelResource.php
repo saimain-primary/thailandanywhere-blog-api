@@ -21,6 +21,7 @@ class HotelResource extends JsonResource
             'city' => new CityResource($this->city),
             'place' => $this->place,
             'rooms' => $this->rooms,
+            'contacts' => HotelContractResource::collection($this->contracts),
             'deleted_at' => $this->deleted_at,
             'updated_at' => $this->updated_at,
             'updated_at' => $this->updated_at,

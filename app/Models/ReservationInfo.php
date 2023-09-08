@@ -9,5 +9,5 @@ class ReservationInfo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['booking_item_id', 'customer_feedback', 'customer_score', 'special_request', 'other_info','route_plan','pickup_location' , 'payment_method','payment_status','payment_due','payment_receipt'];
+    protected $fillable = ['booking_item_id', 'pickup_time', 'customer_feedback', 'customer_score', 'special_request', 'other_info','route_plan','pickup_location' , 'payment_method','payment_status','payment_due','payment_receipt'];
 }

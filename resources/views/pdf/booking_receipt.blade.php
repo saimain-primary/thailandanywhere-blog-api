@@ -225,21 +225,23 @@
                             {{ number_format($data->balance_due) }}
                         </td>
                     </tr>
-                    <tr>
-                        <td></td>
-                        <td>EXCHANGE RATE</td>
-                        <td style="font-size:14px;">
-                            {{ $data->money_exchange_rate }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>BALANCE MMK</td>
-                        <td style="font-weight: bold; font-size:14px;">
-                            MMK
-                            {{ number_format($data->balance_due * ($data->money_exchange_rate ? $data->money_exchange_rate : 1)) }}
-                        </td>
-                    </tr>
+                    @if ($data->money_exchange_rate)
+                        <tr>
+                            <td></td>
+                            <td>EXCHANGE RATE</td>
+                            <td style="font-size:14px;">
+                                {{ $data->money_exchange_rate }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>BALANCE MMK</td>
+                            <td style="font-weight: bold; font-size:14px;">
+                                MMK
+                                {{ number_format($data->balance_due * ($data->money_exchange_rate ? $data->money_exchange_rate : 1)) }}
+                            </td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>

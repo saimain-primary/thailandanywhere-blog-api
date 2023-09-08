@@ -11,7 +11,7 @@ class Hotel extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','city_id','place'];
+    protected $fillable = ['legal_name','contract_due','name','city_id','place'];
 
     public function city(): BelongsTo
     {
@@ -22,4 +22,10 @@ class Hotel extends Model
     {
         return $this->hasMany(Room::class, 'hotel_id');
     }
+
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(HotelContract::class, 'hotel_id');
+    }
+
 }
