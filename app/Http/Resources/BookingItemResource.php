@@ -74,6 +74,7 @@ class BookingItemResource extends JsonResource
             'route_plan' => $this->route_plan,
             'expense_amount' => $this->expense_amount,
             'pickup_location' => $this->pickup_location,
+            'pickup_time' => $this->pickup_time,
             'dropoff_location' => $this->dropoff_location,
             'reservation_info' => $this->reservationInfo,
             'reservation_car_info' => new ReservationCarInfoResource($this->reservationCarInfo),
