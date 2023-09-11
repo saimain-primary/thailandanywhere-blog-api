@@ -13,6 +13,7 @@ use App\Http\Resources\BookingItemResource;
 use App\Http\Resources\BookingResource;
 use App\Models\ReservationCarInfo;
 use App\Models\ReservationInfo;
+use App\Models\ReservationSupplierInfo;
 
 class ReservationController extends Controller
 {
@@ -92,6 +93,7 @@ class ReservationController extends Controller
             'payment_status' => $request->payment_status ?? $find->payment_status,
             'exchange_rate' => $request->exchange_rate ?? $find->exchange_rate,
             'reservation_status' => $request->reservation_status ?? $find->reservation_status,
+            'expense_amount' => $request->expense_amount ?? $find->expense_amount,
             'comment' => $request->comment ?? $find->comment,
         ];
 
@@ -166,7 +168,6 @@ class ReservationController extends Controller
                 $saveData['paid_slip'] = $fileData['fileName'];
             }
 
-
             ReservationInfo::create($saveData);
 
         } else {
@@ -230,6 +231,35 @@ class ReservationController extends Controller
                 $findCarInfo->update();
             }
 
+        } else {
+            $findInfo = ReservationSupplierInfo::where('booking_item_id', $bookingItem->id)->first();
+            if (!$findInfo) {
+                $data = [
+                    'booking_item_id' => $bookingItem->id,
+                    'ref_number' => $request->ref_number,
+                    'supplier_name' => $request->supplier_name,
+                ];
+
+                if ($file = $request->file('booking_confirm_letter')) {
+                    $fileData = $this->uploads($file, 'images/');
+                    $data['booking_confirm_letter'] = $fileData['fileName'];
+                }
+                ReservationSupplierInfo::create($data);
+            } else {
+
+                $findInfo->ref_number = $request->ref_number ?? $findInfo->ref_number;
+                $findInfo->supplier_name = $request->supplier_name ?? $findInfo->supplier_name;
+
+                if ($file = $request->file('booking_confirm_letter')) {
+                    if ($findInfo->booking_confirm_letter) {
+                        Storage::delete('public/images/' . $findInfo->booking_confirm_letter);
+                    }
+                    $fileData = $this->uploads($file, 'images/');
+                    $findInfo->booking_confirm_letter = $fileData['fileName'];
+                }
+
+                $findInfo->update();
+            }
         }
         return $this->success(new BookingItemResource($bookingItem), 'Successfully updated');
     }

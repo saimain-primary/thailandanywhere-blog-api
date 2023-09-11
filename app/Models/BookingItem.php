@@ -10,7 +10,7 @@ class BookingItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['pickup_time','hotel_id','room_id', 'crm_id','route_plan','pickup_location','dropoff_location', 'booking_id','special_request', 'car_id', 'product_type', 'product_id', 'service_date', 'quantity', 'duration', 'selling_price', 'comment', 'reservation_status', 'receipt_image', 'cost_price', 'payment_status', 'payment_method', 'confirmation_letter', 'exchange_rate' , 'variation_id'];
+    protected $fillable = ['pickup_time', 'expense_amount' ,'hotel_id','room_id', 'crm_id','route_plan','pickup_location','dropoff_location', 'booking_id','special_request', 'car_id', 'product_type', 'product_id', 'service_date', 'quantity', 'duration', 'selling_price', 'comment', 'reservation_status', 'receipt_image', 'cost_price', 'payment_status', 'payment_method', 'confirmation_letter', 'exchange_rate' , 'variation_id'];
 
     public function product()
     {
@@ -53,5 +53,10 @@ class BookingItem extends Model
     public function reservationCarInfo()
     {
         return $this->hasOne(ReservationCarInfo::class, 'booking_item_id');
+    }
+
+    public function reservationSupplierInfo()
+    {
+        return $this->hasOne(ReservationSupplierInfo::class, 'booking_item_id');
     }
 }
