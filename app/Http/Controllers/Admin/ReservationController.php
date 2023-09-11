@@ -151,6 +151,8 @@ class ReservationController extends Controller
                 'booking_item_id' => $bookingItem->id,
                 'customer_feedback' => $request->customer_feedback,
                 'customer_score' => $request->customer_score,
+                'driver_score' => $request->driver_score,
+                'product_score' => $request->product_score,
                 'special_request' => $request->special_request,
                 'other_info' => $request->other_info,
                 'route_plan' => $request->route_plan,
@@ -174,6 +176,8 @@ class ReservationController extends Controller
         } else {
             $findInfo->customer_feedback = $request->customer_feedback ?? $findInfo->customer_feedback;
             $findInfo->customer_score = $request->customer_score ?? $findInfo->customer_score;
+            $findInfo->driver_score = $request->driver_score ?? $findInfo->driver_score;
+            $findInfo->product_score = $request->product_score ?? $findInfo->product_score;
             $findInfo->special_request = $request->special_request ?? $findInfo->special_request;
             $findInfo->other_info = $request->other_info ?? $findInfo->other_info;
             $findInfo->route_plan = $request->route_plan ?? $findInfo->route_plan;
