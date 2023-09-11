@@ -11,7 +11,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\BookingItemResource;
 use App\Http\Resources\BookingResource;
+use App\Models\ReservationBookingConfirmLetter;
 use App\Models\ReservationCarInfo;
+use App\Models\ReservationExpenseReceipt;
 use App\Models\ReservationInfo;
 use App\Models\ReservationSupplierInfo;
 
@@ -98,14 +100,8 @@ class ReservationController extends Controller
         ];
 
 
-        if ($file = $request->file('receipt_image')) {
-            if ($find->receipt_image) {
-                Storage::delete('public/images/' . $find->receipt_image);
-            }
 
-            $fileData = $this->uploads($file, 'images/');
-            $data['receipt_image'] = $fileData['fileName'];
-        }
+
 
         if ($file = $request->file('confirmation_letter')) {
             if ($find->confirmation_letter) {
@@ -165,6 +161,8 @@ class ReservationController extends Controller
                 'payment_status' => $request->payment_status,
                 'payment_due' => $request->payment_due,
             ];
+
+
 
             if ($file = $request->file('paid_slip')) {
                 $fileData = $this->uploads($file, 'images/');
@@ -246,23 +244,34 @@ class ReservationController extends Controller
                     'supplier_name' => $request->supplier_name,
                 ];
 
+                if ($file = $request->file('receipt_image')) {
+                    $fileData = $this->uploads($file, 'images/');
+                    ReservationExpenseReceipt::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
+                }
+
                 if ($file = $request->file('booking_confirm_letter')) {
                     $fileData = $this->uploads($file, 'images/');
-                    $data['booking_confirm_letter'] = $fileData['fileName'];
+                    ReservationBookingConfirmLetter::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
                 }
+
+
                 ReservationSupplierInfo::create($data);
             } else {
 
                 $findInfo->ref_number = $request->ref_number ?? $findInfo->ref_number;
                 $findInfo->supplier_name = $request->supplier_name ?? $findInfo->supplier_name;
 
-                if ($file = $request->file('booking_confirm_letter')) {
-                    if ($findInfo->booking_confirm_letter) {
-                        Storage::delete('public/images/' . $findInfo->booking_confirm_letter);
-                    }
+
+                if ($file = $request->file('receipt_image')) {
                     $fileData = $this->uploads($file, 'images/');
-                    $findInfo->booking_confirm_letter = $fileData['fileName'];
+                    ReservationExpenseReceipt::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
                 }
+
+                if ($file = $request->file('booking_confirm_letter')) {
+                    $fileData = $this->uploads($file, 'images/');
+                    ReservationBookingConfirmLetter::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
+                }
+
 
                 $findInfo->update();
             }

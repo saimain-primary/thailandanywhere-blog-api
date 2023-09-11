@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\ReservationReceiptImageResource;
 use App\Models\Booking;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -58,5 +59,15 @@ class BookingItem extends Model
     public function reservationSupplierInfo()
     {
         return $this->hasOne(ReservationSupplierInfo::class, 'booking_item_id');
+    }
+
+    public function reservationBookingConfirmLetter()
+    {
+        return $this->hasMany(ReservationBookingConfirmLetter::class, 'booking_item_id');
+    }
+
+    public function reservationReceiptImage()
+    {
+        return $this->hasMany(reservationReceiptImage::class, 'booking_item_id');
     }
 }

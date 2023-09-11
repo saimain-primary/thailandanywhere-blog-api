@@ -78,8 +78,9 @@ class BookingItemResource extends JsonResource
             'reservation_info' => $this->reservationInfo,
             'reservation_car_info' => new ReservationCarInfoResource($this->reservationCarInfo),
             'reservation_supplier_info' => new ReservationCarInfoResource($this->reservationSupplierInfo),
+            'booking_confirm_letters' => new ReservationBookingConfirmLetterResource($this->reservationSupplierInfo),
+            'receipt_images' => new ReservationReceiptImageResource($this->reservationSupplierInfo),
             'paid_slip' => $this->paid_slip ? env('APP_URL', 'http://localhost:8000') . Storage::url('images/' . $this->paid_slip) : null,
-            'receipt_image' => $this->receipt_image ? env('APP_URL', 'http://localhost:8000') . Storage::url('images/' . $this->receipt_image) : null,
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
         ];
