@@ -158,6 +158,7 @@ class ReservationController extends Controller
                 'payment_method' => $request->payment_method,
                 'bank_name' => $request->bank_name,
                 'bank_account_number' => $request->bank_account_number,
+                'expense_amount' => $request->expense_amount,
                 'cost' => $request->cost,
                 'payment_status' => $request->payment_status,
                 'payment_due' => $request->payment_due,
@@ -181,6 +182,7 @@ class ReservationController extends Controller
             $findInfo->payment_status = $request->payment_status ?? $findInfo->payment_status;
             $findInfo->payment_due = $request->payment_due ?? $findInfo->payment_due;
             $findInfo->payment_receipt = $request->payment_receipt ?? $findInfo->payment_receipt;
+            $findInfo->expense_amount = $request->expense_amount ?? $findInfo->expense_amount;
             $findInfo->bank_name = $request->bank_name ?? $findInfo->bank_name;
             $findInfo->cost = $request->cost ?? $findInfo->cost;
             $findInfo->bank_account_number = $request->bank_account_number ?? $findInfo->bank_account_number;
