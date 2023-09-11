@@ -27,6 +27,7 @@ class BookingResource extends JsonResource
             'sold_from' => $this->sold_from,
             'payment_currency' => $this->payment_currency,
             'payment_method' => $this->payment_method,
+            'bank_name' => $this->bank_name,
             'payment_status' => $this->payment_status,
             'booking_date' => $this->booking_date,
             'money_exchange_rate' => $this->money_exchange_rate,

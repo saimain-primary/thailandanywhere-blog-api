@@ -142,13 +142,10 @@ class ReservationController extends Controller
             return $this->error(null, 'Data not found', 404);
         }
 
-        $isEntranceTicketType = $bookingItem->product_type === 'App\Models\EntranceTicket';
-
-        return $isEntranceTicketType;
-
         $findInfo = ReservationInfo::where('booking_item_id', $bookingItem->id)->first();
         if (!$findInfo) {
-            ReservationInfo::create([
+
+            $saveData = [
                 'booking_item_id' => $bookingItem->id,
                 'customer_feedback' => $request->customer_feedback,
                 'customer_score' => $request->customer_score,
@@ -157,9 +154,21 @@ class ReservationController extends Controller
                 'route_plan' => $request->route_plan,
                 'pickup_location' => $request->pickup_location,
                 'payment_method' => $request->payment_method,
+                'bank_name' => $request->bank_name,
+                'bank_account_number' => $request->bank_account_number,
+                'cost' => $request->cost,
                 'payment_status' => $request->payment_status,
                 'payment_due' => $request->payment_due,
-            ]);
+            ];
+
+            if ($file = $request->file('paid_slip')) {
+                $fileData = $this->uploads($file, 'images/');
+                $saveData['paid_slip'] = $fileData['fileName'];
+            }
+
+
+            ReservationInfo::create($saveData);
+
         } else {
             $findInfo->customer_feedback = $request->customer_feedback ?? $findInfo->customer_feedback;
             $findInfo->customer_score = $request->customer_score ?? $findInfo->customer_score;
@@ -171,45 +180,57 @@ class ReservationController extends Controller
             $findInfo->payment_status = $request->payment_status ?? $findInfo->payment_status;
             $findInfo->payment_due = $request->payment_due ?? $findInfo->payment_due;
             $findInfo->payment_receipt = $request->payment_receipt ?? $findInfo->payment_receipt;
+            $findInfo->bank_name = $request->bank_name ?? $findInfo->bank_name;
+            $findInfo->cost = $request->cost ?? $findInfo->cost;
+            $findInfo->bank_account_number = $request->bank_account_number ?? $findInfo->bank_account_number;
+
+            if ($file = $request->file('paid_slip')) {
+                $fileData = $this->uploads($file, 'images/');
+                $findInfo->paid_slip = $fileData['fileName'];
+            }
+
             $findInfo->update();
         }
 
 
+        $isEntranceTicketType = $bookingItem->product_type === 'App\Models\EntranceTicket';
 
-        $findCarInfo = ReservationCarInfo::where('booking_item_id', $bookingItem->id)->first();
-        if (!$findCarInfo) {
-            $data = [
-                'booking_item_id' => $bookingItem->id,
-                'driver_name' => $request->driver_name,
-                'driver_contact' => $request->driver_contact,
-                'supplier_name' => $request->supplier_name,
-                'car_number' => $request->car_number,
-            ];
+        if(!$isEntranceTicketType) {
+            $findCarInfo = ReservationCarInfo::where('booking_item_id', $bookingItem->id)->first();
+            if (!$findCarInfo) {
+                $data = [
+                    'booking_item_id' => $bookingItem->id,
+                    'driver_name' => $request->driver_name,
+                    'driver_contact' => $request->driver_contact,
+                    'supplier_name' => $request->supplier_name,
+                    'car_number' => $request->car_number,
+                ];
 
-            if ($file = $request->file('car_photo')) {
-                $fileData = $this->uploads($file, 'images/');
-                $data['car_photo'] = $fileData['fileName'];
-            }
-            ReservationCarInfo::create($data);
-        } else {
-
-            $findCarInfo->driver_name = $request->driver_name ?? $findCarInfo->driver_name;
-            $findCarInfo->driver_contact = $request->driver_contact ?? $findCarInfo->driver_contact;
-            $findCarInfo->supplier_name = $request->supplier_name ?? $findCarInfo->supplier_name;
-            $findCarInfo->car_number = $request->car_number ?? $findCarInfo->car_number;
-
-            if ($file = $request->file('car_photo')) {
-                if ($findCarInfo->car_photo) {
-                    Storage::delete('public/images/' . $findCarInfo->car_photo);
+                if ($file = $request->file('car_photo')) {
+                    $fileData = $this->uploads($file, 'images/');
+                    $data['car_photo'] = $fileData['fileName'];
                 }
-                $fileData = $this->uploads($file, 'images/');
-                $findCarInfo->car_photo = $fileData['fileName'];
+                ReservationCarInfo::create($data);
+            } else {
+
+                $findCarInfo->driver_name = $request->driver_name ?? $findCarInfo->driver_name;
+                $findCarInfo->driver_contact = $request->driver_contact ?? $findCarInfo->driver_contact;
+                $findCarInfo->supplier_name = $request->supplier_name ?? $findCarInfo->supplier_name;
+                $findCarInfo->car_number = $request->car_number ?? $findCarInfo->car_number;
+
+                if ($file = $request->file('car_photo')) {
+                    if ($findCarInfo->car_photo) {
+                        Storage::delete('public/images/' . $findCarInfo->car_photo);
+                    }
+                    $fileData = $this->uploads($file, 'images/');
+                    $findCarInfo->car_photo = $fileData['fileName'];
+                }
+
+
+                $findCarInfo->update();
             }
 
-
-            $findCarInfo->update();
         }
-
         return $this->success(new BookingItemResource($bookingItem), 'Successfully updated');
     }
 }
