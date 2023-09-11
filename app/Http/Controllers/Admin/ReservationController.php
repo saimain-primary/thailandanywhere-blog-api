@@ -142,6 +142,10 @@ class ReservationController extends Controller
             return $this->error(null, 'Data not found', 404);
         }
 
+        $isEntranceTicketType = $bookingItem->product_type === 'App\Models\EntranceTicket';
+
+        return $isEntranceTicketType;
+
         $findInfo = ReservationInfo::where('booking_item_id', $bookingItem->id)->first();
         if (!$findInfo) {
             ReservationInfo::create([
@@ -169,6 +173,8 @@ class ReservationController extends Controller
             $findInfo->payment_receipt = $request->payment_receipt ?? $findInfo->payment_receipt;
             $findInfo->update();
         }
+
+
 
         $findCarInfo = ReservationCarInfo::where('booking_item_id', $bookingItem->id)->first();
         if (!$findCarInfo) {
