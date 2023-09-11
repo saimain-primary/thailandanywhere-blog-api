@@ -259,15 +259,14 @@ class ReservationController extends Controller
                 $findInfo->ref_number = $request->ref_number ?? $findInfo->ref_number;
                 $findInfo->supplier_name = $request->supplier_name ?? $findInfo->supplier_name;
 
-
                 if ($file = $request->file('receipt_image')) {
                     $fileData = $this->uploads($file, 'images/');
-                    ReservationExpenseReceipt::create(['booking_item_id' => $findInfo->id, 'file' => $fileData['fileName']]);
+                    ReservationExpenseReceipt::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
                 }
 
                 if ($file = $request->file('booking_confirm_letter')) {
                     $fileData = $this->uploads($file, 'images/');
-                    ReservationBookingConfirmLetter::create(['booking_item_id' => $findInfo->id, 'file' => $fileData['fileName']]);
+                    ReservationBookingConfirmLetter::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
                 }
 
 
