@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ReservationExpenseReceipt extends Model
 {
     use HasFactory;
-    
-    protected $fillable = ['booking_id', 'file'];
+
+    protected $fillable = ['booking_item_id', 'file'];
 
 }
