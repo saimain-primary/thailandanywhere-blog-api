@@ -68,6 +68,6 @@ class BookingItem extends Model
 
     public function reservationReceiptImage()
     {
-        return $this->hasMany(reservationReceiptImage::class, 'booking_item_id');
+        return $this->hasMany(ReservationExpenseReceipt::class, 'booking_item_id');
     }
 }
