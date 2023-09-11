@@ -162,8 +162,6 @@ class ReservationController extends Controller
                 'payment_due' => $request->payment_due,
             ];
 
-
-
             if ($file = $request->file('paid_slip')) {
                 $fileData = $this->uploads($file, 'images/');
                 $saveData['paid_slip'] = $fileData['fileName'];
@@ -264,12 +262,12 @@ class ReservationController extends Controller
 
                 if ($file = $request->file('receipt_image')) {
                     $fileData = $this->uploads($file, 'images/');
-                    ReservationExpenseReceipt::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
+                    ReservationExpenseReceipt::create(['booking_item_id' => $findInfo->id, 'file' => $fileData['fileName']]);
                 }
 
                 if ($file = $request->file('booking_confirm_letter')) {
                     $fileData = $this->uploads($file, 'images/');
-                    ReservationBookingConfirmLetter::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
+                    ReservationBookingConfirmLetter::create(['booking_item_id' => $findInfo->id, 'file' => $fileData['fileName']]);
                 }
 
 
