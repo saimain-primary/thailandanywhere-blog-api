@@ -79,6 +79,10 @@ class EntranceTicketController extends Controller
             $save->categories()->sync($request->category_ids);
         }
 
+        if ($request->variations) {
+            $save->variations()->sync($request->variations);
+        }
+
         if($request->file('images')) {
             foreach ($request->file('images') as $image) {
                 $fileData = $this->uploads($image, 'images/');
@@ -86,9 +90,9 @@ class EntranceTicketController extends Controller
             };
         }
 
-        foreach ($request->variations as $variation) {
-            EntranceTicketVariation::create(['entrance_ticket_id' => $save->id, 'name' => $variation['name'], 'age_group' => $variation['age_group'], 'price' => $variation['price']]);
-        };
+        // foreach ($request->variations as $variation) {
+        //     EntranceTicketVariation::create(['entrance_ticket_id' => $save->id, 'name' => $variation['name'], 'age_group' => $variation['age_group'], 'price' => $variation['price']]);
+        // };
 
         return $this->success(new EntranceTicketResource($save), 'Successfully created');
     }
@@ -150,6 +154,10 @@ class EntranceTicketController extends Controller
             $find->categories()->sync($request->category_ids);
         }
 
+        if ($request->variations) {
+            $find->variations()->sync($request->variations);
+        }
+
 
 
         if ($request->file('images')) {
@@ -169,16 +177,16 @@ class EntranceTicketController extends Controller
             };
         }
 
-        if ($request->variations) {
-            foreach ($request->variations as $variation) {
-                if (count($find->variations) > 0) {
-                    foreach ($find->variations as $v) {
-                        $v->delete();
-                    }
-                }
-                EntranceTicketVariation::create(['entrance_ticket_id' => $find->id, 'name' => $variation['name'], 'age_group' => $variation['age_group'], 'price' => $variation['price']]);
-            };
-        }
+        // if ($request->variations) {
+        //     foreach ($request->variations as $variation) {
+        //         if (count($find->variations) > 0) {
+        //             foreach ($find->variations as $v) {
+        //                 $v->delete();
+        //             }
+        //         }
+        //         EntranceTicketVariation::create(['entrance_ticket_id' => $find->id, 'name' => $variation['name'], 'age_group' => $variation['age_group'], 'price' => $variation['price']]);
+        //     };
+        // }
 
 
         return $this->success(new EntranceTicketResource($find), 'Successfully updated');

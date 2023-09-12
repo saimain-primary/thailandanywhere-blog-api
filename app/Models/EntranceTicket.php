@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\City;
 use App\Models\ProductTag;
+use App\Models\EntranceVariation;
 use App\Models\EntranceTicketImage;
 use App\Models\EntranceTicketVariation;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ class EntranceTicket extends Model
 
     public function variations()
     {
-        return $this->hasMany(EntranceTicketVariation::class, 'entrance_ticket_id', 'id');
+        return $this->belongsToMany(EntranceTicketVariation::class, 'entrance_variations', 'entrance_ticket_id', 'variation_id');
     }
 
     public function tags()
