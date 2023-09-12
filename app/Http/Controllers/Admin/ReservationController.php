@@ -199,7 +199,7 @@ class ReservationController extends Controller
         $isEntranceTicketType = $bookingItem->product_type === 'App\Models\EntranceTicket';
         $isHotelType = $bookingItem->product_type === 'App\Models\Hotel';
 
-        if(!$isEntranceTicketType || !$isHotelType) {
+        if(!$isEntranceTicketType && !$isHotelType) {
             $findCarInfo = ReservationCarInfo::where('booking_item_id', $bookingItem->id)->first();
             if (!$findCarInfo) {
                 $data = [
@@ -233,7 +233,6 @@ class ReservationController extends Controller
 
                 $findCarInfo->update();
             }
-
         } else {
             $findInfo = ReservationSupplierInfo::where('booking_item_id', $bookingItem->id)->first();
             if (!$findInfo) {
