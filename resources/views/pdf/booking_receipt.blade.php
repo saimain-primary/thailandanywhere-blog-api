@@ -238,7 +238,7 @@
                             <td>BALANCE MMK</td>
                             <td style="font-weight: bold; font-size:14px;">
                                 MMK
-                                {{ number_format($data->balance_due * ($data->money_exchange_rate ? $data->money_exchange_rate : 1)) }}
+                                {{ number_format($data->deposit * ($data->money_exchange_rate ? $data->money_exchange_rate : 1)) }}
                             </td>
                         </tr>
                     @endif
