@@ -19,6 +19,7 @@ class ReservationCarInfoResource extends JsonResource
         return [
             'id' => $this->id,
             'booking_item_id' => $this->booking_item_id,
+            'ref_number' => $this->ref_number,
             'supplier_name' => $this->supplier_name,
             'driver_name' => $this->driver_name,
             'driver_contact' => $this->driver_contact,
