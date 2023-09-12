@@ -49,6 +49,7 @@ class BookingItemResource extends JsonResource
                 'bank_name' => $this->booking->bank_name,
             ],
             'customer_info' => $this->booking->customer,
+            'customer_attachment' => $this->customer_attachment ? env('APP_URL', 'http://localhost:8000') . Storage::url('attachments/' . $this->customer_attachment) : null,
             'product_type' => $this->product_type,
             'product_id' => $this->product_id,
             'product' => $product,

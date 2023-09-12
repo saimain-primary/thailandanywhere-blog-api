@@ -121,6 +121,12 @@ class BookingController extends Controller
                 'reservation_status' => $item['reservation_status'],
             ];
 
+            if(isset($request->items[$key]['customer_attachment'])) {
+                $attachment = $request->items[$key]['customer_attachment'];
+                $fileData = $this->uploads($attachment, 'attachments/');
+                $data['customer_attachment'] = $fileData['fileName'];
+            }
+
             if (isset($request->items[$key]['receipt_image'])) {
                 $receiptImage = $request->items[$key]['receipt_image'];
                 if ($receiptImage) {
@@ -244,6 +250,13 @@ class BookingController extends Controller
                         $data['receipt_image'] = $fileData['fileName'];
                     }
                 }
+
+                if(isset($request->items[$key]['customer_attachment'])) {
+                    $attachment = $request->items[$key]['customer_attachment'];
+                    $fileData = $this->uploads($attachment, 'attachments/');
+                    $data['customer_attachment'] = $fileData['fileName'];
+                }
+
 
                 if (isset($request->items[$key]['confirmation_letter'])) {
                     $file = $request->items[$key]['confirmation_letter'];
