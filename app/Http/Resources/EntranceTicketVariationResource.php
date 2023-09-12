@@ -19,6 +19,7 @@ class EntranceTicketVariationResource extends JsonResource
             'name' => $this->name,
             'age_group' => $this->age_group,
             'price' => $this->price,
+            'description' => $this->description,
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
         ];

@@ -9,5 +9,5 @@ class EntranceTicketVariation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['entrance_ticket_id', 'name', 'age_group', 'price'];
+    protected $fillable = ['entrance_ticket_id', 'name', 'age_group', 'price','description'];
 }
