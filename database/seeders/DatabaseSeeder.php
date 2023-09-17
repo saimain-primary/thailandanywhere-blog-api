@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Super Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
-            'email_verified_at' => now()
+            'email_verified_at' => now(),
+            'is_super' => true
         ]);
 
         // \App\Models\User::factory(10)->create();

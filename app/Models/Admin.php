@@ -22,6 +22,7 @@ class Admin extends Authenticatable
         'name',
         'email',
         'password',
+        'is_super'
     ];
 
     /**
@@ -42,5 +43,6 @@ class Admin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_super' => 'boolean'
     ];
 }

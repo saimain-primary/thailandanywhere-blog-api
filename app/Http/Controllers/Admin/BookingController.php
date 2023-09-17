@@ -27,13 +27,25 @@ class BookingController extends Controller
     {
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
+        $crmId = $request->query('crm_id');
+
+
 
         $query = Booking::query();
+
+        if(!Auth::user()->is_super) {
+            $query->where('created_by', Auth::id());
+        }
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
+        if($crmId) {
+            $query->where('crm_id', $crmId);
+        }
+
+        $query->orderBy('created_at', 'desc');
         $data = $query->paginate($limit);
         return $this->success(BookingResource::collection($data)
             ->additional([
@@ -85,7 +97,8 @@ class BookingController extends Controller
             'balance_due_date' => $request->balance_due_date,
             'discount' => $request->discount,
             'comment' => $request->comment,
-            'created_by' => Auth::id()
+            'created_by' => Auth::id(),
+            'reservation_status' => "awaiting"
         ];
 
         $save = Booking::create($data);

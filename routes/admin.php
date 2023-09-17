@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AirportPickupController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BookingController;
@@ -26,6 +27,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/bookings/{id}/receipt', [BookingController::class, 'printReceipt']);
+
+Route::get('/super', function () {
+    return 'this is super admin only';
+})->middleware(['auth:sanctum','abilities:*']);
+
+Route::middleware(['auth:sanctum','abilities:super'])->group(function () {
+    Route::apiResource('admins', AdminController::class);
+});
 
 Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::get('/me', [AuthController::class, 'me']);

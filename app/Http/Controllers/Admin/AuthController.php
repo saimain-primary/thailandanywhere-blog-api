@@ -27,9 +27,17 @@ class AuthController extends Controller
 
         // $admin->tokens()->delete();
 
+        $abilities = [
+            'admin'
+        ];
+
+        if($admin->is_super) {
+            $abilities[] = '*';
+        }
+
         return $this->success([
             'user' => $admin,
-            'token' => $admin->createToken('API Token of admin id ' . $admin->id, ['admin'])->plainTextToken
+            'token' => $admin->createToken('API Token of admin id ' . $admin->id, $abilities)->plainTextToken
         ], 'Successfully Login');
     }
 
