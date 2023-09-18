@@ -83,7 +83,7 @@ class Booking extends Model
             $lastInitial = $words[count($words) - 1][1];
         }
 
-        $fullName = $firstInitial . $lastInitial;
+        $fullName = strtoupper($firstInitial . $lastInitial);
 
         // Count previous bookings for the user
         $previousBookingsCount = static::where('created_by', $user->id)->count();
