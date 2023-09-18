@@ -64,21 +64,27 @@ class Booking extends Model
 
     public function generateCrmID()
     {
-        // Ensure the first letter of each word is capitalized
         $user = Auth::user();
+
+        // Ensure the first letter of each word is capitalized
         $name = ucwords(strtolower($user->name));
 
-        // Use a regex pattern to get the first letter of each word
-        preg_match_all('/\b\w/', $name, $matches);
+        // Split the name into words
+        $words = explode(' ', $name);
 
-        // Return combined initials
-        $combined = implode('', $matches[0])  . rand(0, 9);
-        ;
+        // Get the first letter of the first word
+        $firstInitial = $words[0][0];
+
+        // Get the first letter of the last word
+        $lastInitial = $words[count($words) - 1][0];
+
+        $fullName = $firstInitial . $lastInitial;
+
         // Count previous bookings for the user
         $previousBookingsCount = static::where('created_by', $user->id)->count();
 
         // Construct the booking ID
-        $bookingId = $combined . '-' . str_pad($previousBookingsCount + 1, 4, '0', STR_PAD_LEFT);
+        $bookingId = $fullName . '-' . str_pad($previousBookingsCount + 1, 4, '0', STR_PAD_LEFT);
 
         return $bookingId;
     }
