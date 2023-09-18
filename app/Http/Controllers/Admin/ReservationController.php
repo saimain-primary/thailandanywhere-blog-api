@@ -47,6 +47,7 @@ class ReservationController extends Controller
             })->with(['items' => function ($q) use ($productType, $crmId) {
                 $q->where('product_type', $productType);
                 if($crmId) {
+                    dd('abc');
                     $q->where('crm_id', $crmId);
                 }
             }]);
