@@ -248,7 +248,7 @@
                                 @if ($data->deposit === 0 || $data->deposit === 'null')
                                     {{ number_format(($data->sub_total - $data->discount) * $data->money_exchange_rate ? $data->money_exchange_rate : 1) }}
                                 @else
-                                    {{ number_format(($data->sub_total - $data->discount - $data->deposit) * ($data->money_exchange_rate ? parse_int($data->money_exchange_rate) : 1)) }}
+                                    {{ number_format(($data->sub_total - $data->discount - $data->deposit) * ($data->money_exchange_rate ? (int) $data->money_exchange_rate : 1)) }}
                                 @endif
                             </td>
                         </tr>
