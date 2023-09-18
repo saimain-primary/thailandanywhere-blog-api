@@ -190,7 +190,6 @@ class BookingController extends Controller
 
 
         $data = [
-            'crm_id' => $request->crm_id,
             'customer_id' => $request->customer_id ?? $find->customer_id,
             'sold_from' => $request->sold_from ?? $find->sold_from,
             'payment_method' => $request->payment_method ?? $find->payment_method,
