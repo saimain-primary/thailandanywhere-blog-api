@@ -213,6 +213,13 @@
                     </tr>
                     <tr>
                         <td></td>
+                        <td>Total</td>
+                        <td style="font-size:14px;">
+                            {{ $data->sub_total - $data->discount }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
                         <td>DEPOSIT</td>
                         <td style="font-size:14px;">
                             {{ $data->deposit }}
@@ -221,7 +228,7 @@
                     <tr>
                         <td></td>
                         <td>BALANCE DUE</td>
-                        <td style="font-weight: bold; font-size:14px;">THB
+                        <td style="font-weight: bold; font-size:14px;">{{ $data->payment_currency }}
                             {{ number_format($data->balance_due) }}
                         </td>
                     </tr>
