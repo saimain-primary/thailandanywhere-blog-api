@@ -78,6 +78,11 @@ class Booking extends Model
         // Get the first letter of the last word
         $lastInitial = $words[count($words) - 1][0];
 
+        // If the first letters of both words are the same, take the second letter of the second word
+        if ($firstInitial == $lastInitial && isset($words[count($words) - 1][1])) {
+            $lastInitial = $words[count($words) - 1][1];
+        }
+
         $fullName = $firstInitial . $lastInitial;
 
         // Count previous bookings for the user
