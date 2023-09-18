@@ -42,8 +42,11 @@ class ReservationController extends Controller
         $crmId = $request->query('crm_id');
 
         if ($productType) {
-            $query->whereHas('items', function ($q) use ($productType) {
+            $query->whereHas('items', function ($q) use ($productType, $crmId) {
                 $q->where('product_type', $productType);
+                if($crmId) {
+                    $q->where('crm_id', 'LIKE', "%{$crmId}%");
+                }
             })->with(['items' => function ($query) use ($productType, $crmId) {
                 $query->where('product_type', $productType);
                 if($crmId) {
