@@ -227,7 +227,7 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td>BALANCE DUE</td>
+                        <td>BALANCE THB</td>
                         <td style="font-weight: bold; font-size:14px;">
                             {{ number_format($data->sub_total - $data->discount - $data->deposit) }}
                         </td>
