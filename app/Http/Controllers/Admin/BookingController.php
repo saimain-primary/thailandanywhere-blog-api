@@ -252,7 +252,7 @@ class BookingController extends Controller
                     'payment_status' => $item['payment_status'],
                     'exchange_rate' => $item['exchange_rate'],
                     'comment' => $item['comment'],
-                    'reservation_status' => $item['reservation_status'],
+                    'reservation_status' => $item['reservation_status'] ?? "awaiting",
                 ];
 
                 if (isset($request->items[$key]['receipt_image'])) {
