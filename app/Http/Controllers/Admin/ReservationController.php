@@ -53,7 +53,16 @@ class ReservationController extends Controller
                     $query->where('crm_id', 'LIKE', "%{$crmId}%");
                 }
                 $query->where('product_type', $productType);
-
+            }]);
+        } else {
+            $query->whereHas('items', function ($q) use ($crmId) {
+                if($crmId) {
+                    $q->where('crm_id', 'LIKE', "%{$crmId}%");
+                }
+            })->with(['items' => function ($query) use ($crmId) {
+                if($crmId) {
+                    $query->where('crm_id', 'LIKE', "%{$crmId}%");
+                }
             }]);
         }
 
