@@ -66,7 +66,6 @@ class BookingController extends Controller
     {
 
         $request->validate([
-            'crm_id' => 'required',
             'customer_id' => 'required',
             'sold_from' => 'required|string',
             'payment_method' => 'required|string',
