@@ -82,7 +82,6 @@ class BookingController extends Controller
 
         $data = [
             // 'crm_id' => $request->crm_id,
-            'crm_id' => $this->generateCrmID(),
             'customer_id' => $request->customer_id,
             'sold_from' => $request->sold_from,
             'payment_method' => $request->payment_method,

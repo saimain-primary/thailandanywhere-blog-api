@@ -41,6 +41,7 @@ class Booking extends Model
 
         static::creating(function ($model) {
             $model->invoice_number = $model->generateInvoiceNumber();
+            $model->crm_id = $model->generateCrmID();
         });
     }
 
