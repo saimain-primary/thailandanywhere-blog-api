@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Customer;
 use App\Models\BookingItem;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -59,4 +60,27 @@ class Booking extends Model
     {
         return static::where('invoice_number', $number)->exists();
     }
+
+    public function generateCrmID()
+    {
+        // Ensure the first letter of each word is capitalized
+        $user = Auth::user();
+        $name = ucwords(strtolower($user->name));
+
+        // Use a regex pattern to get the first letter of each word
+        preg_match_all('/\b\w/', $name, $matches);
+
+        // Return combined initials
+        $combined = implode('', $matches[0])  . rand(0, 9);
+        ;
+        // Count previous bookings for the user
+        $previousBookingsCount = static::where('created_by', $user->id)->count();
+
+        // Construct the booking ID
+        $bookingId = $combined . '-' . str_pad($previousBookingsCount + 1, 4, '0', STR_PAD_LEFT);
+
+        return $bookingId;
+    }
+
+
 }
