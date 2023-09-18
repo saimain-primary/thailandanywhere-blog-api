@@ -201,7 +201,6 @@
                         <td>Thank you for booking with Thailand Anywhere. We are with you every step of the way.</td>
                         <td>SUB TOTAL</td>
                         <td style="font-size:14px;">
-                            {{ $data->payment_currency }}
                             {{ number_format($data->sub_total) }}
                         </td>
                     </tr>
@@ -216,7 +215,6 @@
                         <td></td>
                         <td>Total</td>
                         <td style="font-size:14px;">
-                            {{ $data->payment_currency }}
                             {{ $data->sub_total - $data->discount }}
                         </td>
                     </tr>
@@ -231,7 +229,6 @@
                         <td></td>
                         <td>BALANCE DUE</td>
                         <td style="font-weight: bold; font-size:14px;">
-                            {{ $data->payment_currency }}
                             {{ number_format($data->sub_total - $data->discount - $data->deposit) }}
                         </td>
                     </tr>
