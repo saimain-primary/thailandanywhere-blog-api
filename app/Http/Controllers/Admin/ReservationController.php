@@ -40,17 +40,17 @@ class ReservationController extends Controller
 
         $productType = $request->query('product_type');
         $crmId = $request->query('crm_id');
+
         if ($productType) {
             $query->whereHas('items', function ($q) use ($productType) {
                 $q->where('product_type', $productType);
-            })->with(['items' => function ($q) use ($productType, $crmId) {
-                $q->where('product_type', $productType);
+            })->with(['items' => function ($query) use ($productType, $crmId) {
+                $query->where('product_type', $productType);
                 if($crmId) {
-                    $q->where('crm_id', $crmId);
+                    $query->where('crm_id', $crmId);
                 }
             }]);
         }
-
 
 
         $data = $query->paginate($limit);
