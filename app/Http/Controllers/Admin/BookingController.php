@@ -123,7 +123,7 @@ class BookingController extends Controller
                 'selling_price' => $item['selling_price'],
                 'cost_price' => $item['cost_price'],
                 'payment_method' => $item['payment_method'],
-                'payment_status' => $item['payment_status'],
+                'payment_status' => $item['payment_status'] ?? 'not_paid',
                 'exchange_rate' => $item['exchange_rate'],
                 'comment' => $item['comment'],
                 'special_request' => isset($item['special_request']) ? $item['special_request'] : null,
@@ -131,7 +131,7 @@ class BookingController extends Controller
                 'pickup_location' => isset($item['pickup_location']) ? $item['pickup_location'] : null,
                 'pickup_time' => isset($item['pickup_time']) ? $item['pickup_time'] : null,
                 'dropoff_location' => isset($item['dropoff_location']) ? $item['dropoff_location'] : null,
-                'reservation_status' => $item['reservation_status'],
+                'reservation_status' => $item['reservation_status'] ?? "awaiting",
             ];
 
             if(isset($request->items[$key]['customer_attachment'])) {
