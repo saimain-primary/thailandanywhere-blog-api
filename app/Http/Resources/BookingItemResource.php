@@ -77,6 +77,8 @@ class BookingItemResource extends JsonResource
             'pickup_location' => $this->pickup_location,
             'pickup_time' => $this->pickup_time,
             'dropoff_location' => $this->dropoff_location,
+            'checkin_date' => $this->checkin_date,
+            'checkout_date' => $this->checkout_date,
             'reservation_info' => $this->reservationInfo,
             'reservation_car_info' => new ReservationCarInfoResource($this->reservationCarInfo),
             'reservation_supplier_info' => new ReservationCarInfoResource($this->reservationSupplierInfo),

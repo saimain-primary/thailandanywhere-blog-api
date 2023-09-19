@@ -131,6 +131,8 @@ class BookingController extends Controller
                 'pickup_location' => isset($item['pickup_location']) ? $item['pickup_location'] : null,
                 'pickup_time' => isset($item['pickup_time']) ? $item['pickup_time'] : null,
                 'dropoff_location' => isset($item['dropoff_location']) ? $item['dropoff_location'] : null,
+                'checkin_date' => isset($item['checkin_date']) ? $item['checkin_date'] : null,
+                'checkout_date' => isset($item['checkout_date']) ? $item['checkout_date'] : null,
                 'reservation_status' => $item['reservation_status'] ?? "awaiting",
             ];
 
@@ -252,6 +254,8 @@ class BookingController extends Controller
                     'payment_status' => $item['payment_status'],
                     'exchange_rate' => $item['exchange_rate'],
                     'comment' => $item['comment'],
+                    'checkin_date' => isset($item['checkin_date']) ? $item['checkin_date'] : null,
+                    'checkout_date' => isset($item['checkout_date']) ? $item['checkout_date'] : null,
                     'reservation_status' => $item['reservation_status'] ?? "awaiting",
                 ];
 
