@@ -47,7 +47,6 @@ class HotelController extends Controller
      */
     public function store(StoreHotelRequest $request)
     {
-        dd($request->file('contracts'));
         $save = Hotel::create([
              'name' => $request->name,
              'payment_method' => $request->payment_method,
@@ -63,17 +62,11 @@ class HotelController extends Controller
 
         if($request->file('contracts')) {
             foreach($request->file('contracts') as $file) {
-                $fileName = $file->getClientOriginalName();
-                $filePath = 'contracts/' . $fileName;
-                dd($file);
-                dd(file_get_contents($file));
-                $path = Storage::disk('public')->put($filePath, file_get_contents($file));
-                // $path = Storage::disk('public')->url($path);
-                // $fileData = $this->uploads($file, 'contracts/');
-                // $contractArr[] = [
-                //     'hotel_id' => $save->id,
-                //     'file' => $fileData['fileName']
-                // ];
+                $fileData = $this->uploads($file, 'contracts/');
+                $contractArr[] = [
+                    'hotel_id' => $save->id,
+                    'file' => $fileData['fileName']
+                ];
             }
 
             HotelContract::insert($contractArr);
