@@ -48,6 +48,9 @@ class HotelController extends Controller
     {
         $save = Hotel::create([
              'name' => $request->name,
+             'payment_method' => $request->payment_method,
+             'bank_name' => $request->bank_name,
+             'bank_account_number' => $request->bank_account_number,
              'city_id' => $request->city_id,
              'place' => $request->place,
              'legal_name' => $request->legal_name,
@@ -90,6 +93,9 @@ class HotelController extends Controller
             'name' => $request->name ?? $hotel->name,
             'city_id' => $request->city_id ?? $hotel->city_id,
             'place' => $request->place ?? $hotel->place,
+            'bank_name' => $request->bank_name ?? $hotel->bank_name,
+            'payment_method' => $request->payment_method ?? $hotel->payment_method,
+            'bank_account_number' => $request->bank_account_number ?? $hotel->bank_account_number,
             'legal_name' => $request->legal_name,
             'contract_due' => $request->contract_due,
         ]);
