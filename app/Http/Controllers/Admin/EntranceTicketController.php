@@ -127,7 +127,6 @@ class EntranceTicketController extends Controller
             return $this->error(null, 'Data not found', 404);
         }
 
-
         $data = [
             'name' => $request->name ?? $find->name,
             'description' => $request->description  ?? $find->description,

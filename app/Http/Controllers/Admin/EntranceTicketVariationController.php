@@ -47,12 +47,15 @@ class EntranceTicketVariationController extends Controller
             'name' => 'required',
             'age_group' => 'required',
             'price' => 'required',
+            'ticket_id' => 'required',
         ]);
 
         $save = EntranceTicketVariation::create([
             'name' => $request->name,
-            'age_group' => $request->age_group,
+            'price_name' => $request->price_name,
             'price' => $request->price,
+            'cost_price' => $request->cost_price,
+            'entrance_ticket_id' => $request->entrance_ticket_id,
             'description' => $request->description,
         ]);
 
@@ -68,7 +71,6 @@ class EntranceTicketVariationController extends Controller
 
     }
 
-
     /**
      * Update the specified resource in storage.
      */
@@ -76,8 +78,10 @@ class EntranceTicketVariationController extends Controller
     {
         $entrance_tickets_variation->update([
             'name' => $request->name ?? $entrance_tickets_variation->name,
-            'age_group' => $request->age_group ?? $entrance_tickets_variation->age_group,
+            'entrance_ticket_id' => $request->entrance_ticket_id ?? $entrance_tickets_variation->entrance_ticket_id,
+            'price_name' => $request->price_name ?? $entrance_tickets_variation->price_name,
             'price' => $request->price ?? $entrance_tickets_variation->price,
+            'cost_price' => $request->cost_price ?? $entrance_tickets_variation->cost_price,
             'description' => $request->description ?? $entrance_tickets_variation->description,
         ]);
 

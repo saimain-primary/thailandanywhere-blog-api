@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,10 +12,11 @@ return new class extends Migration
     {
         Schema::create('entrance_ticket_variations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('entrance_ticket_id');
             $table->string('name')->nullable();
-            $table->string('age_group')->nullable();
+            $table->string('price_name')->nullable();
+            $table->string('cost_price')->nullable();
             $table->string('price')->nullable();
+            $table->unsignedBigInteger('entrance_ticket_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
