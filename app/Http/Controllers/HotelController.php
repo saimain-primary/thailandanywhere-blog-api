@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Hotel;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
+use App\Models\HotelContract;
 use App\Traits\HttpResponses;
 use App\Http\Resources\HotelResource;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreHotelRequest;
 use App\Http\Requests\UpdateHotelRequest;
-use App\Models\HotelContract;
 
 class HotelController extends Controller
 {
@@ -46,6 +47,7 @@ class HotelController extends Controller
      */
     public function store(StoreHotelRequest $request)
     {
+        dd($request->file('contracts'));
         $save = Hotel::create([
              'name' => $request->name,
              'payment_method' => $request->payment_method,
@@ -61,11 +63,17 @@ class HotelController extends Controller
 
         if($request->file('contracts')) {
             foreach($request->file('contracts') as $file) {
-                $fileData = $this->uploads($file, '/contracts/');
-                $contractArr[] = [
-                    'hotel_id' => $save->id,
-                    'file' => $fileData['fileName']
-                ];
+                $fileName = $file->getClientOriginalName();
+                $filePath = 'contracts/' . $fileName;
+                dd($file);
+                dd(file_get_contents($file));
+                $path = Storage::disk('public')->put($filePath, file_get_contents($file));
+                // $path = Storage::disk('public')->url($path);
+                // $fileData = $this->uploads($file, 'contracts/');
+                // $contractArr[] = [
+                //     'hotel_id' => $save->id,
+                //     'file' => $fileData['fileName']
+                // ];
             }
 
             HotelContract::insert($contractArr);

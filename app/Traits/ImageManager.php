@@ -14,7 +14,6 @@ trait ImageManager
             Storage::disk('public')->put($path . $fileName, File::get($file));
             $file_type  = $file->getClientOriginalExtension();
             $filePath   = $path . $fileName;
-
             return $file = [
                 'fileName' => $fileName,
                 'fileType' => $file_type,
