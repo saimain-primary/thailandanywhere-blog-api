@@ -23,7 +23,6 @@ class UpdateEntranceTicketRequest extends FormRequest
     {
         return [
             'name'  => 'sometimes',
-            'variations' => 'sometimes|array',
         ];
     }
 }
