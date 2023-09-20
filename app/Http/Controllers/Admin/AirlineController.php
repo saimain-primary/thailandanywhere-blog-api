@@ -5,10 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AirlineResource;
 use App\Models\Airline;
+use App\Traits\HttpResponses;
+use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 
 class AirlineController extends Controller
 {
+    use HttpResponses;
+    use ImageManager;
     /**
      * Display a listing of the resource.
      */
