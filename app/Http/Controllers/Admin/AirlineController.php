@@ -43,17 +43,19 @@ class AirlineController extends Controller
      */
     public function store(Request $request)
     {
-        $save = Airline::create([
+        $data = [
             'name' => $request->name,
             'legal_name' => $request->legal_name,
             'starting_balance' => $request->starting_balance,
-        ]);
+        ];
 
 
         if($file = $request->file('contract')) {
             $fileData = $this->uploads($file, 'contracts/');
-            $save['contract'] =  $fileData['fileName'];
+            $data['contract'] =  $fileData['fileName'];
         }
+
+        $save = Airline::create($data);
 
         return $this->success(new AirlineResource($save), 'Successfully created', 200);
     }
