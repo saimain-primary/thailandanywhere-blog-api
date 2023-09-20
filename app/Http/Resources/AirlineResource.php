@@ -24,7 +24,7 @@ class AirlineResource extends JsonResource
             'contract' => $this->contract ? env('APP_URL', 'http://localhost:8000') . Storage::url('contracts/' . $this->contract) : null,
             'deleted_at' => $this->deleted_at,
             'updated_at' => $this->updated_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at,
         ];
     }
 }
