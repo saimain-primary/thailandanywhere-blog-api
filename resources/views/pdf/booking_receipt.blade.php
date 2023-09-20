@@ -227,9 +227,9 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td>BALANCE THB</td>
+                        <td>BALANCE </td>
                         <td style="font-weight: bold; font-size:14px;">
-                            {{ number_format($data->sub_total - $data->discount - $data->deposit) }}
+                            {{ number_format($data->sub_total - $data->discount - $data->deposit) }} THB
                         </td>
                     </tr>
                     @if ($data->money_exchange_rate)

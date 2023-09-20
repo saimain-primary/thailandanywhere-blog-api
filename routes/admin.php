@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AirlineController;
+use App\Http\Controllers\Admin\AirlineTicketController;
 use App\Http\Controllers\Admin\AirportPickupController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BookingController;
@@ -66,4 +68,6 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
 
     Route::apiResource('hotels', HotelController::class);
     Route::apiResource('rooms', RoomController::class);
+    Route::apiResource('airlines', AirlineController::class);
+    Route::apiResource('airline-tickets', AirlineTicketController::class);
 });
