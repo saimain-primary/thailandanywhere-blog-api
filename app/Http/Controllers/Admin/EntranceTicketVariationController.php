@@ -43,13 +43,6 @@ class EntranceTicketVariationController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
-            'name' => 'required',
-            'age_group' => 'required',
-            'price' => 'required',
-            'ticket_id' => 'required',
-        ]);
-
         $save = EntranceTicketVariation::create([
             'name' => $request->name,
             'price_name' => $request->price_name,
