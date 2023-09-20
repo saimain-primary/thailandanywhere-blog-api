@@ -16,7 +16,6 @@ return new class () extends Migration {
             $table->string('price_name')->nullable();
             $table->string('cost_price')->nullable();
             $table->string('price')->nullable();
-            $table->unsignedBigInteger('entrance_ticket_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
