@@ -42,7 +42,7 @@ class AirlineController extends Controller
         $save = Airline::create([
             'name' => $request->name,
             'legal_name' => $request->legal_name,
-            'starting_price' => $request->starting_price,
+            'starting_balance' => $request->starting_balance,
         ]);
 
 
@@ -70,7 +70,7 @@ class AirlineController extends Controller
         $airline->update([
             'name' => $request->name ?? $airline->name,
             'legal_name' => $request->legal_name ?? $airline->legal_name,
-            'starting_price' => $request->starting_price ?? $airline->starting_price,
+            'starting_balance' => $request->starting_balance ?? $airline->starting_balance,
         ]);
 
         if($file = $request->file('contract')) {
