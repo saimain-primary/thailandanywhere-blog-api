@@ -9,5 +9,5 @@ class ReservationCarInfo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['booking_item_id', 'supplier_name', 'driver_name', 'driver_contact', 'car_number', 'car_photo'];
+    protected $fillable = ['booking_item_id','account_holder_name', 'supplier_name', 'driver_name', 'driver_contact', 'car_number', 'car_photo'];
 }

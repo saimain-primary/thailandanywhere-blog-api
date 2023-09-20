@@ -225,6 +225,7 @@ class ReservationController extends Controller
                     'booking_item_id' => $bookingItem->id,
                     'driver_name' => $request->driver_name,
                     'driver_contact' => $request->driver_contact,
+                    'account_holder_name' => $request->account_holder_name,
                     'supplier_name' => $request->supplier_name,
                     'car_number' => $request->car_number,
                 ];
@@ -240,6 +241,7 @@ class ReservationController extends Controller
                 $findCarInfo->driver_contact = $request->driver_contact ?? $findCarInfo->driver_contact;
                 $findCarInfo->supplier_name = $request->supplier_name ?? $findCarInfo->supplier_name;
                 $findCarInfo->car_number = $request->car_number ?? $findCarInfo->car_number;
+                $findCarInfo->account_holder_name = $request->account_holder_name ?? $findCarInfo->account_holder_name;
 
                 if ($file = $request->file('car_photo')) {
                     if ($findCarInfo->car_photo) {
