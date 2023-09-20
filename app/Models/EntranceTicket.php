@@ -14,7 +14,7 @@ class EntranceTicket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'provider', 'cancellation_policy_id', 'cover_image'];
+    protected $fillable = ['name', 'description', 'provider', 'cancellation_policy_id', 'cover_image','place','legal_name','bank_name','payment_method','bank_account_number','account_name'];
 
     public function images()
     {

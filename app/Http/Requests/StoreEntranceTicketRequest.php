@@ -23,7 +23,6 @@ class StoreEntranceTicketRequest extends FormRequest
     {
         return [
             'name'  => 'required',
-            'variations' => 'required|array',
         ];
     }
 
@@ -31,7 +30,6 @@ class StoreEntranceTicketRequest extends FormRequest
     {
         return [
             'name.required' => 'Name is required',
-            'variations.required' => 'Variations is required',
         ];
     }
 }

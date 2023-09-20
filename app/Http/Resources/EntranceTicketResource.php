@@ -21,6 +21,12 @@ class EntranceTicketResource extends JsonResource
         return [
             'id' => $this->id,
             'provider' => $this->provider,
+            'place' => $this->place,
+            'bank_account_number' => $this->bank_account_number,
+            'legal_name' => $this->legal_name,
+            'bank_name' => $this->bank_name,
+            'payment_method' => $this->payment_method,
+            'account_name' => $this->account_name,
             'name' => $this->name,
             'description' => $this->description,
             'cover_image' => $this->cover_image ? env('APP_URL', 'http://localhost:8000') . Storage::url('images/' . $this->cover_image) : null,

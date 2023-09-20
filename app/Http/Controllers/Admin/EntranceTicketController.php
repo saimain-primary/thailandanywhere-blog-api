@@ -57,6 +57,12 @@ class EntranceTicketController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'provider' => $request->provider,
+            'place' => $request->place,
+            'legal_name' => $request->legal_name,
+            'bank_name' => $request->bank_name,
+            'payment_method' => $request->payment_method,
+            'bank_account_number' => $request->bank_account_number,
+            'account_name' => $request->account_name,
             'cancellation_policy_id' => $request->cancellation_policy_id,
         ];
 
@@ -126,6 +132,12 @@ class EntranceTicketController extends Controller
             'name' => $request->name ?? $find->name,
             'description' => $request->description  ?? $find->description,
             'provider' => $request->provider ?? $find->provider,
+            'place' => $request->place ?? $find->place,
+            'legal_name' => $request->legal_name ?? $find->legal_name,
+            'bank_name' => $request->bank_name ?? $find->bank_name,
+            'payment_method' => $request->payment_method ?? $find->payment_method,
+            'bank_account_number' => $request->bank_account_number ?? $find->bank_account_number,
+            'account_name' => $request->account_name ?? $find->account_name,
             'cancellation_policy_id' => $request->cancellation_policy_id ?? $find->cancellation_policy_id,
         ];
 
