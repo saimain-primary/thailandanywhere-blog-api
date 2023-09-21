@@ -23,7 +23,7 @@ class EntranceTicket extends Model
 
     public function variations()
     {
-        return $this->belongsToMany(EntranceTicketVariation::class, 'entrance_variations', 'entrance_ticket_id', 'variation_id');
+        return $this->hasMany(EntranceTicketVariation::class, 'entrance_ticket_id', 'id');
     }
 
     public function tags()
