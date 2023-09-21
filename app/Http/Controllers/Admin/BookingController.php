@@ -251,7 +251,7 @@ class BookingController extends Controller
                     'selling_price' => $item['selling_price'] ?? null,
                     'cost_price' => $item['cost_price'] ?? null,
                     'payment_method' => $item['payment_method'] ?? null,
-                    'payment_status' => $item['payment_status'] ?? null,
+                    'payment_status' => $item['payment_status'] ?? 'not_paid',
                     'exchange_rate' => $item['exchange_rate'] ?? null,
                     'comment' => $item['comment'] ?? null,
                     'checkin_date' => isset($item['checkin_date']) ? $item['checkin_date'] : null,
