@@ -33,7 +33,7 @@ class EntranceTicketResource extends JsonResource
             'tags' => PrivateVanTourTagResource::collection($this->tags),
             'cities' => PrivateVanTourCityResource::collection($this->cities),
             'categories' => ProductCategoryResource::collection($this->categories),
-            'variations' => EntranceTicketVariationResource::collection($this->variations),
+            'variations' => $this->variations,
             'images' => $this->images ? PrivateVanTourImageResource::collection($this->images) : null,
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
