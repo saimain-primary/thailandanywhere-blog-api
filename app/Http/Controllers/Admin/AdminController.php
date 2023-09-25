@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     use HttpResponses;
+
     /**
      * Display a listing of the resource.
      */
@@ -25,7 +26,7 @@ class AdminController extends Controller
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%")
-            ->orWhere('email', 'LIKE', "%{$search}%");
+                ->orWhere('email', 'LIKE', "%{$search}%");
         }
 
         $query->orderBy('created_at', 'desc');
@@ -34,7 +35,7 @@ class AdminController extends Controller
         return $this->success(AdminResource::collection($data)
             ->additional([
                 'meta' => [
-                    'total_page' => (int) ceil($data->total() / $data->perPage()),
+                    'total_page' => (int)ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
@@ -49,9 +50,9 @@ class AdminController extends Controller
     {
 
         $request->validate([
-            'name' => ['required','string','max:225'],
-            'email' => ['required','email','max:225',Rule::unique('admins', 'email')],
-            'password' => ['required','string', 'confirmed','max:225'],
+            'name' => ['required', 'string', 'max:225'],
+            'email' => ['required', 'email', 'max:225', Rule::unique('admins', 'email')],
+            'password' => ['required', 'string', 'confirmed', 'max:225'],
         ]);
 
 
@@ -59,7 +60,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'is_super' => $request->is_super ?? false,
+            'role' => $request->role,
         ]);
 
         return $this->success($admin, 'Successfully created', 200);
@@ -80,15 +81,15 @@ class AdminController extends Controller
     {
 
         $request->validate([
-            'name' => ['string','max:225'],
-            'email' => ['email','max:225',Rule::unique('admins', 'email')->ignore($admin)],
-            'password' => ['string', 'confirmed','max:225'],
+            'name' => ['string', 'max:225'],
+            'email' => ['email', 'max:225', Rule::unique('admins', 'email')->ignore($admin)],
+            'password' => ['string', 'confirmed', 'max:225'],
         ]);
 
         $admin->name = $request->name ?? $admin->name;
         $admin->email = $request->email ?? $admin->email;
         $admin->password = $request->password ? Hash::make($request->password) : $admin->password;
-        $admin->is_super = $request->is_super ?? $admin->is_super;
+        $admin->role = $request->role ?? $admin->role;
         $admin->update();
 
         return $this->success($admin, 'Successfully updated', 200);

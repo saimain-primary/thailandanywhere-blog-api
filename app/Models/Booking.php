@@ -12,7 +12,7 @@ class Booking extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['invoice_number', 'bank_name','crm_id', 'customer_id', 'sold_from', 'payment_method', 'payment_currency', 'payment_status', 'booking_date', 'money_exchange_rate', 'discount', 'sub_total', 'grand_total', 'deposit', 'balance_due', 'balance_due_date', 'comment', 'reservation_status', 'created_by'];
+    protected $fillable = ['invoice_number', 'bank_name','crm_id', 'customer_id', 'sold_from', 'payment_method', 'payment_currency', 'payment_status', 'booking_date', 'money_exchange_rate', 'discount', 'sub_total', 'grand_total', 'deposit', 'balance_due', 'balance_due_date', 'comment', 'reservation_status', 'created_by','is_past_info','past_user_id','past_crm_id'];
 
     public function customer()
     {
@@ -22,6 +22,11 @@ class Booking extends Model
     public function createdBy()
     {
         return $this->belongsTo(Admin::class, 'created_by');
+    }
+
+    public function pastUser()
+    {
+        return $this->belongsTo(Admin::class, 'past_user_id');
     }
 
     public function items()

@@ -31,18 +31,17 @@ class BookingController extends Controller
         $crmId = $request->query('crm_id');
 
 
-
         $query = Booking::query();
 
-        if(!Auth::user()->is_super) {
-            $query->where('created_by', Auth::id());
+        if (!Auth::user()->is_super) {
+            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
         }
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 
-        if($crmId) {
+        if ($crmId) {
             $query->where('crm_id', $crmId);
         }
 
@@ -51,7 +50,7 @@ class BookingController extends Controller
         return $this->success(BookingResource::collection($data)
             ->additional([
                 'meta' => [
-                    'total_page' => (int) ceil($data->total() / $data->perPage()),
+                    'total_page' => (int)ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
@@ -97,6 +96,9 @@ class BookingController extends Controller
             'balance_due_date' => $request->balance_due_date,
             'discount' => $request->discount,
             'comment' => $request->comment,
+            'is_past_info' => $request->is_past_info,
+            'past_user_id' => $request->past_user_id,
+            'past_crm_id' => $request->past_crm_id,
             'created_by' => Auth::id(),
             'reservation_status' => "awaiting"
         ];
@@ -111,7 +113,7 @@ class BookingController extends Controller
         foreach ($request->items as $key => $item) {
             $data = [
                 'booking_id' => $save->id,
-                'crm_id' =>  $save->crm_id . '_' . str_pad($key + 1, 3, '0', STR_PAD_LEFT),
+                'crm_id' => $save->crm_id . '_' . str_pad($key + 1, 3, '0', STR_PAD_LEFT),
                 'product_type' => $item['product_type'],
                 'product_id' => $item['product_id'],
                 'car_id' => isset($item['car_id']) ? $item['car_id'] : null,
@@ -136,7 +138,7 @@ class BookingController extends Controller
                 'reservation_status' => $item['reservation_status'] ?? "awaiting",
             ];
 
-            if(isset($request->items[$key]['customer_attachment'])) {
+            if (isset($request->items[$key]['customer_attachment'])) {
                 $attachment = $request->items[$key]['customer_attachment'];
                 $fileData = $this->uploads($attachment, 'attachments/');
                 $data['customer_attachment'] = $fileData['fileName'];
@@ -193,6 +195,9 @@ class BookingController extends Controller
 
         $data = [
             'customer_id' => $request->customer_id ?? $find->customer_id,
+            'is_past_info' => $request->is_past_info ?? $find->is_past_info,
+            'past_user_id' => $request->past_user_id ?? $find->past_user_id,
+            'past_crm_id' => $request->past_crm_id ?? $find->past_crm_id,
             'sold_from' => $request->sold_from ?? $find->sold_from,
             'payment_method' => $request->payment_method ?? $find->payment_method,
             'payment_status' => $request->payment_status ?? $find->payment_status,
@@ -267,7 +272,7 @@ class BookingController extends Controller
                     }
                 }
 
-                if(isset($request->items[$key]['customer_attachment'])) {
+                if (isset($request->items[$key]['customer_attachment'])) {
                     $attachment = $request->items[$key]['customer_attachment'];
                     $fileData = $this->uploads($attachment, 'attachments/');
                     $data['customer_attachment'] = $fileData['fileName'];
