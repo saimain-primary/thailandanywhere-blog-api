@@ -38,9 +38,9 @@ class BookingController extends Controller
             if ($filter === 'all') {
                 $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
             } else if ($filter === 'past') {
-                $query->where('past_user_id', Auth::id());
+                $query->where('past_user_id', Auth::id())->whereNotNull('past_user_id');
             } else if ($filter === 'current') {
-                $query->where('created_by', Auth::id());
+                $query->where('created_by', Auth::id())->whereNull('past_user_id');
             }
         }
 //        if (!Auth::user()->is_super) {
