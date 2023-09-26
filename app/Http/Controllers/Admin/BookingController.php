@@ -30,12 +30,22 @@ class BookingController extends Controller
         $search = $request->query('search');
         $crmId = $request->query('crm_id');
 
+        $filter = $request->query('filter');
+
 
         $query = Booking::query();
-
-        if (!Auth::user()->is_super) {
-            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+        if ($filter) {
+            if ($filter === 'all') {
+                $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+            } else if ($filter === 'past') {
+                $query->where('past_user_id', Auth::id());
+            } else if ($filter === 'current') {
+                $query->where('created_by', Auth::id());
+            }
         }
+//        if (!Auth::user()->is_super) {
+//            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+//        }
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
