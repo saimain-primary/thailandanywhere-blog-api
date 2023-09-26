@@ -34,7 +34,7 @@ Route::get('/super', function () {
     return 'this is super admin only';
 })->middleware(['auth:sanctum', 'abilities:*']);
 
-Route::middleware(['auth:sanctum', 'abilities:super'])->group(function () {
+Route::middleware(['auth:sanctum', 'abilities:super,admin'])->group(function () {
     Route::apiResource('admins', AdminController::class);
 });
 
