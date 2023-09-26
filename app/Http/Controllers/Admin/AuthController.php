@@ -31,8 +31,12 @@ class AuthController extends Controller
             'admin'
         ];
 
-        if($admin->is_super) {
+        if ($admin->role === 'super_admin') {
             $abilities[] = '*';
+        }
+
+        if ($admin->role === 'cashier') {
+            $abilities[] = 'admin';
         }
 
         return $this->success([
@@ -46,7 +50,7 @@ class AuthController extends Controller
     {
         $query = Admin::query();
         $query->where('id', Auth::id());
-        $data =  $query->first();
+        $data = $query->first();
         return $this->success([
             'user' => $data,
         ], 'Admin Account Detail');

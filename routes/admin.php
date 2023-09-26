@@ -32,9 +32,9 @@ Route::get('/bookings/{id}/receipt', [BookingController::class, 'printReceipt'])
 
 Route::get('/super', function () {
     return 'this is super admin only';
-})->middleware(['auth:sanctum','abilities:*']);
+})->middleware(['auth:sanctum', 'abilities:*']);
 
-Route::middleware(['auth:sanctum','abilities:super'])->group(function () {
+Route::middleware(['auth:sanctum', 'abilities:super'])->group(function () {
     Route::apiResource('admins', AdminController::class);
 });
 
