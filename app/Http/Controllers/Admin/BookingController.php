@@ -34,15 +34,29 @@ class BookingController extends Controller
 
 
         $query = Booking::query();
-        if ($filter) {
-            if ($filter === 'all') {
-                $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
-            } else if ($filter === 'past') {
-                $query->where('past_user_id', Auth::id())->whereNotNull('past_user_id');
-            } else if ($filter === 'current') {
-                $query->where('created_by', Auth::id())->whereNull('past_user_id');
+        if (Auth::user()->role === 'super_admin') {
+            if ($filter) {
+                if ($filter === 'all') {
+                    $query->orWhere('past_user_id', Auth::id());
+                } else if ($filter === 'past') {
+                    $query->where('is_past_info', true)->whereNotNull('past_user_id');
+                } else if ($filter === 'current') {
+                    $query->whereNull('past_user_id');
+                }
+            }
+        } else {
+            if ($filter) {
+                if ($filter === 'all') {
+                    $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+                } else if ($filter === 'past') {
+                    $query->where('is_past_info', true)->where('past_user_id', Auth::id())->whereNotNull('past_user_id');
+                } else if ($filter === 'current') {
+                    $query->where('created_by', Auth::id())->whereNull('past_user_id');
+                }
             }
         }
+
+
 //        if (!Auth::user()->is_super) {
 //            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
 //        }
