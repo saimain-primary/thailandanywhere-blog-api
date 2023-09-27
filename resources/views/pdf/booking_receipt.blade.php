@@ -242,7 +242,21 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td>BALANCE MMK</td>
+                    <td>DEPOSIT IN MMK</td>
+                    <td style="font-size:14px;">
+                        {{ number_format($data->deposit * $data->money_exchange_rate ? $data->money_exchange_rate : 1) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>EXCHANGE RATE</td>
+                    <td style="font-size:14px;">
+                        {{ $data->money_exchange_rate }}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>TOTAL IN MMK</td>
                     <td style="font-weight: bold; font-size:14px;">
                         {{ $data->money_exchange_rate ? 'MMK' : 'THB' }}
                         @if ($data->deposit === 0 || $data->deposit === 'null')
