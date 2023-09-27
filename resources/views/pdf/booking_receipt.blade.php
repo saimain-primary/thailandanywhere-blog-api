@@ -244,7 +244,7 @@
                     <td></td>
                     <td>DEPOSIT IN MMK</td>
                     <td style="font-size:14px;">
-                        {{ number_format($data->deposit * $data->money_exchange_rate ? $data->money_exchange_rate : 1) }}
+                        {{ number_format(($data->deposit) * $data->money_exchange_rate) }}
                     </td>
                 </tr>
                 <tr>
