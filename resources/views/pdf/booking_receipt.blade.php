@@ -189,7 +189,7 @@
                     <td style="max-width: 120px">{{ $row->comment }}</td>
                     <td>{{ $row->quantity }}</td>
                     <td>{{ number_format((float) $row->selling_price) }}</td>
-                    <td>{{ number_format($row->amount }}</td>
+                    <td>{{ number_format($row->amount) }}</td>
                 </tr>
             @endforeach
             </tbody>
