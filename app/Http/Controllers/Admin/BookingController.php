@@ -37,7 +37,6 @@ class BookingController extends Controller
         if (Auth::user()->role === 'super_admin') {
             if ($filter) {
                 if ($filter === 'all') {
-                    $query->orWhere('past_user_id', Auth::id());
                 } else if ($filter === 'past') {
                     $query->where('is_past_info', true)->whereNotNull('past_user_id');
                 } else if ($filter === 'current') {
