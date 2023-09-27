@@ -149,7 +149,7 @@
             </tr>
             </tbody>
         </table>
-        <table class="body-table" style="max-height: 500px !important;">
+        <table class="body-table" style="max-height: 100px !important;">
             <tbody>
             <tr>
                 <th>SERVICE DATE</th>
