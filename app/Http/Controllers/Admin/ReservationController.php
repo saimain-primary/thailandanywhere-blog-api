@@ -8,6 +8,7 @@ use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\BookingItemResource;
 use App\Http\Resources\BookingResource;
@@ -29,12 +30,36 @@ class ReservationController extends Controller
     {
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
+        $filter = $request->query('filter');
+
 
         $query = Booking::query();
 
+        if (Auth::user()->role === 'super_admin') {
+            if ($filter) {
+                if ($filter === 'all') {
+                } else if ($filter === 'past') {
+                    $query->where('is_past_info', true)->whereNotNull('past_user_id');
+                } else if ($filter === 'current') {
+                    $query->whereNull('past_user_id');
+                }
+            }
+        } else {
+            if ($filter) {
+                if ($filter === 'all') {
+                    $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+                } else if ($filter === 'past') {
+                    $query->where('is_past_info', true)->where('past_user_id', Auth::id())->whereNotNull('past_user_id');
+                } else if ($filter === 'current') {
+                    $query->where('created_by', Auth::id())->whereNull('past_user_id');
+                }
+            }
+        }
+        
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
+
 
         $query->orderBy('created_at', 'desc');
 
@@ -43,24 +68,24 @@ class ReservationController extends Controller
 
         if ($productType) {
             $query->whereHas('items', function ($q) use ($productType, $crmId) {
-                if($crmId) {
+                if ($crmId) {
                     $q->where('crm_id', 'LIKE', "%{$crmId}%");
                 }
                 $q->where('product_type', $productType);
 
             })->with(['items' => function ($query) use ($productType, $crmId) {
-                if($crmId) {
+                if ($crmId) {
                     $query->where('crm_id', 'LIKE', "%{$crmId}%");
                 }
                 $query->where('product_type', $productType);
             }]);
         } else {
             $query->whereHas('items', function ($q) use ($crmId) {
-                if($crmId) {
+                if ($crmId) {
                     $q->where('crm_id', 'LIKE', "%{$crmId}%");
                 }
             })->with(['items' => function ($query) use ($crmId) {
-                if($crmId) {
+                if ($crmId) {
                     $query->where('crm_id', 'LIKE', "%{$crmId}%");
                 }
             }]);
@@ -71,7 +96,7 @@ class ReservationController extends Controller
         return $this->success(BookingResource::collection($data)
             ->additional([
                 'meta' => [
-                    'total_page' => (int) ceil($data->total() / $data->perPage()),
+                    'total_page' => (int)ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
@@ -117,9 +142,6 @@ class ReservationController extends Controller
             'expense_amount' => $request->expense_amount ?? $find->expense_amount,
             'comment' => $request->comment ?? $find->comment,
         ];
-
-
-
 
 
         if ($file = $request->file('confirmation_letter')) {
@@ -218,7 +240,7 @@ class ReservationController extends Controller
         $isEntranceTicketType = $bookingItem->product_type === 'App\Models\EntranceTicket';
         $isHotelType = $bookingItem->product_type === 'App\Models\Hotel';
 
-        if(!$isEntranceTicketType && !$isHotelType) {
+        if (!$isEntranceTicketType && !$isHotelType) {
             $findCarInfo = ReservationCarInfo::where('booking_item_id', $bookingItem->id)->first();
             if (!$findCarInfo) {
                 $data = [
