@@ -120,143 +120,143 @@
 </head>
 
 <body>
-    <div id="watermark">
-        <img src="{{ public_path() . '/assets/template.jpg' }}" height="100%" width="100%" />
-    </div>
-    <div style="margin-top: 300px; padding:10px 40px">
-        <div>
-            <h3 class="header-heading">Invoice</h3>
-            <table class="header-table">
-                <tbody>
-                    <tr>
-                        <th style="width:70%">BILL TO</th>
-                        <th>INVOICE</th>
-                        <td>{{ $data->invoice_number }}</td>
-                    </tr>
-                    <tr>
-                        <td style="width:70%">{{ $data->customer->name }} / {{ $data->customer->phone_number }}</td>
-                        <th>CRMID</th>
-                        <td>{{ $data->crm_id }}</td>
-                    </tr>
-                    <tr>
-                        <th style="width:70%">DATE</th>
-                        <th>TERM</th>
-                    </tr>
-                    <tr>
-                        <td style="width:70%">{{ $data->created_at->format('d-m-Y') }}</td>
-                        <th>DUE DATE</th>
-                        <td>{{ $data->balance_due_date }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="body-table">
-                <tbody>
-                    <tr>
-                        <th>SERVICE DATE</th>
-                        <th>SERVICE</th>
-                        <th style="max-width:140px">DESCRIPTION</th>
-                        <th>QTY</th>
-                        <th>RATE</th>
-                        <th>AMOUNT</th>
-                    </tr>
-                    @foreach ($data->items as $row)
-                        <tr>
-                            <td>{{ $row->service_date }}</td>
-                            <td style="max-width: 100px">{{ $row->product->name }} </br>
-                                @if ($row->product_type === 'App\Models\Inclusive')
-                                    @if ($row->product->privateVanTours)
-                                        @foreach ($row->product->privateVanTours as $pvt)
-                                            {{ $pvt->product->name }} </br>
-                                        @endforeach
-                                    @endif
-                                    @if ($row->product->groupTours)
-                                        @foreach ($row->product->groupTours as $gt)
-                                            {{ $gt->product->name }} </br>
-                                        @endforeach
-                                    @endif
-                                    @if ($row->product->airportPickups)
-                                        @foreach ($row->product->airportPickups as $ap)
-                                            {{ $ap->product->name }} </br>
-                                        @endforeach
-                                    @endif
-                                    @if ($row->product->entranceTickets)
-                                        @foreach ($row->product->entranceTickets as $et)
-                                            {{ $et->product->name }} </br>
-                                        @endforeach
-                                    @endif
-                                @endif
-                            </td>
-                            <td style="max-width: 120px">{{ $row->comment }}</td>
-                            <td>{{ $row->quantity }}</td>
-                            <td>{{ number_format((float) $row->selling_price) }}</td>
-                            <td>{{ number_format((float) $row->selling_price * (float) $row->quantity) }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <table class="footer-table">
+<div id="watermark">
+    <img src="{{ public_path() . '/assets/template.jpg' }}" height="100%" width="100%"/>
+</div>
+<div style="margin-top: 300px; padding:10px 40px">
+    <div>
+        <h3 class="header-heading">Invoice</h3>
+        <table class="header-table">
+            <tbody>
+            <tr>
+                <th style="width:70%">BILL TO</th>
+                <th>INVOICE</th>
+                <td>{{ $data->invoice_number }}</td>
+            </tr>
+            <tr>
+                <td style="width:70%">{{ $data->customer->name }} / {{ $data->customer->phone_number }}</td>
+                <th>CRMID</th>
+                <td>{{ $data->crm_id }}</td>
+            </tr>
+            <tr>
+                <th style="width:70%">DATE</th>
+                <th>TERM</th>
+            </tr>
+            <tr>
+                <td style="width:70%">{{ $data->created_at->format('d-m-Y') }}</td>
+                <th>DUE DATE</th>
+                <td>{{ $data->balance_due_date }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="body-table" style="max-height: 500px !important;">
+            <tbody>
+            <tr>
+                <th>SERVICE DATE</th>
+                <th>SERVICE</th>
+                <th style="max-width:140px">DESCRIPTION</th>
+                <th>QTY</th>
+                <th>RATE</th>
+                <th>AMOUNT</th>
+            </tr>
+            @foreach ($data->items as $row)
+                <tr>
+                    <td>{{ $row->service_date }}</td>
+                    <td style="max-width: 100px">{{ $row->product->name }} </br>
+                        @if ($row->product_type === 'App\Models\Inclusive')
+                            @if ($row->product->privateVanTours)
+                                @foreach ($row->product->privateVanTours as $pvt)
+                                    {{ $pvt->product->name }} </br>
+                        @endforeach
+                        @endif
+                        @if ($row->product->groupTours)
+                            @foreach ($row->product->groupTours as $gt)
+                                {{ $gt->product->name }} </br>
+                        @endforeach
+                        @endif
+                        @if ($row->product->airportPickups)
+                            @foreach ($row->product->airportPickups as $ap)
+                                {{ $ap->product->name }} </br>
+                        @endforeach
+                        @endif
+                        @if ($row->product->entranceTickets)
+                            @foreach ($row->product->entranceTickets as $et)
+                                {{ $et->product->name }} </br>
+                        @endforeach
+                        @endif
+                        @endif
+                    </td>
+                    <td style="max-width: 120px">{{ $row->comment }}</td>
+                    <td>{{ $row->quantity }}</td>
+                    <td>{{ number_format((float) $row->selling_price) }}</td>
+                    <td>{{ number_format($row->amount }}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+        <table class="footer-table">
 
-                <tbody>
-                    <tr>
-                        <td>Thank you for booking with Thailand Anywhere. We are with you every step of the way.</td>
-                        <td>SUB TOTAL</td>
-                        <td style="font-size:14px;">
-                            {{ number_format($data->sub_total) }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>DISCOUNT</td>
-                        <td style="font-size:14px;">
-                            {{ $data->discount }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Total</td>
-                        <td style="font-size:14px;">
-                            {{ $data->sub_total - $data->discount }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>DEPOSIT</td>
-                        <td style="font-size:14px;">
-                            {{ $data->deposit }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>BALANCE </td>
-                        <td style="font-weight: bold; font-size:14px;">
-                            {{ number_format($data->sub_total - $data->discount - $data->deposit) }} THB
-                        </td>
-                    </tr>
-                    @if ($data->money_exchange_rate)
-                        <tr>
-                            <td></td>
-                            <td>EXCHANGE RATE</td>
-                            <td style="font-size:14px;">
-                                {{ $data->money_exchange_rate }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>BALANCE MMK</td>
-                            <td style="font-weight: bold; font-size:14px;">
-                                {{ $data->money_exchange_rate ? 'MMK' : 'THB' }}
-                                @if ($data->deposit === 0 || $data->deposit === 'null')
-                                    {{ number_format(($data->sub_total - $data->discount) * $data->money_exchange_rate ? $data->money_exchange_rate : 1) }}
-                                @else
-                                    {{ number_format(($data->sub_total - $data->discount - $data->deposit) * ($data->money_exchange_rate ? (int) $data->money_exchange_rate : 1)) }}
-                                @endif
-                            </td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
-        </div>
+            <tbody>
+            <tr>
+                <td>Thank you for booking with Thailand Anywhere. We are with you every step of the way.</td>
+                <td>SUB TOTAL</td>
+                <td style="font-size:14px;">
+                    {{ number_format($data->sub_total) }}
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>DISCOUNT</td>
+                <td style="font-size:14px;">
+                    {{ $data->discount }}
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Total</td>
+                <td style="font-size:14px;">
+                    {{ $data->sub_total - $data->discount }}
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>DEPOSIT</td>
+                <td style="font-size:14px;">
+                    {{ $data->deposit }}
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>BALANCE</td>
+                <td style="font-weight: bold; font-size:14px;">
+                    {{ number_format($data->sub_total - $data->discount - $data->deposit) }} THB
+                </td>
+            </tr>
+            @if ($data->money_exchange_rate)
+                <tr>
+                    <td></td>
+                    <td>EXCHANGE RATE</td>
+                    <td style="font-size:14px;">
+                        {{ $data->money_exchange_rate }}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>BALANCE MMK</td>
+                    <td style="font-weight: bold; font-size:14px;">
+                        {{ $data->money_exchange_rate ? 'MMK' : 'THB' }}
+                        @if ($data->deposit === 0 || $data->deposit === 'null')
+                            {{ number_format(($data->sub_total - $data->discount) * $data->money_exchange_rate ? $data->money_exchange_rate : 1) }}
+                        @else
+                            {{ number_format(($data->sub_total - $data->discount - $data->deposit) * ($data->money_exchange_rate ? (int) $data->money_exchange_rate : 1)) }}
+                        @endif
+                    </td>
+                </tr>
+            @endif
+            </tbody>
+        </table>
     </div>
+</div>
 </body>
 
 </html>
