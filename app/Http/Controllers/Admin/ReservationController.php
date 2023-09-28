@@ -55,7 +55,7 @@ class ReservationController extends Controller
                 }
             }
         }
-        
+
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
@@ -285,9 +285,15 @@ class ReservationController extends Controller
                     'supplier_name' => $request->supplier_name,
                 ];
 
-                if ($file = $request->file('receipt_image')) {
-                    $fileData = $this->uploads($file, 'images/');
-                    ReservationExpenseReceipt::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
+//                if ($file = $request->file('receipt_image')) {
+//                    $fileData = $this->uploads($file, 'images/');
+//                    ReservationExpenseReceipt::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
+//                }
+
+                if ($request->receipt_image) {
+                    foreach ($request->receipt_image as $image) {
+                        dd($image);
+                    }
                 }
 
                 if ($file = $request->file('booking_confirm_letter')) {
