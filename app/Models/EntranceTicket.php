@@ -9,12 +9,13 @@ use App\Models\EntranceTicketImage;
 use App\Models\EntranceTicketVariation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EntranceTicket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'provider', 'cancellation_policy_id', 'cover_image','place','legal_name','bank_name','payment_method','bank_account_number','account_name'];
+    protected $fillable = ['name', 'description', 'provider', 'cancellation_policy_id', 'cover_image', 'place', 'legal_name', 'bank_name', 'payment_method', 'bank_account_number', 'account_name'];
 
     public function images()
     {
@@ -39,5 +40,10 @@ class EntranceTicket extends Model
     public function categories()
     {
         return $this->belongsToMany(ProductCategory::class, 'entrance_ticket_categories', 'entrance_ticket_id', 'category_id');
+    }
+
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(EntranceTicketContract::class, 'entrance_ticket_id');
     }
 }

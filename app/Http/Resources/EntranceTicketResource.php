@@ -35,6 +35,7 @@ class EntranceTicketResource extends JsonResource
             'categories' => ProductCategoryResource::collection($this->categories),
             'variations' => $this->variations,
             'images' => $this->images ? PrivateVanTourImageResource::collection($this->images) : null,
+            'contacts' => HotelContractResource::collection($this->contracts),
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
         ];
