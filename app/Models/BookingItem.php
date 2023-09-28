@@ -11,7 +11,7 @@ class BookingItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['pickup_time', 'customer_attachment', 'expense_amount' ,'hotel_id','room_id', 'crm_id','route_plan','pickup_location','dropoff_location', 'booking_id','special_request', 'car_id', 'product_type', 'product_id', 'service_date', 'quantity', 'duration', 'selling_price', 'comment', 'reservation_status', 'receipt_image', 'cost_price', 'room_number', 'payment_status', 'payment_method', 'confirmation_letter', 'exchange_rate' , 'variation_id','checkin_date','checkout_date','amount'];
+    protected $fillable = ['pickup_time', 'customer_attachment', 'expense_amount', 'hotel_id', 'room_id', 'crm_id', 'route_plan', 'pickup_location', 'dropoff_location', 'booking_id', 'special_request', 'car_id', 'product_type', 'product_id', 'service_date', 'quantity', 'duration', 'selling_price', 'comment', 'reservation_status', 'receipt_image', 'cost_price', 'room_number', 'payment_status', 'payment_method', 'confirmation_letter', 'exchange_rate', 'variation_id', 'checkin_date', 'checkout_date', 'amount'];
 
     public function product()
     {
@@ -69,5 +69,10 @@ class BookingItem extends Model
     public function reservationReceiptImage()
     {
         return $this->hasMany(ReservationExpenseReceipt::class, 'booking_item_id');
+    }
+
+    public function reservationPaidSlip()
+    {
+        return $this->hasMany(ReservationPaidSlip::class, 'booking_item_id');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Booking;
 use App\Models\BookingItem;
+use App\Models\ReservationPaidSlip;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
@@ -203,9 +204,16 @@ class ReservationController extends Controller
                 'payment_due' => $request->payment_due,
             ];
 
-            if ($file = $request->file('paid_slip')) {
-                $fileData = $this->uploads($file, 'images/');
-                $saveData['paid_slip'] = $fileData['fileName'];
+//            if ($file = $request->file('paid_slip')) {
+//                $fileData = $this->uploads($file, 'images/');
+//                $saveData['paid_slip'] = $fileData['fileName'];
+//            }
+
+            if ($request->paid_slip) {
+                foreach ($request->paid_slip as $image) {
+                    $fileData = $this->uploads($image, 'images/');
+                    ReservationPaidSlip::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
+                }
             }
 
             ReservationInfo::create($saveData);
@@ -228,12 +236,19 @@ class ReservationController extends Controller
             $findInfo->cost = $request->cost ?? $findInfo->cost;
             $findInfo->bank_account_number = $request->bank_account_number ?? $findInfo->bank_account_number;
 
-            if ($file = $request->file('paid_slip')) {
-                $fileData = $this->uploads($file, 'images/');
-                $findInfo->paid_slip = $fileData['fileName'];
-            }
+//            if ($file = $request->file('paid_slip')) {
+//                $fileData = $this->uploads($file, 'images/');
+//                $findInfo->paid_slip = $fileData['fileName'];
+//            }
 
             $findInfo->update();
+
+            if ($request->paid_slip) {
+                foreach ($request->paid_slip as $image) {
+                    $fileData = $this->uploads($image, 'images/');
+                    ReservationPaidSlip::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
+                }
+            }
         }
 
 
