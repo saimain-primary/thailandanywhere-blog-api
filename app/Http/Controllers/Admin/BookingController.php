@@ -31,6 +31,7 @@ class BookingController extends Controller
         $crmId = $request->query('crm_id');
 
         $filter = $request->query('filter');
+        $paymentStatus = $request->query('status');
 
 
         $query = Booking::query();
@@ -43,6 +44,10 @@ class BookingController extends Controller
                     $query->whereNull('past_user_id');
                 }
             }
+
+            if ($paymentStatus) {
+                $query->where('payment_status', $paymentStatus);
+            }
         } else {
             if ($filter) {
                 if ($filter === 'all') {
@@ -52,6 +57,10 @@ class BookingController extends Controller
                 } else if ($filter === 'current') {
                     $query->where('created_by', Auth::id())->whereNull('past_user_id');
                 }
+            }
+
+            if ($paymentStatus) {
+                $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id())->where('payment_status', $paymentStatus);
             }
         }
 
