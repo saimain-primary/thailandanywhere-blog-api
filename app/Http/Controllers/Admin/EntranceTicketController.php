@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\EntranceTicketContract;
+use App\Models\HotelContract;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
@@ -39,7 +41,7 @@ class EntranceTicketController extends Controller
         return $this->success(EntranceTicketResource::collection($data)
             ->additional([
                 'meta' => [
-                    'total_page' => (int) ceil($data->total() / $data->perPage()),
+                    'total_page' => (int)ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
@@ -89,13 +91,26 @@ class EntranceTicketController extends Controller
             $save->variations()->sync($request->variations);
         }
 
-        if($request->file('images')) {
+        if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
                 $fileData = $this->uploads($image, 'images/');
                 EntranceTicketImage::create(['entrance_ticket_id' => $save->id, 'image' => $fileData['fileName']]);
             };
         }
 
+        $contractArr = [];
+
+        if ($request->file('contracts')) {
+            foreach ($request->file('contracts') as $file) {
+                $fileData = $this->uploads($file, 'contracts/');
+                $contractArr[] = [
+                    'entrance_ticket_id' => $save->id,
+                    'file' => $fileData['fileName']
+                ];
+            }
+
+            EntranceTicketContract::insert($contractArr);
+        }
         // foreach ($request->variations as $variation) {
         //     EntranceTicketVariation::create(['entrance_ticket_id' => $save->id, 'name' => $variation['name'], 'age_group' => $variation['age_group'], 'price' => $variation['price']]);
         // };
@@ -129,7 +144,7 @@ class EntranceTicketController extends Controller
 
         $data = [
             'name' => $request->name ?? $find->name,
-            'description' => $request->description  ?? $find->description,
+            'description' => $request->description ?? $find->description,
             'provider' => $request->provider ?? $find->provider,
             'place' => $request->place ?? $find->place,
             'legal_name' => $request->legal_name ?? $find->legal_name,
@@ -170,7 +185,6 @@ class EntranceTicketController extends Controller
         }
 
 
-
         if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
                 // Delete existing images
@@ -188,6 +202,19 @@ class EntranceTicketController extends Controller
             };
         }
 
+        $contractArr = [];
+
+        if ($request->file('contracts')) {
+            foreach ($request->file('contracts') as $file) {
+                $fileData = $this->uploads($file, 'contracts/');
+                $contractArr[] = [
+                    'entrance_ticket_id' => $find->id,
+                    'file' => $fileData['fileName']
+                ];
+            }
+
+            EntranceTicketContract::insert($contractArr);
+        }
         // if ($request->variations) {
         //     foreach ($request->variations as $variation) {
         //         if (count($find->variations) > 0) {
