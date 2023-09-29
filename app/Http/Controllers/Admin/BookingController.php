@@ -74,7 +74,7 @@ class BookingController extends Controller
         }
 
         if ($crmId) {
-            $query->where('crm_id', $crmId);
+            $query->where('crm_id', 'LIKE', "%{$crmId}%");
         }
 
         $query->orderBy('created_at', 'desc');
