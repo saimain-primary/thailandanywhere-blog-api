@@ -209,14 +209,15 @@ class ReservationController extends Controller
 //                $saveData['paid_slip'] = $fileData['fileName'];
 //            }
 
+
+            $save = ReservationInfo::create($saveData);
+
             if ($request->paid_slip) {
                 foreach ($request->paid_slip as $image) {
                     $fileData = $this->uploads($image, 'images/');
-                    ReservationPaidSlip::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
+                    ReservationPaidSlip::create(['booking_item_id' => $save->booking_item_id, 'file' => $fileData['fileName']]);
                 }
             }
-
-            ReservationInfo::create($saveData);
 
         } else {
             $findInfo->customer_feedback = $request->customer_feedback ?? $findInfo->customer_feedback;
