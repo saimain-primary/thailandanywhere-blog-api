@@ -310,7 +310,7 @@ class ReservationController extends Controller
                 if ($request->receipt_image) {
                     foreach ($request->receipt_image as $image) {
                         $fileData = $this->uploads($image, 'images/');
-                        ReservationExpenseReceipt::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
+                        ReservationExpenseReceipt::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
                     }
                 }
 
