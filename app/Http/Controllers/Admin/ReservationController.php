@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Booking;
 use App\Models\BookingItem;
+use App\Models\BookingReceipt;
 use App\Models\ReservationPaidSlip;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
@@ -348,5 +349,18 @@ class ReservationController extends Controller
             }
         }
         return $this->success(new BookingItemResource($bookingItem), 'Successfully updated');
+    }
+
+    public function deleteReceipt($id)
+    {
+        $find = ReservationExpenseReceipt::find($id);
+        if (!$find) {
+            return $this->error(null, 'Data not found', 404);
+        }
+
+        Storage::delete('public/images/' . $find->file);
+        $find->delete();
+        return $this->success(null, 'Successfully deleted');
+
     }
 }

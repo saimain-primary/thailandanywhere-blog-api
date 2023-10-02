@@ -70,4 +70,5 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::apiResource('airline-tickets', AirlineTicketController::class);
 
     Route::delete('booking-receipt/{id}', [BookingController::class, 'deleteReceipt']);
+    Route::delete('reservation-receipt/{id}', [ReservationController::class, 'deleteReceipt']);
 });
