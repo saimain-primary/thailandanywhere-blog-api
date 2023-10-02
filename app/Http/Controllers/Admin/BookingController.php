@@ -128,7 +128,7 @@ class BookingController extends Controller
             'balance_due_date' => $request->balance_due_date,
             'discount' => $request->discount,
             'comment' => $request->comment,
-            'is_past_info' => $request->is_past_info,
+            'is_past_info' => $request->is_past_info ?? false,
             'past_user_id' => $request->past_user_id,
             'past_crm_id' => $request->past_crm_id,
             'created_by' => Auth::id(),
@@ -137,9 +137,11 @@ class BookingController extends Controller
 
         $save = Booking::create($data);
 
-        if ($file = $request->file('receipt_image')) {
-            $fileData = $this->uploads($file, 'images/');
-            BookingReceipt::create(['booking_id' => $save->id, 'image' => $fileData['fileName']]);
+        if ($request->receipt_image) {
+            foreach ($request->receipt_image as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                BookingReceipt::create(['booking_id' => $save->id, 'image' => $fileData['fileName']]);
+            }
         }
 
         foreach ($request->items as $key => $item) {
@@ -251,10 +253,11 @@ class BookingController extends Controller
 
         $find->update($data);
 
-
-        if ($file = $request->file('receipt_image')) {
-            $fileData = $this->uploads($file, 'images/');
-            BookingReceipt::create(['booking_id' => $find->id, 'image' => $fileData['fileName']]);
+        if ($request->receipt_image) {
+            foreach ($request->receipt_image as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                BookingReceipt::create(['booking_id' => $find->id, 'image' => $fileData['fileName']]);
+            }
         }
 
         if ($request->items) {
@@ -369,5 +372,18 @@ class BookingController extends Controller
 
         return $pdf->stream();
         // return $pdf->download($booking->crm_id . '_receipt.pdf');
+    }
+
+    public function deleteReceipt($id)
+    {
+        $find = BookingReceipt::find($id);
+        if (!$find) {
+            return $this->error(null, 'Data not found', 404);
+        }
+
+        Storage::delete('public/images/' . $find->image);
+        $find->delete();
+        return $this->success(null, 'Successfully deleted');
+
     }
 }

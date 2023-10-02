@@ -68,4 +68,6 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::apiResource('rooms', RoomController::class);
     Route::apiResource('airlines', AirlineController::class);
     Route::apiResource('airline-tickets', AirlineTicketController::class);
+
+    Route::delete('booking-receipt/{id}', [BookingController::class, 'deleteReceipt']);
 });
