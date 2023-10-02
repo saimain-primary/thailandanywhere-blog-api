@@ -363,4 +363,18 @@ class ReservationController extends Controller
         return $this->success(null, 'Successfully deleted');
 
     }
+
+    public function deleteConfirmationReceipt($id)
+    {
+        $find = ReservationPaidSlip::find($id);
+        if (!$find) {
+            return $this->error(null, 'Data not found', 404);
+        }
+
+        Storage::delete('public/images/' . $find->file);
+        $find->delete();
+        return $this->success(null, 'Successfully deleted');
+
+
+    }
 }
