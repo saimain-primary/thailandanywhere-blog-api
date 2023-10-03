@@ -293,6 +293,14 @@ class ReservationController extends Controller
 
                 $findCarInfo->update();
             }
+
+            if ($request->receipt_image) {
+                foreach ($request->receipt_image as $image) {
+                    $fileData = $this->uploads($image, 'images/');
+                    ReservationExpenseReceipt::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
+                }
+            }
+
         } else {
             $findInfo = ReservationSupplierInfo::where('booking_item_id', $bookingItem->id)->first();
             if (!$findInfo) {
@@ -306,7 +314,6 @@ class ReservationController extends Controller
 //                    $fileData = $this->uploads($file, 'images/');
 //                    ReservationExpenseReceipt::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
 //                }
-
 
                 if ($request->receipt_image) {
                     foreach ($request->receipt_image as $image) {
