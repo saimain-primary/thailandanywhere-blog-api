@@ -138,6 +138,13 @@
                 <th>CRMID</th>
                 <td>{{ $data->crm_id }}</td>
             </tr>
+            @if($data->is_past_info)
+                <tr>
+                    <td style="width:70%"></td>
+                    <th>PAST CRMID</th>
+                    <td>{{ $data->past_crm_id }}</td>
+                </tr>
+            @endif
             <tr>
                 <th style="width:70%">DATE</th>
                 <th>TERM</th>
