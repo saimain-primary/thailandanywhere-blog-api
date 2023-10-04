@@ -40,19 +40,22 @@ class ReservationController extends Controller
         if (Auth::user()->role === 'super_admin') {
             if ($filter) {
                 if ($filter === 'all') {
-                } else if ($filter === 'past') {
+                } elseif ($filter === 'past') {
                     $query->where('is_past_info', true)->whereNotNull('past_user_id');
-                } else if ($filter === 'current') {
+                } elseif ($filter === 'current') {
                     $query->whereNull('past_user_id');
                 }
             }
         } else {
+
+            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+
             if ($filter) {
                 if ($filter === 'all') {
                     $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
-                } else if ($filter === 'past') {
+                } elseif ($filter === 'past') {
                     $query->where('is_past_info', true)->where('past_user_id', Auth::id())->whereNotNull('past_user_id');
-                } else if ($filter === 'current') {
+                } elseif ($filter === 'current') {
                     $query->where('created_by', Auth::id())->whereNull('past_user_id');
                 }
             }
@@ -205,10 +208,10 @@ class ReservationController extends Controller
                 'payment_due' => $request->payment_due,
             ];
 
-//            if ($file = $request->file('paid_slip')) {
-//                $fileData = $this->uploads($file, 'images/');
-//                $saveData['paid_slip'] = $fileData['fileName'];
-//            }
+            //            if ($file = $request->file('paid_slip')) {
+            //                $fileData = $this->uploads($file, 'images/');
+            //                $saveData['paid_slip'] = $fileData['fileName'];
+            //            }
 
 
             $save = ReservationInfo::create($saveData);
@@ -238,10 +241,10 @@ class ReservationController extends Controller
             $findInfo->cost = $request->cost ?? $findInfo->cost;
             $findInfo->bank_account_number = $request->bank_account_number ?? $findInfo->bank_account_number;
 
-//            if ($file = $request->file('paid_slip')) {
-//                $fileData = $this->uploads($file, 'images/');
-//                $findInfo->paid_slip = $fileData['fileName'];
-//            }
+            //            if ($file = $request->file('paid_slip')) {
+            //                $fileData = $this->uploads($file, 'images/');
+            //                $findInfo->paid_slip = $fileData['fileName'];
+            //            }
 
             $findInfo->update();
 
@@ -310,10 +313,10 @@ class ReservationController extends Controller
                     'supplier_name' => $request->supplier_name,
                 ];
 
-//                if ($file = $request->file('receipt_image')) {
-//                    $fileData = $this->uploads($file, 'images/');
-//                    ReservationExpenseReceipt::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
-//                }
+                //                if ($file = $request->file('receipt_image')) {
+                //                    $fileData = $this->uploads($file, 'images/');
+                //                    ReservationExpenseReceipt::create(['booking_item_id' => $bookingItem->id, 'file' => $fileData['fileName']]);
+                //                }
 
                 if ($request->receipt_image) {
                     foreach ($request->receipt_image as $image) {
@@ -334,10 +337,10 @@ class ReservationController extends Controller
                 $findInfo->ref_number = $request->ref_number ?? $findInfo->ref_number;
                 $findInfo->supplier_name = $request->supplier_name ?? $findInfo->supplier_name;
 
-//                if ($file = $request->file('receipt_image')) {
-//                    $fileData = $this->uploads($file, 'images/');
-//                    ReservationExpenseReceipt::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
-//                }
+                //                if ($file = $request->file('receipt_image')) {
+                //                    $fileData = $this->uploads($file, 'images/');
+                //                    ReservationExpenseReceipt::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
+                //                }
 
                 if ($request->receipt_image) {
                     foreach ($request->receipt_image as $image) {
