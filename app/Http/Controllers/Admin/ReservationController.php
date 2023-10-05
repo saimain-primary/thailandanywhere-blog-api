@@ -16,6 +16,7 @@ use App\Http\Resources\BookingItemResource;
 use App\Http\Resources\BookingResource;
 use App\Models\ReservationBookingConfirmLetter;
 use App\Models\ReservationCarInfo;
+use App\Models\ReservationCustomerPassport;
 use App\Models\ReservationExpenseReceipt;
 use App\Models\ReservationInfo;
 use App\Models\ReservationSupplierInfo;
@@ -358,6 +359,14 @@ class ReservationController extends Controller
                 $findInfo->update();
             }
         }
+
+        if ($request->customer_passport) {
+            foreach ($request->customer_passport as $passport) {
+                $fileData = $this->uploads($passport, 'files/');
+                ReservationCustomerPassport::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
+            }
+        }
+
         return $this->success(new BookingItemResource($bookingItem), 'Successfully updated');
     }
 
@@ -382,6 +391,20 @@ class ReservationController extends Controller
         }
 
         Storage::delete('public/images/' . $find->file);
+        $find->delete();
+        return $this->success(null, 'Successfully deleted');
+
+
+    }
+
+    public function deleteCustomerPassport($id)
+    {
+        $find = ReservationCustomerPassport::find($id);
+        if (!$find) {
+            return $this->error(null, 'Data not found', 404);
+        }
+
+        Storage::delete('public/files/' . $find->file);
         $find->delete();
         return $this->success(null, 'Successfully deleted');
 

@@ -72,4 +72,5 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::delete('booking-receipt/{id}', [BookingController::class, 'deleteReceipt']);
     Route::delete('reservation-receipt/{id}', [ReservationController::class, 'deleteReceipt']);
     Route::delete('confirmation-receipt/{id}', [ReservationController::class, 'deleteConfirmationReceipt']);
+    Route::delete('customer-passport/{id}', [ReservationController::class, 'deleteCustomerPassport']);
 });

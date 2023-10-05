@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Http\Resources\ReservationReceiptImageResource;
 use App\Models\Booking;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ReservationCustomerPassport;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Http\Resources\ReservationReceiptImageResource;
 
 class BookingItem extends Model
 {
@@ -69,6 +70,11 @@ class BookingItem extends Model
     public function reservationReceiptImage()
     {
         return $this->hasMany(ReservationExpenseReceipt::class, 'booking_item_id');
+    }
+
+    public function reservationCustomerPassport()
+    {
+        return $this->hasMany(ReservationCustomerPassport::class, 'booking_item_id');
     }
 
     public function reservationPaidSlip()
