@@ -224,6 +224,15 @@ class ReservationController extends Controller
                 }
             }
 
+
+            if ($request->customer_passport) {
+                foreach ($request->customer_passport as $passport) {
+                    $fileData = $this->uploads($passport, 'files/');
+                    ReservationCustomerPassport::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
+                }
+            }
+
+
         } else {
             $findInfo->customer_feedback = $request->customer_feedback ?? $findInfo->customer_feedback;
             $findInfo->customer_score = $request->customer_score ?? $findInfo->customer_score;
