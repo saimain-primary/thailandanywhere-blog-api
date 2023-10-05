@@ -274,6 +274,13 @@
                                 {{ $data->payment_currency }}
                             </td>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td>PAYMENT STATUS</td>
+                            <td style="font-weight: bold; font-size:14px;">
+                                {{ $data->payment_status }}
+                            </td>
+                        </tr>
                     @endif
                 </tbody>
             </table>
