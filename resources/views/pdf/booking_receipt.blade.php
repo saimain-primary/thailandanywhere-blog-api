@@ -236,7 +236,7 @@
                 <td></td>
                 <td>BALANCE DUE</td>
                 <td style="font-weight: bold; font-size:14px;">
-                    {{ number_format($data->sub_total - $data->discount - $data->deposit) }} {{$data->payment_currency}}
+                    {{ number_format($data->sub_total - $data->discount - $data->deposit) }} THB
                 </td>
             </tr>
             @if ($data->money_exchange_rate)
