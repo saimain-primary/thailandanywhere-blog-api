@@ -277,9 +277,22 @@
                         <tr>
                             <td></td>
                             <td>PAYMENT STATUS</td>
-                            <td style="font-weight: bold; font-size:14px;">
-                                {{ $data->payment_status }}
-                            </td>
+                            @if ($data->payment_status === 'not_paid')
+                                <td style="font-weight: bold; font-size:14px; color:red">
+                                    {{ ucwords(str_replace('_', ' ', $data->payment_status)) }}
+                                </td>
+                            @endif
+                            @if ($data->payment_status === 'partially_paid')
+                                <td style="font-weight: bold; font-size:14px; color:yellow">
+                                    {{ ucwords(str_replace('_', ' ', $data->payment_status)) }}
+                                </td>
+                            @endif
+                            @if ($data->payment_status === 'fully_paid')
+                                <td style="font-weight: bold; font-size:14px; color: green">
+                                    {{ ucwords(str_replace('_', ' ', $data->payment_status)) }}
+                                </td>
+                            @endif
+
                         </tr>
                     @endif
                 </tbody>
