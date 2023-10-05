@@ -256,7 +256,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>TOTAL IN MMK</td>
+                            <td>BALANCE DUE (MMK)</td>
                             <td style="font-weight: bold; font-size:14px;">
                                 {{ $data->money_exchange_rate ? 'MMK' : 'THB' }}
                                 @if ($data->deposit === 0 || $data->deposit === 'null')
