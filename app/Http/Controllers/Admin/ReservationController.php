@@ -228,7 +228,7 @@ class ReservationController extends Controller
             if ($request->customer_passport) {
                 foreach ($request->customer_passport as $passport) {
                     $fileData = $this->uploads($passport, 'files/');
-                    ReservationCustomerPassport::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
+                    ReservationCustomerPassport::create(['booking_item_id' => $save->booking_item_id, 'file' => $fileData['fileName']]);
                 }
             }
 
