@@ -258,20 +258,20 @@
                             <td></td>
                             <td>BALANCE DUE ({{ $data->payment_currency }})</td>
                             <td style="font-weight: bold; font-size:14px;">
-                                {{ $data->payment_currency }}
                                 @if ($data->deposit === 0 || $data->deposit === 'null')
                                     @if ($data->payment_currency === 'USD')
-                                        {{ number_format(($data->sub_total - $data->discount) / ($data->money_exchange_rate ? $data->money_exchange_rate : 1)) }}
+                                        {{ number_format((float) ($data->sub_total - $data->discount) / ($data->money_exchange_rate ? $data->money_exchange_rate : 1), '2', '.', '') }}
                                     @else
-                                        {{ number_format(($data->sub_total - $data->discount) * $data->money_exchange_rate ? $data->money_exchange_rate : 1) }}
+                                        {{ number_format((float) ($data->sub_total - $data->discount) * $data->money_exchange_rate ? $data->money_exchange_rate : 1, '2', '.', '') }}
                                     @endif
                                 @else
                                     @if ($data->payment_currency === 'USD')
-                                        {{ number_format(($data->sub_total - $data->discount - $data->deposit) / ($data->money_exchange_rate ? (int) $data->money_exchange_rate : 1)) }}
+                                        {{ number_format((float) ($data->sub_total - $data->discount - $data->deposit) / ($data->money_exchange_rate ? (int) $data->money_exchange_rate : 1), 2, '.', '') }}
                                     @else
-                                        {{ number_format(($data->sub_total - $data->discount - $data->deposit) * ($data->money_exchange_rate ? (int) $data->money_exchange_rate : 1)) }}
+                                        {{ number_format((float) ($data->sub_total - $data->discount - $data->deposit) * ($data->money_exchange_rate ? (int) $data->money_exchange_rate : 1), 2, '.', '') }}
                                     @endif
                                 @endif
+                                {{ $data->payment_currency }}
                             </td>
                         </tr>
                     @endif
