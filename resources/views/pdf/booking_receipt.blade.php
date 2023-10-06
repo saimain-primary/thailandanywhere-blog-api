@@ -194,7 +194,7 @@
                                 @endif
                             </td>
                             <td style="max-width: 120px">{{ $row->comment }}</td>
-                            <td>{{ $row->quantity }}</td>
+                            <td>{{ (int) $row->quantity * (int) ($row->days ? $row->days : 1) }}</td>
                             <td>{{ number_format((float) $row->selling_price) }}</td>
                             <td>{{ number_format($row->amount) }}</td>
                         </tr>
