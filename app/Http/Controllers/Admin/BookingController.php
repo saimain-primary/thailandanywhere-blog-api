@@ -38,9 +38,9 @@ class BookingController extends Controller
         if (Auth::user()->role === 'super_admin') {
             if ($filter) {
                 if ($filter === 'all') {
-                } else if ($filter === 'past') {
+                } elseif ($filter === 'past') {
                     $query->where('is_past_info', true)->whereNotNull('past_user_id');
-                } else if ($filter === 'current') {
+                } elseif ($filter === 'current') {
                     $query->whereNull('past_user_id');
                 }
             }
@@ -53,9 +53,9 @@ class BookingController extends Controller
             if ($filter) {
                 if ($filter === 'all') {
                     $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
-                } else if ($filter === 'past') {
+                } elseif ($filter === 'past') {
                     $query->where('is_past_info', true)->where('past_user_id', Auth::id())->whereNotNull('past_user_id');
-                } else if ($filter === 'current') {
+                } elseif ($filter === 'current') {
                     $query->where('created_by', Auth::id())->whereNull('past_user_id');
                 }
             }
@@ -66,9 +66,9 @@ class BookingController extends Controller
         }
 
 
-//        if (!Auth::user()->is_super) {
-//            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
-//        }
+        //        if (!Auth::user()->is_super) {
+        //            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+        //        }
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
@@ -165,6 +165,7 @@ class BookingController extends Controller
                 'exchange_rate' => $item['exchange_rate'] ?? null,
                 'comment' => $item['comment'] ?? null,
                 'amount' => $item['amount'] ?? null,
+                'days' => $item['days'] ?? null,
                 'special_request' => isset($item['special_request']) ? $item['special_request'] : null,
                 'route_plan' => isset($item['route_plan']) ? $item['route_plan'] : null,
                 'pickup_location' => isset($item['pickup_location']) ? $item['pickup_location'] : null,
@@ -241,6 +242,7 @@ class BookingController extends Controller
             'payment_currency' => $request->payment_currency ?? $find->payment_currency,
             'booking_date' => $request->booking_date ?? $find->booking_date,
             'bank_name' => $request->bank_name ?? $find->bank_name,
+            'days' => $item['days'] ?? $find->days,
             'money_exchange_rate' => $request->money_exchange_rate ?? $find->money_exchange_rate,
             'comment' => $request->comment ?? $find->comment,
             'sub_total' => $request->sub_total ?? $find->sub_total,

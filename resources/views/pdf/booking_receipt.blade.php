@@ -208,28 +208,28 @@
                         <td>Thank you for booking with Thailand Anywhere. We are with you every step of the way.</td>
                         <td>SUB TOTAL</td>
                         <td style="font-size:14px;">
-                            {{ number_format($data->sub_total) }}
+                            {{ number_format($data->sub_total) }} THB
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>DISCOUNT</td>
                         <td style="font-size:14px;">
-                            {{ $data->discount }}
+                            {{ $data->discount }} THB
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Total</td>
                         <td style="font-size:14px;">
-                            {{ $data->sub_total - $data->discount }}
+                            {{ $data->sub_total - $data->discount }} THB
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>DEPOSIT</td>
                         <td style="font-size:14px;">
-                            {{ $data->deposit }}
+                            {{ $data->deposit }} THB
                         </td>
                     </tr>
                     <tr>
@@ -285,7 +285,7 @@
                             </td>
                         @endif
                         @if ($data->payment_status === 'partially_paid')
-                            <td style="font-weight: bold; font-size:14px; color:yellow">
+                            <td style="font-weight: bold; font-size:14px; color:#ff5733">
                                 {{ ucwords(str_replace('_', ' ', $data->payment_status)) }}
                             </td>
                         @endif
