@@ -287,7 +287,7 @@ class BookingController extends Controller
                     'variation_id' => isset($item['variation_id']) ? $item['variation_id'] : null,
                     'service_date' => $item['service_date'],
                     'quantity' => $item['quantity'],
-                    'days' => $item['days'] ? $item['days'] : null,
+                    'days' => isset($item['days']) ? $item['days'] : null,
                     'special_request' => isset($item['special_request']) ? $item['special_request'] : null,
                     'route_plan' => isset($item['route_plan']) ? $item['route_plan'] : null,
                     'pickup_location' => isset($item['pickup_location']) ? $item['pickup_location'] : null,
