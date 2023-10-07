@@ -39,6 +39,9 @@ class ReservationController extends Controller
 
         $query = Booking::query();
 
+        if($serviceDate) {
+            $query->whereDate('service_date', $serviceDate);
+        }
         if($calenderFilter === 1) {
             $query->whereHas('items', function ($q) {
                 $q->where('product_type', 'App\Models\PrivateVanTour')->orWhere('product_type', 'App\Models\GroupTour');
