@@ -40,7 +40,11 @@ class ReservationController extends Controller
         $query = Booking::query();
 
         if($serviceDate) {
-            $query->whereDate('service_date', $serviceDate);
+            $query->whereHas('items', function ($q) use ($serviceDate) {
+                $q->whereDate('service_date', $serviceDate);
+            })->with(['items' => function ($query) use ($serviceDate) {
+                $query->whereDate('service_date', $serviceDate);
+            }]);
         }
         if($calenderFilter === 1) {
             $query->whereHas('items', function ($q) {
