@@ -34,9 +34,18 @@ class ReservationController extends Controller
         $limit = $request->query('limit', 10);
         $search = $request->query('search');
         $filter = $request->query('filter');
-
+        $serviceDate = $request->query('service_date');
+        $calenderFilter = $request->query('calender_filter');
 
         $query = Booking::query();
+
+        if($calenderFilter === 1) {
+            $query->whereHas('items', function ($q) {
+                $q->where('product_type', 'App\Models\PrivateVanTour')->orWhere('product_type', 'App\Models\GroupTour');
+            })->with(['items' => function ($query) {
+                $query->where('product_type', 'App\Models\PrivateVanTour')->orWhere('product_type', 'App\Models\GroupTour');
+            }]);
+        }
 
         if (Auth::user()->role === 'super_admin') {
             if ($filter) {
@@ -48,7 +57,6 @@ class ReservationController extends Controller
                 }
             }
         } else {
-
             $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
 
             if ($filter) {
@@ -78,7 +86,6 @@ class ReservationController extends Controller
                     $q->where('crm_id', 'LIKE', "%{$crmId}%");
                 }
                 $q->where('product_type', $productType);
-
             })->with(['items' => function ($query) use ($productType, $crmId) {
                 if ($crmId) {
                     $query->where('crm_id', 'LIKE', "%{$crmId}%");
