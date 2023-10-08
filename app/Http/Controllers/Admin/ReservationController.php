@@ -46,13 +46,8 @@ class ReservationController extends Controller
                 $query->whereDate('service_date', $serviceDate);
             }]);
         }
-        if($calenderFilter) {
-            $query->whereHas('items', function ($q) {
-                $q->where('product_type', 'App\Models\PrivateVanTour')->orWhere('product_type', 'App\Models\GroupTour');
-            })->with(['items' => function ($query) {
-                $query->where('product_type', 'App\Models\PrivateVanTour')->orWhere('product_type', 'App\Models\GroupTour');
-            }]);
-        }
+
+
 
         if (Auth::user()->role === 'super_admin') {
             if ($filter) {
@@ -108,6 +103,14 @@ class ReservationController extends Controller
                 if ($crmId) {
                     $query->where('crm_id', 'LIKE', "%{$crmId}%");
                 }
+            }]);
+        }
+
+        if($calenderFilter == true) {
+            $query->whereHas('items', function ($q) {
+                $q->where('product_type', 'App\Models\PrivateVanTour')->orWhere('product_type', 'App\Models\GroupTour');
+            })->with(['items' => function ($query) {
+                $query->where('product_type', 'App\Models\PrivateVanTour')->orWhere('product_type', 'App\Models\GroupTour');
             }]);
         }
 

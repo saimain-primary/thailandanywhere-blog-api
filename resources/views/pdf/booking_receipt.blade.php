@@ -9,18 +9,22 @@
 
     <style>
         @page {
-            margin: 0px;
+            margin: 0;
+            /* margin-top: 300px;
+            padding: 10px 40px */
+        }
+
+        .page-break {
+            page-break-after: always;
         }
 
         body {
             margin: 0px;
-        }
-
-        body {
             font-family: 'Poppins', sans-serif;
             margin: 0 !important;
             padding: 0 !important;
             width: 100%;
+
         }
 
         .header-title {
@@ -116,6 +120,10 @@
             /** Your watermark should be behind every content**/
             z-index: -1000;
         }
+
+        .break-before {
+            page-break-before: always;
+        }
     </style>
 </head>
 
@@ -123,8 +131,9 @@
     <div id="watermark">
         <img src="{{ public_path() . '/assets/template.jpg' }}" height="100%" width="100%" />
     </div>
-    <div style="margin-top: 300px; padding:10px 40px">
-        <div>
+    <div>
+        <div style="margin-top: 300px;
+        padding: 10px 40px">
             <h3 class="header-heading">Invoice</h3>
             <table class="header-table">
                 <tbody>
@@ -166,43 +175,59 @@
                         <th>RATE</th>
                         <th>AMOUNT</th>
                     </tr>
-                    @foreach ($data->items as $row)
-                        <tr>
-                            <td>{{ $row->service_date }}</td>
-                            <td style="max-width: 100px">{{ $row->product->name }} </br>
-                                @if ($row->product_type === 'App\Models\Inclusive')
-                                    @if ($row->product->privateVanTours)
-                                        @foreach ($row->product->privateVanTours as $pvt)
-                                            {{ $pvt->product->name }} </br>
-                                        @endforeach
-                                    @endif
-                                    @if ($row->product->groupTours)
-                                        @foreach ($row->product->groupTours as $gt)
-                                            {{ $gt->product->name }} </br>
-                                        @endforeach
-                                    @endif
-                                    @if ($row->product->airportPickups)
-                                        @foreach ($row->product->airportPickups as $ap)
-                                            {{ $ap->product->name }} </br>
-                                        @endforeach
-                                    @endif
-                                    @if ($row->product->entranceTickets)
-                                        @foreach ($row->product->entranceTickets as $et)
-                                            {{ $et->product->name }} </br>
-                                        @endforeach
-                                    @endif
+                    @foreach ($data->items as $index => $row)
+                        @if ($index == 4)
+            </table>
+            <div class="break-before"></div>
+            <table class="body-table" style="max-height: 100px !important; margin-top:300px;">
+                <tbody>
+                    <tr>
+                        <th>SERVICE DATE</th>
+                        <th>SERVICE</th>
+                        <th style="max-width:140px">DESCRIPTION</th>
+                        <th>QTY</th>
+                        <th>RATE</th>
+                        <th>AMOUNT</th>
+                    </tr>
+                    @endif
+                    <tr>
+                        <td>{{ $row->service_date }}</td>
+                        <td style="max-width: 100px">{{ $row->product->name }} </br>
+                            @if ($row->product_type === 'App\Models\Inclusive')
+                                @if ($row->product->privateVanTours)
+                                    @foreach ($row->product->privateVanTours as $pvt)
+                                        {{ $pvt->product->name }} </br>
+                                    @endforeach
                                 @endif
-                            </td>
-                            <td style="max-width: 120px">{{ $row->comment }}</td>
-                            <td>{{ (int) $row->quantity * (int) ($row->days ? $row->days : 1) }}</td>
-                            <td>{{ number_format((float) $row->selling_price) }}</td>
-                            <td>{{ number_format($row->amount) }}</td>
-                        </tr>
+                                @if ($row->product->groupTours)
+                                    @foreach ($row->product->groupTours as $gt)
+                                        {{ $gt->product->name }} </br>
+                                    @endforeach
+                                @endif
+                                @if ($row->product->airportPickups)
+                                    @foreach ($row->product->airportPickups as $ap)
+                                        {{ $ap->product->name }} </br>
+                                    @endforeach
+                                @endif
+                                @if ($row->product->entranceTickets)
+                                    @foreach ($row->product->entranceTickets as $et)
+                                        {{ $et->product->name }} </br>
+                                    @endforeach
+                                @endif
+                            @endif
+                        </td>
+                        <td style="max-width: 120px">{{ $row->comment }}</td>
+                        <td>{{ (int) $row->quantity * (int) ($row->days ? $row->days : 1) }}</td>
+                        <td>{{ number_format((float) $row->selling_price) }}</td>
+                        <td>{{ number_format($row->amount) }}</td>
+                    </tr>
+                    @if ($index == 4)
+                        <tbody />
+                    @endif
                     @endforeach
                 </tbody>
             </table>
             <table class="footer-table">
-
                 <tbody>
                     <tr>
                         <td>Thank you for booking with Thailand Anywhere. We are with you every step of the way.</td>
@@ -298,6 +323,8 @@
                 </tbody>
             </table>
         </div>
+
+
     </div>
 </body>
 
