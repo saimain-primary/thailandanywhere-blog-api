@@ -48,8 +48,7 @@ class ReservationController extends Controller
         }
 
 
-
-        if (Auth::user()->role === 'super_admin') {
+        if (Auth::user()->role === 'super_admin' || Auth::user()->role === 'reservation') {
             if ($filter) {
                 if ($filter === 'all') {
                 } elseif ($filter === 'past') {
@@ -74,6 +73,11 @@ class ReservationController extends Controller
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+
+        if ($request->user_id) {
+            $query->where('created_by', $request->user_id)->orWhere('past_user_id', $request->user_id);
         }
 
 
