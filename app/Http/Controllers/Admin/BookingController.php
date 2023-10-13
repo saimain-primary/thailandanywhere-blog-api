@@ -65,7 +65,7 @@ class BookingController extends Controller
 
             if ($filter && $filter !== "") {
                 if ($filter === 'all') {
-                    $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id())->where('payment_status', $paymentStatus);
+                    $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
                 } elseif ($filter === 'past') {
                     $query->where('is_past_info', true)->where('past_user_id', Auth::id())->whereNotNull('past_user_id');
                 } elseif ($filter === 'current') {
