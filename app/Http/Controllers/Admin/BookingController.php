@@ -58,7 +58,7 @@ class BookingController extends Controller
                     $query->whereNull('past_user_id');
                 }
             }
-          
+
         } else {
 
             $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
@@ -76,12 +76,15 @@ class BookingController extends Controller
 
         }
 
-        if ($paymentStatus) {
-            $query->where('payment_status', $paymentStatus);
+        $data = $query->paginate($limit);
+
+
+        if ($paymentStatus && $paymentStatus !== "all") {
+            $query = $query->where('payment_status', $paymentStatus);
+            $data = $query->paginate($limit);
         }
 
         $query->orderBy('created_at', 'desc');
-        $data = $query->paginate($limit);
         return $this->success(BookingResource::collection($data)
             ->additional([
                 'meta' => [
