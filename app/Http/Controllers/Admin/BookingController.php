@@ -35,7 +35,7 @@ class BookingController extends Controller
 
 
         $query = Booking::query();
-        
+
 
         //        if (!Auth::user()->is_super) {
         //            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
@@ -58,28 +58,28 @@ class BookingController extends Controller
                     $query->whereNull('past_user_id');
                 }
             }
-
-            if ($paymentStatus) {
-                $query->where('payment_status', $paymentStatus);
-            }
+          
         } else {
+
             $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+
             if ($filter && $filter !== "") {
                 if ($filter === 'all') {
-                    $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+                    $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id())->where('payment_status', $paymentStatus);
                 } elseif ($filter === 'past') {
                     $query->where('is_past_info', true)->where('past_user_id', Auth::id())->whereNotNull('past_user_id');
                 } elseif ($filter === 'current') {
                     $query->where('created_by', Auth::id())->whereNull('past_user_id');
                 }
             }
-            
-            if ($paymentStatus) {
-                $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id())->where('payment_status', $paymentStatus);
-            }
+
+
         }
 
-        
+        if ($paymentStatus) {
+            $query->where('payment_status', $paymentStatus);
+        }
+
         $query->orderBy('created_at', 'desc');
         $data = $query->paginate($limit);
         return $this->success(BookingResource::collection($data)
