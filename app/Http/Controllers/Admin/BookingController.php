@@ -35,6 +35,20 @@ class BookingController extends Controller
 
 
         $query = Booking::query();
+        
+
+        //        if (!Auth::user()->is_super) {
+        //            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+        //        }
+
+        if ($search) {
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        if ($crmId) {
+            $query->where('crm_id', 'LIKE', "%{$crmId}%");
+        }
+
         if (Auth::user()->role === 'super_admin') {
             if ($filter && $filter !== "") {
                 if ($filter === 'all') {
@@ -59,25 +73,13 @@ class BookingController extends Controller
                     $query->where('created_by', Auth::id())->whereNull('past_user_id');
                 }
             }
-
+            
             if ($paymentStatus) {
                 $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id())->where('payment_status', $paymentStatus);
             }
         }
 
-
-        //        if (!Auth::user()->is_super) {
-        //            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
-        //        }
-
-        if ($search) {
-            $query->where('name', 'LIKE', "%{$search}%");
-        }
-
-        if ($crmId) {
-            $query->where('crm_id', 'LIKE', "%{$crmId}%");
-        }
-
+        
         $query->orderBy('created_at', 'desc');
         $data = $query->paginate($limit);
         return $this->success(BookingResource::collection($data)
