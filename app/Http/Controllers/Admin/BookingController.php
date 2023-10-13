@@ -36,7 +36,7 @@ class BookingController extends Controller
 
         $query = Booking::query();
         if (Auth::user()->role === 'super_admin') {
-            if ($filter) {
+            if ($filter && $filter !== "") {
                 if ($filter === 'all') {
                 } elseif ($filter === 'past') {
                     $query->where('is_past_info', true)->whereNotNull('past_user_id');
@@ -50,7 +50,7 @@ class BookingController extends Controller
             }
         } else {
             $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
-            if ($filter) {
+            if ($filter && $filter !== "") {
                 if ($filter === 'all') {
                     $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
                 } elseif ($filter === 'past') {
