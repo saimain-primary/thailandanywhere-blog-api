@@ -3,11 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\CarResource;
-use App\Http\Resources\EntranceTicketResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class InclusiveEntranceTicketResource extends JsonResource
+class InclusiveAirlineTicketResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,8 +16,8 @@ class InclusiveEntranceTicketResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'product' => new EntranceTicketResource($this->product),
-            'variation_id' => new EntranceTicketVariationResource($this->variation),
+            'product' => new AirportPickupResource($this->product),
+            'ticket' => new AirlineTicketResource($this->ticket),
             'selling_price' => $this->selling_price,
             'cost_price' => $this->cost_price,
             'quantity' => $this->quantity,

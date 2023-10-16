@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\InclusiveAirlineTicket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -29,6 +30,8 @@ class InclusiveResource extends JsonResource
             'group_tours' => InclusiveGroupTourResource::collection($this->groupTours),
             'entrance_tickets' => InclusiveEntranceTicketResource::collection($this->entranceTickets),
             'airport_pickups' => InclusiveAirportPickupResource::collection($this->airportPickups),
+            'airline_tickets' => InclusiveAirlineTicketResource::collection($this->airlineTickets),
+            'hotels' => InclusiveHotelResource::collection($this->hotels),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $this->updated_at->format('Y-m-d H:i:s'),
         ];

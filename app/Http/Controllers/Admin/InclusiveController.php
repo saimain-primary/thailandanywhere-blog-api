@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\GroupTour;
 use App\Models\Inclusive;
+use App\Models\InclusiveAirlineTicket;
+use App\Models\InclusiveHotel;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Models\AirportPickup;
@@ -98,7 +100,10 @@ class InclusiveController extends Controller
                     $product = InclusivePrivateVanTour::create([
                         'inclusive_id' => $save->id,
                         'product_id' => $product['product_id'],
-                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
                     ]);
                 }
 
@@ -106,21 +111,50 @@ class InclusiveController extends Controller
                     $product = InclusiveGroupTour::create([
                         'inclusive_id' => $save->id,
                         'product_id' => $product['product_id'],
-                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
                     ]);
                 }
                 if ($product['product_type'] === 'entrance_ticket') {
                     $product = InclusiveEntranceTicket::create([
                         'inclusive_id' => $save->id,
                         'product_id' => $product['product_id'],
-                        'variation_id' => isset($product['variation_id']) ? $product['variation_id'] : null
+                        'variation_id' => isset($product['variation_id']) ? $product['variation_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
                     ]);
                 }
                 if ($product['product_type'] === 'airport_pickup') {
                     $product = InclusiveAirportPickup::create([
                         'inclusive_id' => $save->id,
                         'product_id' => $product['product_id'],
-                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
+                    ]);
+                }
+                if ($product['product_type'] === 'airline_ticket') {
+                    $product = InclusiveAirlineTicket::create([
+                        'inclusive_id' => $save->id,
+                        'product_id' => $product['product_id'],
+                        'ticket_id' => isset($product['ticket_id']) ? $product['ticket_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
+                    ]);
+                }
+                if ($product['product_type'] === 'hotel') {
+                    $product = InclusiveHotel::create([
+                        'inclusive_id' => $save->id,
+                        'product_id' => $product['product_id'],
+                        'room_id' => isset($product['room_id']) ? $product['room_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
                     ]);
                 }
 
