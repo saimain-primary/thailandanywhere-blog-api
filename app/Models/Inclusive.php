@@ -10,7 +10,7 @@ class Inclusive extends Model
 {
     use HasFactory;
 
-    protected $fillable  = ['name', 'description', 'sku_code', 'price', 'agent_price', 'cover_image'];
+    protected $fillable = ['name', 'description', 'sku_code', 'price', 'agent_price', 'cover_image'];
 
     public function groupTours()
     {
@@ -33,6 +33,18 @@ class Inclusive extends Model
     public function privateVanTours()
     {
         return $this->hasMany(InclusivePrivateVanTour::class);
+    }
+
+    public function airlineTickets()
+    {
+
+        return $this->hasMany(InclusiveAirlineTicket::class);
+    }
+
+    public function hotels()
+    {
+
+        return $this->hasMany(InclusiveHotel::class);
     }
 
     public function images()
