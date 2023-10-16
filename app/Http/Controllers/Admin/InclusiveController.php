@@ -47,7 +47,7 @@ class InclusiveController extends Controller
         return $this->success(InclusiveResource::collection($data)
             ->additional([
                 'meta' => [
-                    'total_page' => (int) ceil($data->total() / $data->perPage()),
+                    'total_page' => (int)ceil($data->total() / $data->perPage()),
                 ],
             ])
             ->response()
@@ -101,6 +101,7 @@ class InclusiveController extends Controller
                         'car_id' => isset($product['car_id']) ? $product['car_id'] : null
                     ]);
                 }
+
                 if ($product['product_type'] === 'group_tour') {
                     $product = InclusiveGroupTour::create([
                         'inclusive_id' => $save->id,
@@ -183,7 +184,6 @@ class InclusiveController extends Controller
         }
 
         $find->update();
-
 
 
         if ($request->products) {
