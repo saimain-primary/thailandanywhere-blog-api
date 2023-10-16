@@ -63,6 +63,10 @@ class ReservationController extends Controller
             $query->where('product_type', $productType);
         }
 
+        if ($request->reservation_status) {
+            $query->where('reservation_status', $request->reservation_status);
+        }
+
         if ($calenderFilter == true) {
             $query->where('product_type', 'App\Models\PrivateVanTour')->orWhere('product_type', 'App\Models\GroupTour');
         }
