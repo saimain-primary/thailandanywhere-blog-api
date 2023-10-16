@@ -59,6 +59,13 @@ class ReservationController extends Controller
             });
         }
 
+        if ($request->user_id) {
+            $userId = $request->user_id;
+            $query->whereHas('booking', function ($q) use ($userId) {
+                $q->where('created_by', $userId)->orWhere('past_user_id', $userId);
+            });
+        }
+
         if ($productType) {
             $query->where('product_type', $productType);
         }

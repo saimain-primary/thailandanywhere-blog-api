@@ -113,7 +113,7 @@ class InclusiveController extends Controller
                     $product = InclusiveEntranceTicket::create([
                         'inclusive_id' => $save->id,
                         'product_id' => $product['product_id'],
-                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                        'variation_id' => isset($product['variation_id']) ? $product['variation_id'] : null
                     ]);
                 }
                 if ($product['product_type'] === 'airport_pickup') {
@@ -123,6 +123,7 @@ class InclusiveController extends Controller
                         'car_id' => isset($product['car_id']) ? $product['car_id'] : null
                     ]);
                 }
+
             }
         }
 
