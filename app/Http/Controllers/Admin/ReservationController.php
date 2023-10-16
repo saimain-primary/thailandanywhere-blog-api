@@ -43,12 +43,12 @@ class ReservationController extends Controller
             $query->whereDate('service_date', $serviceDate);
         };
 
-        if ($request->user_id) {
-            $userId = $request->user_id;
-            $query->whereHas('booking', function ($q) use ($userId) {
-                $q->where('created_by', $userId)->orWhere('past_user_id', $userId);
-            });
-        }
+//        if ($request->user_id && $request->user_id !== 'undefined') {
+//            $userId = $request->user_id;
+//            $query->whereHas('booking', function ($q) use ($userId) {
+//                $q->where('created_by', $userId)->orWhere('past_user_id', $userId);
+//            });
+//        }
 
         $productType = $request->query('product_type');
         $crmId = $request->query('crm_id');
@@ -74,18 +74,29 @@ class ReservationController extends Controller
         if (Auth::user()->role === 'super_admin' || Auth::user()->role === 'reservation') {
             if ($filter) {
                 if ($filter === 'past') {
-                    $query->where('is_past_info', true)->whereNotNull('past_user_id');
+                    $query->whereHas('booking', function ($q) {
+                        $q->where('is_past_info', true)->whereNotNull('past_user_id');
+                    });
                 } elseif ($filter === 'current') {
-                    $query->where('is_past_info', false)->whereNull('past_user_id');
+                    $query->whereHas('booking', function ($q) {
+                        $q->where('is_past_info', false)->whereNull('past_user_id');
+                    });
                 }
             }
         } else {
-            $query->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+            $query->whereHas('booking', function ($q) {
+                $q->where('created_by', Auth::id())->orWhere('past_user_id', Auth::id());
+            });
+
             if ($filter) {
                 if ($filter === 'past') {
-                    $query->where('is_past_info', true)->where('past_user_id', Auth::id())->whereNotNull('past_user_id');
+                    $query->whereHas('booking', function ($q) {
+                        $q->where('is_past_info', true)->where('past_user_id', Auth::id())->whereNotNull('past_user_id');
+                    });
                 } elseif ($filter === 'current') {
-                    $query->where('created_by', Auth::id())->whereNull('past_user_id');
+                    $query->whereHas('booking', function ($q) {
+                        $q->where('created_by', Auth::id())->whereNull('past_user_id');
+                    });
                 }
             }
         }
