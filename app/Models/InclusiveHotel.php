@@ -10,7 +10,7 @@ class InclusiveHotel extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['inclusive_id', 'product_id', 'room_id', 'cost_price', 'selling_price', 'quantity'];
+    protected $fillable = ['inclusive_id', 'product_id', 'room_id', 'cost_price', 'selling_price', 'quantity', 'checkin_date', 'checkout_date'];
 
     public function product(): BelongsTo
     {

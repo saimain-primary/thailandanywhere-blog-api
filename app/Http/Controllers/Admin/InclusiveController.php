@@ -159,6 +159,8 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'checkin_date' => $product['checkin_date'] ?? null,
+                        'checkout_date' => $product['checkout_date'] ?? null,
                     ]);
                 }
 
