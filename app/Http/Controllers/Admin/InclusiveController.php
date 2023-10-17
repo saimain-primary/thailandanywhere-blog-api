@@ -45,7 +45,7 @@ class InclusiveController extends Controller
 
         $query->orderBy('created_at', 'desc');
 
-        $query->with(['groupTours','entranceTickets','airportPickups','privateVanTours','airlineTickets','hotels']);
+        $query->with(['groupTours', 'entranceTickets', 'airportPickups', 'privateVanTours', 'airlineTickets', 'hotels']);
 
         $data = $query->paginate($limit);
 
@@ -232,36 +232,74 @@ class InclusiveController extends Controller
             InclusiveAirportPickup::where('inclusive_id', $id)->delete();
             InclusiveEntranceTicket::where('inclusive_id', $id)->delete();
             InclusiveGroupTour::where('inclusive_id', $id)->delete();
+            InclusiveHotel::where('inclusive_id', $id)->delete();
+            InclusiveAirlineTicket::where('inclusive_id', $id)->delete();
 
             foreach ($request->products as $product) {
                 if ($product['product_type'] === 'private_van_tour') {
                     $product = InclusivePrivateVanTour::create([
                         'inclusive_id' => $find->id,
                         'product_id' => $product['product_id'],
-                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
                     ]);
                 }
+
                 if ($product['product_type'] === 'group_tour') {
                     $product = InclusiveGroupTour::create([
                         'inclusive_id' => $find->id,
                         'product_id' => $product['product_id'],
-                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
                     ]);
                 }
                 if ($product['product_type'] === 'entrance_ticket') {
                     $product = InclusiveEntranceTicket::create([
                         'inclusive_id' => $find->id,
                         'product_id' => $product['product_id'],
-                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                        'variation_id' => isset($product['variation_id']) ? $product['variation_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
                     ]);
                 }
                 if ($product['product_type'] === 'airport_pickup') {
                     $product = InclusiveAirportPickup::create([
                         'inclusive_id' => $find->id,
                         'product_id' => $product['product_id'],
-                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null
+                        'car_id' => isset($product['car_id']) ? $product['car_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
                     ]);
                 }
+                if ($product['product_type'] === 'airline_ticket') {
+                    $product = InclusiveAirlineTicket::create([
+                        'inclusive_id' => $find->id,
+                        'product_id' => $product['product_id'],
+                        'ticket_id' => isset($product['ticket_id']) ? $product['ticket_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
+                    ]);
+                }
+                if ($product['product_type'] === 'hotel') {
+                    $product = InclusiveHotel::create([
+                        'inclusive_id' => $find->id,
+                        'product_id' => $product['product_id'],
+                        'room_id' => isset($product['room_id']) ? $product['room_id'] : null,
+                        'selling_price' => $product['selling_price'] ?? null,
+                        'quantity' => $product['quantity'] ?? null,
+                        'cost_price' => $product['cost_price'] ?? null,
+                        'checkin_date' => $product['checkin_date'] ?? null,
+                        'checkout_date' => $product['checkout_date'] ?? null,
+                    ]);
+                }
+
             }
         }
 
