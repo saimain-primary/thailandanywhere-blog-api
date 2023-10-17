@@ -20,6 +20,9 @@ class InclusiveAirportPickupResource extends JsonResource
             'id' => $this->id,
             'product' => new AirportPickupResource($this->product),
             'car' => new CarResource($this->car),
+            'selling_price' => $this->selling_price,
+            'cost_price' => $this->cost_price,
+            'quantity' => $this->quantity,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
