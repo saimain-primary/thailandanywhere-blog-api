@@ -14,11 +14,11 @@ class InclusiveAirlineTicket extends Model
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(EntranceTicket::class);
+        return $this->belongsTo(Airline::class, 'product_id');
     }
 
     public function ticket(): BelongsTo
     {
-        return $this->belongsTo(AirlineTicket::class);
+        return $this->belongsTo(AirlineTicket::class,'ticket_id');
     }
 }

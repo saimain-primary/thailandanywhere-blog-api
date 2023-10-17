@@ -20,6 +20,6 @@ class InclusiveEntranceTicket extends Model
 
     public function variation(): BelongsTo
     {
-        return $this->belongsTo(EntranceTicketVariation::class);
+        return $this->belongsTo(EntranceTicketVariation::class,'variation_id');
     }
 }

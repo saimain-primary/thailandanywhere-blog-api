@@ -14,9 +14,11 @@ class InclusiveAirlineTicketResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+//         return parent::toArray($request);
+
         return [
             'id' => $this->id,
-            'product' => new AirportPickupResource($this->product),
+            'product' => new AirlineResource($this->product),
             'ticket' => new AirlineTicketResource($this->ticket),
             'selling_price' => $this->selling_price,
             'cost_price' => $this->cost_price,

@@ -19,7 +19,7 @@ class InclusiveEntranceTicketResource extends JsonResource
         return [
             'id' => $this->id,
             'product' => new EntranceTicketResource($this->product),
-            'variation_id' => new EntranceTicketVariationResource($this->variation),
+            'variation' => new EntranceTicketVariationResource($this->variation),
             'selling_price' => $this->selling_price,
             'cost_price' => $this->cost_price,
             'quantity' => $this->quantity,

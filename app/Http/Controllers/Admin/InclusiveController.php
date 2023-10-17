@@ -45,7 +45,11 @@ class InclusiveController extends Controller
 
         $query->orderBy('created_at', 'desc');
 
+        $query->with(['groupTours','entranceTickets','airportPickups','privateVanTours','airlineTickets','hotels']);
+
         $data = $query->paginate($limit);
+
+//        return $data;
         return $this->success(InclusiveResource::collection($data)
             ->additional([
                 'meta' => [
@@ -160,7 +164,6 @@ class InclusiveController extends Controller
 
             }
         }
-
         return $this->success(new InclusiveResource($save), 'Successfully created');
     }
 
