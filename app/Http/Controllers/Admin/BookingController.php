@@ -76,13 +76,24 @@ class BookingController extends Controller
 
         }
 
-        $data = $query->paginate($limit);
+        if ($request->input('customer_name')) {
+            $customerName = $request->input('customer_name');
+            $query->whereHas('customer', function ($q) use ($customerName) {
+                return $q->where('name', 'LIKE', "%{$customerName}%");
+            });
+        }
 
+        if ($request->input('balance_due_date')) {
+            $query->whereDate('balance_due_date', $request->input('balance_due_date'));
+        }
+
+        $data = $query->paginate($limit);
 
         if ($paymentStatus && $paymentStatus !== "all") {
             $query = $query->where('payment_status', $paymentStatus);
             $data = $query->paginate($limit);
         }
+
 
         $query->orderBy('created_at', 'desc');
         return $this->success(BookingResource::collection($data)

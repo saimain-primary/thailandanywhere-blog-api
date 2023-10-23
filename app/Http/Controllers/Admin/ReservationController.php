@@ -274,11 +274,10 @@ class ReservationController extends Controller
 
         if ($request->customer_passport) {
             foreach ($request->customer_passport as $passport) {
-                $fileData = $this->uploads($passport, 'files/');
+                $fileData = $this->uploads($passport, 'passport/');
                 ReservationCustomerPassport::create(['booking_item_id' => $find->id, 'file' => $fileData['fileName']]);
             }
         }
-
 
         $find->update($data);
 
