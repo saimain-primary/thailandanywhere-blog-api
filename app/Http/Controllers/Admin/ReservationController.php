@@ -79,6 +79,10 @@ class ReservationController extends Controller
             $query->where('reservation_status', $request->reservation_status);
         }
 
+        if ($request->booking_status) {
+            $query->where('reservation_status', $request->booking_status);
+        }
+
         if ($request->customer_payment_status) {
             $query->where('payment_status', $request->customer_payment_status);
         }

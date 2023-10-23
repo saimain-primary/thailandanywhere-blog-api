@@ -24,7 +24,7 @@ class Booking extends Model
         return $this->belongsTo(Admin::class, 'created_by');
     }
 
-    public function pastUser()
+        public function pastUser()
     {
         return $this->belongsTo(Admin::class, 'past_user_id');
     }
