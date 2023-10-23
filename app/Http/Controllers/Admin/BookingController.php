@@ -93,6 +93,7 @@ class BookingController extends Controller
             $query->whereDate('created_at', $request->input('sale_date'));
         }
 
+
         $data = $query->paginate($limit);
 
         if ($paymentStatus && $paymentStatus !== "all") {

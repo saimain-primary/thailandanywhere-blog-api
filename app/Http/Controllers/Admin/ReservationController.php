@@ -83,6 +83,10 @@ class ReservationController extends Controller
             $query->where('payment_status', $request->customer_payment_status);
         }
 
+        if ($request->expense_status) {
+            $query->where('payment_status', $request->expense_status);
+        }
+
         if ($calenderFilter == true) {
             $query->where('product_type', 'App\Models\PrivateVanTour')->orWhere('product_type', 'App\Models\GroupTour');
         }
@@ -431,7 +435,6 @@ class ReservationController extends Controller
                     $fileData = $this->uploads($file, 'images/');
                     $findCarInfo->car_photo = $fileData['fileName'];
                 }
-
 
                 $findCarInfo->update();
             }
