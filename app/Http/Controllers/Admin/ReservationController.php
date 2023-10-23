@@ -31,12 +31,10 @@ class ReservationController extends Controller
      */
     public function index(Request $request)
     {
-
         $limit = $request->query('limit', 10);
         $filter = $request->query('filter');
         $serviceDate = $request->query('service_date');
         $calenderFilter = $request->query('calender_filter');
-
         $query = BookingItem::query();
 
         if ($serviceDate) {
@@ -52,10 +50,17 @@ class ReservationController extends Controller
 
         $productType = $request->query('product_type');
         $crmId = $request->query('crm_id');
+        $oldCrmId = $request->query('old_crm_id');
 
         if ($crmId) {
             $query->whereHas('booking', function ($q) use ($crmId) {
                 $q->where('crm_id', 'LIKE', "%{$crmId}%");
+            });
+        }
+
+        if ($oldCrmId) {
+            $query->whereHas('booking', function ($q) use ($oldCrmId) {
+                $q->where('past_crm_id', 'LIKE', "%{$oldCrmId}%");
             });
         }
 
@@ -72,6 +77,10 @@ class ReservationController extends Controller
 
         if ($request->reservation_status) {
             $query->where('reservation_status', $request->reservation_status);
+        }
+
+        if ($request->customer_payment_status) {
+            $query->where('payment_status', $request->customer_payment_status);
         }
 
         if ($calenderFilter == true) {

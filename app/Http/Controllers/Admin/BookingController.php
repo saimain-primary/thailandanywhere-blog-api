@@ -72,8 +72,6 @@ class BookingController extends Controller
                     $query->where('created_by', Auth::id())->whereNull('past_user_id');
                 }
             }
-
-
         }
 
         if ($request->input('customer_name')) {
@@ -85,6 +83,14 @@ class BookingController extends Controller
 
         if ($request->input('balance_due_date')) {
             $query->whereDate('balance_due_date', $request->input('balance_due_date'));
+        }
+
+        if ($request->input('booking_status')) {
+            $query->where('reservation_status', $request->input('booking_status'));
+        }
+
+        if ($request->input('sale_date')) {
+            $query->whereDate('created_at', $request->input('sale_date'));
         }
 
         $data = $query->paginate($limit);
