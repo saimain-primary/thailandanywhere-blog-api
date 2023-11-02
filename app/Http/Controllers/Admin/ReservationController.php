@@ -14,12 +14,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\BookingItemResource;
 use App\Http\Resources\BookingResource;
+use App\Http\Resources\EntranceTicketResource;
+
 use App\Models\ReservationBookingConfirmLetter;
 use App\Models\ReservationCarInfo;
 use App\Models\ReservationCustomerPassport;
 use App\Models\ReservationExpenseReceipt;
 use App\Models\ReservationInfo;
 use App\Models\ReservationSupplierInfo;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class ReservationController extends Controller
 {
@@ -250,6 +254,26 @@ class ReservationController extends Controller
         }
 
         return $this->success(new BookingItemResource($find), 'Booking Item Detail');
+    }
+
+     /**
+     * Print Invoice for the reservation entrance category.
+     */
+    public
+    function printReservation(Request $request, string $id)
+    {
+        $booking = BookingItem::find($id);
+
+        $data = new BookingItemResource($booking);
+
+        $customers[] = $booking->booking->customer;
+
+        $pdf = Pdf::setOption([
+            'fontDir' => public_path('/fonts')
+        ])->loadView('pdf.reservation_receipt', compact('data','customers'));
+
+        return $pdf->stream();
+
     }
 
 
