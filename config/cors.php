@@ -19,9 +19,9 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://sales-admin.thanywhere.com','https://blog.thanywhere.com',"http://localhost:5173","http://localhost:5174"],
+    'allowed_origins' => ['http://staging-admin.thanywhere.com','https://staging-admin.thanywhere.com','http://localhost:5173'],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patCterns' => [],
 
     'allowed_headers' => ['*'],
 
