@@ -42,6 +42,10 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
 
     Route::get('/sales-report',[ReportController::class, 'salesAmount']);
     Route::get('/sales-count',[ReportController::class, 'salesCount']);
+    Route::get('/bookings-count',[ReportController::class, 'bookingsCount']);
+    Route::get('/reservations-count',[ReportController::class, 'reservationsCount']);
+
+
 
     Route::apiResource('admins', AdminController::class);
     Route::get('/me', [AuthController::class, 'me']);
