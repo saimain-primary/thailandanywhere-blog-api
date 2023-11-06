@@ -24,6 +24,8 @@ use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
+use App\Http\Controllers\Admin\ReportController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +39,10 @@ Route::get('/super', function () {
 
 
 Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
+
+    Route::get('/sales-report',[ReportController::class, 'salesAmount']);
+    Route::get('/sales-count',[ReportController::class, 'salesCount']);
+
     Route::apiResource('admins', AdminController::class);
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
