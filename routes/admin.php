@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum', 'abilities:admin'])->group(function () {
     Route::get('/bookings-count',[ReportController::class, 'bookingsCount']);
     Route::get('/reservations-count',[ReportController::class, 'reservationsCount']);
 
+    Route::get('/reports',[ReportController::class, 'index']);
 
 
     Route::apiResource('admins', AdminController::class);
