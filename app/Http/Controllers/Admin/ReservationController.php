@@ -262,7 +262,13 @@ class ReservationController extends Controller
     public
     function printReservation(Request $request, string $id)
     {
+
         $booking = BookingItem::find($id);
+
+        if($booking == '')
+        {
+            abort(404);
+        }
 
         $data = new BookingItemResource($booking);
 
