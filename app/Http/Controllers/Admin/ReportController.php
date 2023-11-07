@@ -63,8 +63,6 @@ class ReportController extends Controller
         $bookings = $this->bookingsData($date);
         $reservations = $this->reservationsData($date);
 
-        return $reservations;
-
         $date = 'Date: '.Carbon::parse($date)->format('d F Y');
 
            
@@ -104,8 +102,8 @@ class ReportController extends Controller
         }
 
         $data = array(
-            'agents' => $agents,
-            'amount' => $amount,
+            'agents' => isset($agents) ? $agents : null,
+            'amount' => isset($amount) ? $amount : null,
         );
 
         return $this->success($data,'Sales Amount');
@@ -132,8 +130,8 @@ class ReportController extends Controller
         }
 
         $data = array(
-            'agents' => $agents,
-            'amount' => $amount,
+            'agents' => isset($agents) ? $agents : null,
+            'amount' => isset($amount) ? $amount : null,
         );
 
         return $this->success($data,'Sales Count');
@@ -161,8 +159,8 @@ class ReportController extends Controller
         }
 
         $data = array(
-            'agents' => $agents,
-            'bookings' => $booking,
+            'agents' => isset($agents) ? $agents : null,
+            'amount' => isset($amount) ? $amount : null,
         );
 
         return $this->success($data,'Bookings Count');
@@ -194,10 +192,9 @@ class ReportController extends Controller
         }
  
          $data = array(
-             'types' => $type,
-             'bookings' => $booking,
-             'prices' => $prices,
-         );
+            'agents' => isset($agents) ? $agents : null,
+            'amount' => isset($amount) ? $amount : null,
+            'prices' => isset($prices) ? $prices : null,         );
 
          return $this->success($data,'Reservations Count');
     }
@@ -215,8 +212,8 @@ class ReportController extends Controller
             }
 
             $data = array(
-                'agents' => $agents,
-                'amount' => $amount,
+                'agents' => isset($agents) ? $agents : null,
+                'amount' => isset($amount) ? $amount : null,
             );
 
             return $this->success($data,'Sales Amount');
@@ -238,8 +235,8 @@ class ReportController extends Controller
         }
 
         $data = array(
-            'agents' => $agents,
-            'amount' => $amount,
+            'agents' => isset($agents) ? $agents : null,
+            'amount' => isset($amount) ? $amount : null,
         );
 
         return $this->success($data,'Sales Count');
@@ -260,8 +257,8 @@ class ReportController extends Controller
         }
 
         $data = array(
-            'agents' => $agents,
-            'bookings' => $booking,
+            'agents' => isset($agents) ? $agents : null,
+            'amount' => isset($amount) ? $amount : null,
         );
 
         return $this->success($data,'Bookings Count');
@@ -284,10 +281,9 @@ class ReportController extends Controller
         }
  
          $data = array(
-             'types' => $type,
-             'bookings' => $booking,
-             'prices' => $prices,
-         );
+            'agents' => isset($agents) ? $agents : null,
+            'amount' => isset($amount) ? $amount : null,
+            'prices' => isset($prices) ? $prices : null,         );
 
          return $this->success($data,'Reservations Count');
     }
