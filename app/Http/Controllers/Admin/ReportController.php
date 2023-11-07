@@ -58,10 +58,12 @@ class ReportController extends Controller
     public function getSelectData($date)
     {
 
-        $sales_amount = $this->salesAmount($date);
-        $sales_count = $this->salesCount($date);
-        $bookings = $this->bookingsCount($date);
-        $reservations = $this->reservationsCount($date);
+        $sales_amount = $this->salesData($date);
+        $sales_count = $this->salesCountData($date);
+        $bookings = $this->bookingsData($date);
+        $reservations = $this->reservationsData($date);
+
+        return $reservations;
 
         $date = 'Date: '.Carbon::parse($date)->format('d F Y');
 
@@ -172,13 +174,13 @@ class ReportController extends Controller
 
         if($from != '' && $to != '')
         {
-            $data = BookingItem::select('product_type', DB::raw('COUNT(id) as total'))
+            $data = BookingItem::select('product_type', DB::raw('COUNT(id) as total, SUM(selling_price) as total_amount'))
             ->groupBy('product_type')
             ->whereBetween('created_at',[date($from),date($to)])
             ->get();
 
         }else{
-            $data = BookingItem::select('product_type', DB::raw('COUNT(id) as total'))
+            $data = BookingItem::select('product_type', DB::raw('COUNT(id) as total, SUM(selling_price) as total_amount'))
             ->groupBy('product_type')
             ->get();
         }
@@ -188,11 +190,13 @@ class ReportController extends Controller
 
             $type[] = $reserve_types;
             $booking[] = $result->total;
+            $prices[] = $result->total_amount;
         }
  
          $data = array(
              'types' => $type,
              'bookings' => $booking,
+             'prices' => $prices,
          );
 
          return $this->success($data,'Reservations Count');
@@ -202,7 +206,7 @@ class ReportController extends Controller
     {
             $data = Booking::select('created_by', DB::raw('SUM(grand_total) as total'))
             ->groupBy('created_by')
-            ->where('created_at','=',date($date))
+            ->whereDate('created_at',Carbon::parse($date)->format('Y-m-d'))
             ->get();
 
             foreach($data as $result){
@@ -224,7 +228,7 @@ class ReportController extends Controller
         
             $data = Booking::select('created_by', DB::raw('COUNT(grand_total) as total'))
             ->groupBy('created_by')
-            ->where('created_at','=',date($date))
+            ->whereDate('created_at','=',date($date))
             ->get();
         
     
@@ -247,7 +251,7 @@ class ReportController extends Controller
       
         $data = Booking::select('created_by', DB::raw('COUNT(id) as total'))
         ->groupBy('created_by')
-        ->where('created_at','=',date($date))
+        ->whereDate('created_at','=',date($date))
         ->get();
        
         foreach($data as $result){
@@ -267,20 +271,22 @@ class ReportController extends Controller
     public function reservationsData($date)
     {
 
-        $data = BookingItem::select('product_type', DB::raw('COUNT(id) as total'))
+        $data = BookingItem::select('product_type', DB::raw('COUNT(id) as total, SUM(selling_price) as total_amount'))
         ->groupBy('product_type')
-        ->where('created_at','=',date($date))
+        ->whereDate('created_at','=',date($date))
         ->get();
 
         foreach($data as $result){
             $reserve_types = substr($result->product_type,11);
             $type[] = $reserve_types;
             $booking[] = $result->total;
+            $prices[] = $result->total_amount;
         }
  
          $data = array(
              'types' => $type,
              'bookings' => $booking,
+             'prices' => $prices,
          );
 
          return $this->success($data,'Reservations Count');
