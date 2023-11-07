@@ -160,7 +160,7 @@ class ReportController extends Controller
 
         $data = array(
             'agents' => isset($agents) ? $agents : null,
-            'amount' => isset($amount) ? $amount : null,
+            'amount' => isset($booking) ? $booking : null,
         );
 
         return $this->success($data,'Bookings Count');
@@ -258,7 +258,7 @@ class ReportController extends Controller
 
         $data = array(
             'agents' => isset($agents) ? $agents : null,
-            'amount' => isset($amount) ? $amount : null,
+            'amount' => isset($booking) ? $booking : null,
         );
 
         return $this->success($data,'Bookings Count');
