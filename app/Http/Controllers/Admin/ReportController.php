@@ -55,6 +55,28 @@ class ReportController extends Controller
 
     }
 
+    public function getSelectData($date)
+    {
+
+        $sales_amount = $this->salesAmount($date);
+        $sales_count = $this->salesCount($date);
+        $bookings = $this->bookingsCount($date);
+        $reservations = $this->reservationsCount($date);
+
+        $date = 'Date: '.Carbon::parse($date)->format('d F Y');
+
+           
+        $data = array(
+            'sales' => $sales_amount,
+            'sales-count' => $sales_count,
+            'bookings' => $bookings,
+            'reservations' => $reservations
+        );
+
+        return $this->success($data,$date);
+
+    }
+
     /**
      * Get all bookings sales.
      */
@@ -175,5 +197,94 @@ class ReportController extends Controller
 
          return $this->success($data,'Reservations Count');
     }
+
+    public function salesData($date)
+    {
+            $data = Booking::select('created_by', DB::raw('SUM(grand_total) as total'))
+            ->groupBy('created_by')
+            ->where('created_at','=',date($date))
+            ->get();
+
+            foreach($data as $result){
+            $agents[] = $result->createdBy->name;
+            $amount[] = $result->total;
+            }
+
+            $data = array(
+                'agents' => $agents,
+                'amount' => $amount,
+            );
+
+            return $this->success($data,'Sales Amount');
+
+    }
+
+    public function salesCountData($date)
+    {
+        
+            $data = Booking::select('created_by', DB::raw('COUNT(grand_total) as total'))
+            ->groupBy('created_by')
+            ->where('created_at','=',date($date))
+            ->get();
+        
+    
+        foreach($data as $result){
+           $agents[] = $result->createdBy->name;
+           $amount[] = $result->total;
+        }
+
+        $data = array(
+            'agents' => $agents,
+            'amount' => $amount,
+        );
+
+        return $this->success($data,'Sales Count');
+
+    }
+
+    public function bookingsData($date)
+    {
+      
+        $data = Booking::select('created_by', DB::raw('COUNT(id) as total'))
+        ->groupBy('created_by')
+        ->where('created_at','=',date($date))
+        ->get();
+       
+        foreach($data as $result){
+           $agents[] = $result->createdBy->name;
+           $booking[] = $result->total;
+        }
+
+        $data = array(
+            'agents' => $agents,
+            'bookings' => $booking,
+        );
+
+        return $this->success($data,'Bookings Count');
+
+    }
+
+    public function reservationsData($date)
+    {
+
+        $data = BookingItem::select('product_type', DB::raw('COUNT(id) as total'))
+        ->groupBy('product_type')
+        ->where('created_at','=',date($date))
+        ->get();
+
+        foreach($data as $result){
+            $reserve_types = substr($result->product_type,11);
+            $type[] = $reserve_types;
+            $booking[] = $result->total;
+        }
+ 
+         $data = array(
+             'types' => $type,
+             'bookings' => $booking,
+         );
+
+         return $this->success($data,'Reservations Count');
+    }
+
 
 }
