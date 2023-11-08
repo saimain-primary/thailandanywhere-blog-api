@@ -9,6 +9,8 @@ use App\Models\BookingItem;
 use App\Http\Resources\AdminResource;
 use App\Http\Controllers\Controller;
 use App\Traits\HttpResponses;
+use App\Http\Resources\BookingResource;
+
 
 use DB;
 use Carbon\Carbon;
@@ -170,31 +172,62 @@ class ReportController extends Controller
     public function reservationsCount($from='',$to='')
     {
 
+        $query = Booking::query();
+
         if($from != '' && $to != '')
         {
-            $data = BookingItem::select('product_type', DB::raw('COUNT(id) as total, SUM(selling_price) as total_amount'))
-            ->groupBy('product_type')
-            ->whereBetween('created_at',[date($from),date($to)])
-            ->get();
+            $query->whereBetween('created_at',[date($from),date($to)]);
 
-        }else{
-            $data = BookingItem::select('product_type', DB::raw('COUNT(id) as total, SUM(selling_price) as total_amount'))
-            ->groupBy('product_type')
-            ->get();
         }
 
-        foreach($data as $result){
-            $reserve_types = substr($result->product_type,11);
 
-            $type[] = $reserve_types;
-            $booking[] = $result->total;
-            $prices[] = $result->total_amount;
+        $data = $query->get();
+
+        $results = BookingResource::collection($data);
+
+        $items=[];
+
+        foreach($results as $key => $res)
+        {
+            foreach($res->items as $res1){
+                $reserve_types = substr($res1->product_type,11);
+
+                $one[] = [
+                    'product_type' => $reserve_types,
+                    'price' => $res1->selling_price
+                ];
+               
+                $items[] = array(
+                        'product_type' => $reserve_types,
+                        'prices' => $res1->selling_price
+                );
+            }
         }
- 
+
+        $count_bookings = array_count_values(array_column($items, 'product_type'));
+
+        foreach($count_bookings as $value)
+        {
+            $booking[] = $value;
+        }
+
+        $new_array = array();
+        foreach ($one as $value) {
+            if(array_key_exists($value['product_type'],$new_array))
+                $value['price'] += $new_array[$value['product_type']]['price'];
+            $new_array[$value['product_type']] = $value;
+        }
+
+        foreach($new_array as $res)
+        {
+            $type[] = $res['product_type'];
+            $prices[] = $res['price'];
+
+        }
          $data = array(
             'agents' => isset($type) ? $type : null,
             'amount' => isset($booking) ? $booking : null,
-            'prices' => isset($prices) ? $prices : null,         
+            'prices' => isset($prices) ? $prices : null,
         );
 
          return $this->success($data,'Reservations Count');
@@ -269,18 +302,53 @@ class ReportController extends Controller
     public function reservationsData($date)
     {
 
-        $data = BookingItem::select('product_type', DB::raw('COUNT(id) as total, SUM(selling_price) as total_amount'))
-        ->groupBy('product_type')
-        ->whereDate('created_at','=',date($date))
-        ->get();
+        $query = Booking::query();
 
-        foreach($data as $result){
-            $reserve_types = substr($result->product_type,11);
-            $type[] = $reserve_types;
-            $booking[] = $result->total;
-            $prices[] = $result->total_amount;
+        $query->whereDate('created_at', date($date));
+
+        $data = $query->get();
+
+        $results = BookingResource::collection($data);
+
+        $items=[];
+
+        foreach($results as $key => $res)
+        {
+            foreach($res->items as $res1){
+                $reserve_types = substr($res1->product_type,11);
+
+                $one[] = [
+                    'product_type' => $reserve_types,
+                    'price' => $res1->selling_price
+                ];
+               
+                $items[] = array(
+                        'product_type' => $reserve_types,
+                        'prices' => $res1->selling_price
+                );
+            }
         }
- 
+
+        $count_bookings = array_count_values(array_column($items, 'product_type'));
+
+        foreach($count_bookings as $value)
+        {
+            $booking[] = $value;
+        }
+
+        $new_array = array();
+        foreach ($one as $value) {
+            if(array_key_exists($value['product_type'],$new_array))
+                $value['price'] += $new_array[$value['product_type']]['price'];
+            $new_array[$value['product_type']] = $value;
+        }
+
+        foreach($new_array as $res)
+        {
+            $type[] = $res['product_type'];
+            $prices[] = $res['price'];
+
+        }
          $data = array(
             'agents' => isset($type) ? $type : null,
             'amount' => isset($booking) ? $booking : null,
@@ -289,6 +357,5 @@ class ReportController extends Controller
 
          return $this->success($data,'Reservations Count');
     }
-
 
 }
