@@ -90,7 +90,7 @@ class BookingController extends Controller
         }
 
         if ($request->input('sale_date')) {
-            $query->whereDate('created_at', $request->input('sale_date'));
+            $query->whereDate('booking_date', $request->input('sale_date'));
         }
 
 
