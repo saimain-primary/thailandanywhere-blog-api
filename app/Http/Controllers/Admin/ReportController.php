@@ -13,6 +13,7 @@ use App\Http\Resources\BookingResource;
 
 
 use DB;
+use DateTime;
 use Carbon\Carbon;
 
 class ReportController extends Controller
@@ -192,14 +193,29 @@ class ReportController extends Controller
             foreach($res->items as $res1){
                 $reserve_types = substr($res1->product_type,11);
 
+                if($reserve_types == 'Hotel'){
+
+                    $datetime1 = new DateTime($res1->checkin_date);
+                    $datetime2 = new DateTime($res1->checkout_date);
+                    $interval = $datetime1->diff($datetime2);
+                    $days = $interval->format('%a');
+
+                    $price = $res1->quantity * $res1->selling_price * $days;
+
+                }else{
+
+                    $price = $res1->quantity * $res1->selling_price;
+
+                }
+                
                 $one[] = [
                     'product_type' => $reserve_types,
-                    'price' => $res1->selling_price
+                    'price' => $price
                 ];
                
                 $items[] = array(
                         'product_type' => $reserve_types,
-                        'prices' => $res1->selling_price
+                        'prices' => $price
                 );
             }
         }
@@ -317,14 +333,29 @@ class ReportController extends Controller
             foreach($res->items as $res1){
                 $reserve_types = substr($res1->product_type,11);
 
+                if($reserve_types == 'Hotel'){
+
+                    $datetime1 = new DateTime($res1->checkin_date);
+                    $datetime2 = new DateTime($res1->checkout_date);
+                    $interval = $datetime1->diff($datetime2);
+                    $days = $interval->format('%a');
+
+                    $price = $res1->quantity * $res1->selling_price * $days;
+
+                }else{
+
+                    $price = $res1->quantity * $res1->selling_price;
+
+                }
+                
                 $one[] = [
                     'product_type' => $reserve_types,
-                    'price' => $res1->selling_price
+                    'price' => $price
                 ];
                
                 $items[] = array(
                         'product_type' => $reserve_types,
-                        'prices' => $res1->selling_price
+                        'prices' => $price
                 );
             }
         }
