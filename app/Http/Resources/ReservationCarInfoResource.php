@@ -25,7 +25,7 @@ class ReservationCarInfoResource extends JsonResource
             'driver_name' => $this->driver_name,
             'driver_contact' => $this->driver_contact,
             'car_number' => $this->car_number,
-            'car_photo' => $this->car_photo ? env('APP_URL', 'http://localhost:8000') . Storage::url('images/' . $this->car_photo) : null,
+            'car_photo' => $this->car_photo ? config('app.url') . Storage::url('images/' . $this->car_photo) : null,
             'deleted_at' =>  $this->deleted_at,
             'updated_at' =>  $this->updated_at,
             'created_at' =>  $this->created_at,

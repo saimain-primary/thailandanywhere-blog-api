@@ -29,7 +29,7 @@ class EntranceTicketResource extends JsonResource
             'account_name' => $this->account_name,
             'name' => $this->name,
             'description' => $this->description,
-            'cover_image' => $this->cover_image ? env('APP_URL', 'http://localhost:8000') . Storage::url('images/' . $this->cover_image) : null,
+            'cover_image' => $this->cover_image ? config('app.url') . Storage::url('images/' . $this->cover_image) : null,
             'tags' => PrivateVanTourTagResource::collection($this->tags),
             'cities' => PrivateVanTourCityResource::collection($this->cities),
             'categories' => ProductCategoryResource::collection($this->categories),

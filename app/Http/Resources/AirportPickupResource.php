@@ -24,7 +24,7 @@ class AirportPickupResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'cover_image' => $this->cover_image ? env('APP_URL', 'http://localhost:8000') . Storage::url('images/' . $this->cover_image) : null,
+            'cover_image' => $this->cover_image ? config('app.url') . Storage::url('images/' . $this->cover_image) : null,
             'cars' => PrivateVanTourCarResource::collection($this->cars),
             'destinations' => PrivateVanTourDestinationResource::collection($this->destinations),
             'tags' => PrivateVanTourTagResource::collection($this->tags),

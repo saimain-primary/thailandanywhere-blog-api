@@ -18,7 +18,7 @@ class PrivateVanTourImageResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'image' => $this->image ? env('APP_URL', 'http://localhost:8000') . Storage::url('images/' . $this->image) : null,
+            'image' => $this->image ? config('app.url') . Storage::url('images/' . $this->image) : null,
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
         ];
