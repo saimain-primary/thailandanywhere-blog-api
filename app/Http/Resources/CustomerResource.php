@@ -25,7 +25,7 @@ class CustomerResource extends JsonResource
             'dob' => $this->dob,
             'line_id' => $this->line_id,
             'is_corporate_customer' => $this->is_corporate_customer,
-            'photo' => $this->photo ? env('APP_URL', 'http://localhost:8000') . Storage::url('images/' . $this->photo) : null,
+            'photo' => $this->photo ? config('app.url') . Storage::url('images/' . $this->photo) : null,
             'comment' => $this->comment,
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),

@@ -18,7 +18,7 @@ class HotelContractResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
-            'file' => $this->file ? env('APP_URL', 'http://localhost:8000') . Storage::url('contracts/' . $this->file) : null,
+            'file' => $this->file ? config('app.url') . Storage::url('contracts/' . $this->file) : null,
         ];
     }
 }
