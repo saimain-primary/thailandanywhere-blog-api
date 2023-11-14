@@ -25,6 +25,7 @@ class EntranceTicketVariationController extends Controller
             $query->where('name', 'LIKE', "%{$search}%");
         }
         
+        
         if ($request->entrance_ticket_id) {
             $query->where('entrance_ticket_id', $request->entrance_ticket_id);
         }
