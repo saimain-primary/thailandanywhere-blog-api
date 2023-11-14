@@ -287,18 +287,18 @@
                             <td style="font-weight: bold; font-size:14px;">
                                 <?php if($data->deposit === 0 || $data->deposit === 'null'): ?>
                                     <?php if($data->payment_currency === 'USD'): ?>
-                                        <?php echo e(number_format((float) ($data->sub_total - $data->discount) / ($data->money_exchange_rate ? $data->money_exchange_rate : 1), '2', '.', '')); ?>
+                                        <?php echo e(number_format((float) ($data->sub_total - $data->discount) / ($data->money_exchange_rate ? (float) $data->money_exchange_rate : 1), '2', '.', '')); ?>
 
                                     <?php else: ?>
-                                        <?php echo e(number_format((float) ($data->sub_total - $data->discount) * $data->money_exchange_rate ? $data->money_exchange_rate : 1, '2', '.', '')); ?>
+                                        <?php echo e(number_format((float) ($data->sub_total - $data->discount) * $data->money_exchange_rate ? (float) $data->money_exchange_rate : 1, '2', '.', '')); ?>
 
                                     <?php endif; ?>
                                 <?php else: ?>
                                     <?php if($data->payment_currency === 'USD'): ?>
-                                        <?php echo e(number_format((float) ($data->sub_total - $data->discount - $data->deposit) / ($data->money_exchange_rate ? (int) $data->money_exchange_rate : 1), 2, '.', '')); ?>
+                                        <?php echo e(number_format((float) ($data->sub_total - $data->discount - $data->deposit) / ($data->money_exchange_rate ? (float) $data->money_exchange_rate : 1), 2, '.', '')); ?>
 
                                     <?php else: ?>
-                                        <?php echo e(number_format((float) ($data->sub_total - $data->discount - $data->deposit) * ($data->money_exchange_rate ? (int) $data->money_exchange_rate : 1), 2, '.', '')); ?>
+                                        <?php echo e(number_format((float) ($data->sub_total - $data->discount - $data->deposit) * ($data->money_exchange_rate ? (float) $data->money_exchange_rate : 1), 2, '.', '')); ?>
 
                                     <?php endif; ?>
                                 <?php endif; ?>
