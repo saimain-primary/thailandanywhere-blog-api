@@ -389,4 +389,60 @@ class ReportController extends Controller
          return $this->success($data,'Reservations Count');
     }
 
+//     public function getEachUserSaleCount()
+// {
+//     $data = Booking::select('created_by', DB::raw('COUNT(grand_total) as total'))
+//         ->groupBy('created_by')
+//         ->get();
+
+//     foreach ($data as $result) {
+//         $agents[] = $result->createdBy->name;
+//         $amount[] = $result->total;
+//     }
+
+//     $responseData = array(
+//         'agents' => isset($agents) ? $agents : null,
+//         'amount' => isset($amount) ? $amount : null,
+//     );
+
+//     return $this->success($responseData, 'Sales Count');
+// }
+public function getEachUserSaleCount()
+{
+    $data = Booking::select('created_by', DB::raw('COUNT(grand_total) as total'))
+        ->groupBy('created_by')
+        ->get();
+
+    $responseData = [
+        'agents' => $data->pluck('createdBy.name')->toArray(),
+        'amount' => $data->pluck('total')->toArray(),
+    ];
+
+    return $this->success($responseData, 'Sales Count');
+}
+// public function getEachUserSaleCount($selectedMonth)
+// {
+//     $currentMonth = Carbon::now()->format('m');
+    
+//     if ($selectedMonth != $currentMonth) {
+//         // The selected month is not the current month, handle this case as needed
+//         return $this->error('Invalid month selected', 400);
+//     }
+
+//     $data = Booking::select('created_by', DB::raw('COUNT(grand_total) as total'))
+//         ->groupBy('created_by')
+//         ->whereMonth('created_at', '=', $selectedMonth)
+//         ->get();
+
+//     $responseData = [
+//         'agents' => $data->pluck('createdBy.name')->toArray(),
+//         'amount' => $data->pluck('total')->toArray(),
+//     ];
+
+//     return $this->success($responseData, 'Sales Count');
+// }
+
+
+
+
 }
