@@ -24,6 +24,11 @@ class EntranceTicketVariationController extends Controller
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
+        
+        
+        if ($request->entrance_ticket_id) {
+            $query->where('entrance_ticket_id', $request->entrance_ticket_id);
+        }
 
         $data = $query->paginate($limit);
         return $this->success(EntranceTicketVariationResource::collection($data)
