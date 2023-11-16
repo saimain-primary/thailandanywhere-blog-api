@@ -80,6 +80,8 @@ class InclusiveController extends Controller
             'sku_code' => $request->sku_code,
             'price' => $request->price,
             'agent_price' => $request->agent_price,
+            'day' => $request->day,
+            'night' => $request->night,
         ];
 
         if ($request->file('cover_image')) {
@@ -108,6 +110,8 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'day' => $product['day'] ?? 1,
+
                     ]);
                 }
 
@@ -119,6 +123,8 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'day' => $product['day'] ?? 1,
+
                     ]);
                 }
                 if ($product['product_type'] === 'entrance_ticket') {
@@ -129,6 +135,8 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'day' => $product['day'] ?? 1,
+
                     ]);
                 }
                 if ($product['product_type'] === 'airport_pickup') {
@@ -139,6 +147,8 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'day' => $product['day'] ?? 1,
+
                     ]);
                 }
                 if ($product['product_type'] === 'airline_ticket') {
@@ -149,6 +159,8 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'day' => $product['day'] ?? 1,
+
                     ]);
                 }
                 if ($product['product_type'] === 'hotel') {
@@ -161,6 +173,8 @@ class InclusiveController extends Controller
                         'cost_price' => $product['cost_price'] ?? null,
                         'checkin_date' => $product['checkin_date'] ?? null,
                         'checkout_date' => $product['checkout_date'] ?? null,
+                        'day' => $product['day'] ?? 1,
+
                     ]);
                 }
 
@@ -198,6 +212,8 @@ class InclusiveController extends Controller
         $find->sku_code = $request->sku_code ?? $find->sku_code;
         $find->price = $request->price ?? $find->price;
         $find->agent_price = $request->agent_price ?? $find->agent_price;
+        $find->day = $request->day ?? 1;
+        $find->night = $request->night ?? $find->night;
 
         if ($request->file('cover_image')) {
             if ($file = $request->file('cover_image')) {
@@ -244,6 +260,7 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'day' => $product['day'] ?? 1,
                     ]);
                 }
 
@@ -255,6 +272,7 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'day' => $product['day'] ?? 1,
                     ]);
                 }
                 if ($product['product_type'] === 'entrance_ticket') {
@@ -265,6 +283,7 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'day' => $product['day'] ?? 1,
                     ]);
                 }
                 if ($product['product_type'] === 'airport_pickup') {
@@ -275,6 +294,7 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'day' => $product['day'] ?? 1,
                     ]);
                 }
                 if ($product['product_type'] === 'airline_ticket') {
@@ -285,6 +305,7 @@ class InclusiveController extends Controller
                         'selling_price' => $product['selling_price'] ?? null,
                         'quantity' => $product['quantity'] ?? null,
                         'cost_price' => $product['cost_price'] ?? null,
+                        'day' => $product['day'] ?? 1,
                     ]);
                 }
                 if ($product['product_type'] === 'hotel') {
@@ -297,6 +318,8 @@ class InclusiveController extends Controller
                         'cost_price' => $product['cost_price'] ?? null,
                         'checkin_date' => $product['checkin_date'] ?? null,
                         'checkout_date' => $product['checkout_date'] ?? null,
+                        'day' => $product['day'] ?? 1,
+
                     ]);
                 }
 

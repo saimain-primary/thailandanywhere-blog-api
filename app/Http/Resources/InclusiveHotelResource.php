@@ -21,6 +21,7 @@ class InclusiveHotelResource extends JsonResource
             'selling_price' => $this->selling_price,
             'cost_price' => $this->cost_price,
             'quantity' => $this->quantity,
+            'day' => $this->day,
             'checkin_date' => $this->checkin_date,
             'checkout_date' => $this->checkout_date,
             'created_at' => $this->created_at,
