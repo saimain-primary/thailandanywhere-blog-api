@@ -23,6 +23,8 @@ class InclusiveResource extends JsonResource
             'sku_code' => $this->sku_code,
             'price' => $this->price,
             'agent_price' => $this->agent_price,
+            'day' => $this->day,
+            'night' => $this->night,
             'description' => $this->description,
             'cover_image' => $this->cover_image ? config('app.url') . Storage::url('images/' . $this->cover_image) : null,
             'images' => $this->images ? PrivateVanTourImageResource::collection($this->images) : null,
