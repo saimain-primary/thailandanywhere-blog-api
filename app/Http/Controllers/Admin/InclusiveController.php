@@ -85,12 +85,18 @@ class InclusiveController extends Controller
         ];
 
         if ($request->file('cover_image')) {
+
+            $request->validate([
+                'cover_image'=>'nullable|mimes:pdf'
+            ]);
+    
             if ($file = $request->file('cover_image')) {
-                $fileData = $this->uploads($file, 'images/');
+                $fileData = $this->uploads($file, 'pdfs/');
                 $data['cover_image'] = $fileData['fileName'];
             }
         }
 
+      
         $save = Inclusive::create($data);
 
         if ($request->file('images')) {
@@ -216,11 +222,16 @@ class InclusiveController extends Controller
         $find->night = $request->night ?? $find->night;
 
         if ($request->file('cover_image')) {
+
+            $request->validate([
+                'cover_image'=>'nullable|mimes:pdf'
+            ]);
+    
             if ($file = $request->file('cover_image')) {
 
-                Storage::delete('public/images/' . $find->cover_image);
+                Storage::delete('public/pdfs/' . $find->cover_image);
 
-                $fileData = $this->uploads($file, 'images/');
+                $fileData = $this->uploads($file, 'pdfs/');
                 $find->cover_image = $fileData['fileName'];
             }
         }
