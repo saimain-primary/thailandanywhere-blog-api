@@ -192,26 +192,31 @@
                     @endif
                     <tr>
                         <td>{{ $row->service_date }}</td>
-                        <td style="max-width: 100px">{{ $row->product->name }} </br>
+                        <td style="max-width: 100px;">{{ $row->product->name }} </br>
                             @if ($row->product_type === 'App\Models\Inclusive')
                                 @if ($row->product->privateVanTours)
                                     @foreach ($row->product->privateVanTours as $pvt)
-                                        {{ $pvt->product->name }} </br>
+                                        <span style="font-size:7px;">{{ $pvt->product->name }}</span> </br>
                                     @endforeach
                                 @endif
                                 @if ($row->product->groupTours)
                                     @foreach ($row->product->groupTours as $gt)
-                                        {{ $gt->product->name }} </br>
+                                        <span style="font-size:7px;">{{ $gt->product->name }}</span> </br>
                                     @endforeach
                                 @endif
                                 @if ($row->product->airportPickups)
                                     @foreach ($row->product->airportPickups as $ap)
-                                        {{ $ap->product->name }} </br>
+                                        <span style="font-size:7px;">{{ $ap->product->name }}</span> </br>
                                     @endforeach
                                 @endif
                                 @if ($row->product->entranceTickets)
                                     @foreach ($row->product->entranceTickets as $et)
-                                        {{ $et->product->name }} </br>
+                                        <span style="font-size:7px;">{{ $et->product->name }}</span> </br>
+                                    @endforeach
+                                @endif
+                                @if ($row->product->hotels)
+                                    @foreach ($row->product->hotels as $et)
+                                        <span style="font-size:7px;">{{ $et->product->name }}</span> </br>
                                     @endforeach
                                 @endif
                             @endif

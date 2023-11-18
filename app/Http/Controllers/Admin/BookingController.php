@@ -388,7 +388,9 @@ class BookingController extends Controller
                 $q->where('payment_status', 'fully_paid');
             }, 'createdBy'])->first();
         } else {
-            $booking = Booking::where('id', $id)->with(['customer', 'items', 'createdBy'])->first();
+            $booking = Booking::where('id', $id)->with(['customer', 'items' => function ($q) {
+                $q->where('reservation_status','!=','undefined');
+            }, 'createdBy'])->first();
         }
 
         $data = new BookingResource($booking);
@@ -397,7 +399,6 @@ class BookingController extends Controller
         ])->loadView('pdf.booking_receipt', compact('data'));
 
         return $pdf->stream();
-        // return $pdf->download($booking->crm_id . '_receipt.pdf');
     }
 
     public function deleteReceipt($id)
