@@ -23,6 +23,7 @@ class InclusiveAirlineTicketResource extends JsonResource
             'selling_price' => $this->selling_price,
             'cost_price' => $this->cost_price,
             'quantity' => $this->quantity,
+            'day' => $this->day,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
