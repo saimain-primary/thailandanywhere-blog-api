@@ -9,7 +9,7 @@ class InclusivePrivateVanTour extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['inclusive_id', 'product_id', 'car_id','selling_price','cost_price','quantity'];
+    protected $fillable = ['inclusive_id', 'product_id', 'car_id','selling_price','cost_price','quantity','day'];
 
 
     public function product()
