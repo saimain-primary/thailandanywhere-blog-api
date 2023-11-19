@@ -197,6 +197,7 @@ class BookingController extends Controller
                 'checkin_date' => isset($item['checkin_date']) ? $item['checkin_date'] : null,
                 'checkout_date' => isset($item['checkout_date']) ? $item['checkout_date'] : null,
                 'reservation_status' => $item['reservation_status'] ?? "awaiting",
+                'is_inclusive' => $item['reservation_status'] == 'undefined' ? "1" : "0" ,
             ];
 
             if (isset($request->items[$key]['customer_attachment'])) {
@@ -327,6 +328,7 @@ class BookingController extends Controller
                     'checkin_date' => isset($item['checkin_date']) ? $item['checkin_date'] : null,
                     'checkout_date' => isset($item['checkout_date']) ? $item['checkout_date'] : null,
                     'reservation_status' => $item['reservation_status'] ?? "awaiting",
+                    'is_inclusive' => $item['reservation_status'] == 'undefined' ? "1" : "0" ,
                 ];
 
                 if (isset($request->items[$key]['receipt_image'])) {
@@ -385,11 +387,11 @@ class BookingController extends Controller
     {
         if ($request->query('paid') && $request->query('paid') === 1) {
             $booking = Booking::where('id', $id)->with(['customer', 'items' => function ($q) {
-                $q->where('payment_status', 'fully_paid');
+                $q->where('payment_status', 'fully_paid')->where('is_inclusive','0');
             }, 'createdBy'])->first();
         } else {
             $booking = Booking::where('id', $id)->with(['customer', 'items' => function ($q) {
-                $q->where('reservation_status','!=','undefined');
+                $q->where('is_inclusive','0');
             }, 'createdBy'])->first();
         }
 
