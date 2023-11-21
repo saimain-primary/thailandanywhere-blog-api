@@ -22,6 +22,7 @@ use App\Models\ReservationCustomerPassport;
 use App\Models\ReservationExpenseReceipt;
 use App\Models\ReservationInfo;
 use App\Models\ReservationSupplierInfo;
+
 use Barryvdh\DomPDF\Facade\Pdf;
 
 
@@ -39,8 +40,9 @@ class ReservationController extends Controller
         $filter = $request->query('filter');
         $serviceDate = $request->query('service_date');
         $calenderFilter = $request->query('calender_filter');
+        $search = $request->input('hotel_name');
+        $search_attraction = $request->input('attraction_name');
         $query = BookingItem::query();
-
         if ($serviceDate) {
             $query->whereDate('service_date', $serviceDate);
         };
@@ -74,7 +76,7 @@ class ReservationController extends Controller
                 $q->where('created_by', $userId)->orWhere('past_user_id', $userId);
             });
         }
-
+       
         if ($productType) {
             $query->where('product_type', $productType);
         }
@@ -94,11 +96,20 @@ class ReservationController extends Controller
         if ($request->expense_status) {
             $query->where('payment_status', $request->expense_status);
         }
-
+        
         if ($calenderFilter == true) {
             $query->where('product_type', 'App\Models\PrivateVanTour')->orWhere('product_type', 'App\Models\GroupTour');
         }
-
+        if($search){
+            $query->whereHas('product', function ($q) use ($search) {
+                $q->where('name', 'LIKE', "%{$search}%");
+            });
+        }
+        if($search_attraction){
+            $query->whereHas('variation', function ($q) use ($search_attraction) {
+                $q->where('name', 'LIKE', "%{$search_attraction}%");
+            });
+        }
         if (Auth::user()->role === 'super_admin' || Auth::user()->role === 'reservation') {
             if ($filter) {
                 if ($filter === 'past') {
@@ -141,6 +152,7 @@ class ReservationController extends Controller
             ])
             ->response()
             ->getData(), 'Reservation List');
+        
 
 //        $limit = $request->query('limit', 10);
 //        $search = $request->query('search');
