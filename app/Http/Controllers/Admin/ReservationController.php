@@ -41,6 +41,7 @@ class ReservationController extends Controller
         $serviceDate = $request->query('service_date');
         $calenderFilter = $request->query('calender_filter');
         $search = $request->input('hotel_name');
+        $search_attraction = $request->input('attraction_name');
         $query = BookingItem::query();
         if ($serviceDate) {
             $query->whereDate('service_date', $serviceDate);
@@ -102,6 +103,11 @@ class ReservationController extends Controller
         if($search){
             $query->whereHas('product', function ($q) use ($search) {
                 $q->where('name', 'LIKE', "%{$search}%");
+            });
+        }
+        if($search_attraction){
+            $query->whereHas('variation', function ($q) use ($search_attraction) {
+                $q->where('name', 'LIKE', "%{$search_attraction}%");
             });
         }
         if (Auth::user()->role === 'super_admin' || Auth::user()->role === 'reservation') {
