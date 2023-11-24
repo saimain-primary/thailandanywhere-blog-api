@@ -90,9 +90,9 @@
 
 <body>
     <div id="watermark">
-        <img src="{{ public_path() . '/assets/attraction_template.jpg' }}" height="100%" width="100%" />
+        <img src="{{ public_path() . '/assets/hotel_template.jpg' }}" height="100%" width="100%" />
     </div>
-
+    
     <div>
         <div style="margin-top: 430px;
         padding: 0px 23px">
@@ -129,18 +129,29 @@
                         <th style="width:30%;font-size:14px;font-weight:bold;padding-bottom:12px!important">Ticket Detail</th>
                     </tr>
                     <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Attraction Name:</td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{$data->product->name}}</td>
+                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Hotel Name:</td>
+                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">
+                        {{$data->product->name ? $data->product->name : '-'}}
+                    </td>
                     </tr>
                     <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Ticket Name:</td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{$data->variation->name ?? '-' }}
+                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Room Type:</td>
+                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">
+                       {{$data->room->name}}
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Quantity:
+                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Check-In:
                         </td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{count($customers)}}
+                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">
+                        {{ Carbon\Carbon::parse($data->checkin_date)->format('d F Y') }} 
+                        </td>
+                    </tr>
+                    <td style="width:30%;font-size:13px;padding-bottom:12px!important">Check-Out:
+                        </td>
+                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">
+                        {{ Carbon\Carbon::parse($data->checkout_date)->format('d F Y') }}
+
                         </td>
                     </tr>
                     <tr>
@@ -180,7 +191,7 @@
     @if ($data->payment_status === 'not_paid') color:red; @endif">
     {{ ucwords(str_replace('_', ' ', $data->payment_status)) }}
 </td>
-
+                        
                     </tr>
                 </tbody>
             </table>
