@@ -94,96 +94,50 @@
     </div>
     
     <div>
-        <div style="margin-top: 430px;
-        padding: 0px 23px">
-            <table class="header-table">
-                <tbody>
-                    <tr>
-                        <th style="width:30%;font-size:14px;font-weight:bold;padding-bottom:12px!important">Booking Detail</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Booking ID:</td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{ $data->crm_id }}</td>
-                    </tr>
-                    <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Reservation ID:</td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{ preg_match('/_(\d+)$/', $data->crm_id, $matches) ? $matches[1] : '' }}
-</td>
-                    </tr>
-                    {{--  --}}
-                    <tr>
-                        <th style="width:30%;font-size:14px;font-weight:bold;padding-bottom:12px!important">Customer Detail</th>
-                    </tr>
-                    <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Customer Name:</td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{$data->booking->customer->name}}</td>
-                    </tr>
-                    <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Passport No:</td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{$data->customer_passports ? $data->customer_passports : '-'}}</td>
-                    </tr>
-                    {{--  --}}
-                    <tr>
-                        <th style="width:30%;font-size:14px;font-weight:bold;padding-bottom:12px!important">Ticket Detail</th>
-                    </tr>
-                    <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Attraction Name:</td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{$data->product->name}}</td>
-                    </tr>
-                    <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Ticket Name:</td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{$data->variation->name ?? '-' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Quantity:
-                        </td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{count($customers)}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Service Date:
-                        </td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{Carbon\Carbon::parse($data->service_date)->format('d F Y')}}
-                        </td>
-                    </tr>
-                    {{--  --}}
-                    <tr>
-                        <th style="width:30%;font-size:14px;font-weight:bold;padding-bottom:12px!important">Agent Detail</th>
-                    </tr>
-                    <tr>
-                        <td style="width:30%;font-size:13px;padding-bottom:12px!important">Agent Name:
-                        </td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">
-                        @if (Str::startsWith($data->crm_id, 'CK'))
-                            ChawKalayar
-                        @elseif (Str::startsWith($data->crm_id, 'SH'))
-                            Sunshine
-                        @elseif (Str::startsWith($data->crm_id, 'HN'))
-                            Hinn
-                        @elseif (Str::startsWith($data->crm_id, 'CS'))
-                            Chit Su
-                        @elseif (Str::startsWith($data->crm_id, 'KN'))
-                            Ko Nay Myo
-                        @elseif (Str::startsWith($data->crm_id, 'EM'))
-                            Ei Myat
-                        @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="width:30%;font-size:13px;font-weight:bold;padding-bottom:12px!important">Payment Status:</th>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important;
-    @if ($data->payment_status === 'fully_paid') color: green; @endif
-    @if ($data->payment_status === 'partially_paid') color:#ff5733; @endif
-    @if ($data->payment_status === 'not_paid') color:red; @endif">
-    {{ ucwords(str_replace('_', ' ', $data->payment_status)) }}
-</td>
-                        
-                    </tr>
-                </tbody>
-            </table>
+        <div style="margin-top: 170px;
+        padding: 10px 40px" id="wrap">
+            <h3 class="header-heading ">{{Carbon\Carbon::now()->format('d F Y')}}</h3>
+
+            <p>Dear Sir, </p>
+
+            <p>Thank you very much for your booking. Please see the information below for confirmation of the {{$data->product->name}}.
+
+            </p><br/>
+
+            <div class="one">
+                Name of Attraction: 
+            </div>
+            <div class="two info">{{$data->product->name}}</div><br/><br/><br/>
+
+            <div class="one">Agent Name:</div>
+            <div class="two info">TH Anywhere Co.Ltd.</div><br/><br/>
+            <div class="one">Reservation Date:</div>
+            <div class="two info">{{Carbon\Carbon::parse($data->created_at)->format('d F Y')}}</div><br/><br/>
+            @if($data->payment_method)
+                <div class="one space">Payment Method:</div>
+                <div class="two space info">{{$data->payment_method}}</div><br/><br>
+            @endif<div class="one">Customer Name:</div>
+            <div class="two info">{{$data->booking->customer->name}}</div><br><br/>
+            <div class="one">Passport Number:</div>
+            <div class="two info">{{$data->customer_passports ? $data->customer_passports : '-'}}</div><br/><br/><br/><br/>
+            <div class="one">Name of Attraction:</div>
+            <div class="two info">{{$data->product->name}}</div><br/><br/>
+
+            <div class="one ">Type of Ticket:</div>
+            <div class="two  info">{{$data->variation->name}}</div><br/><br/>
+
+            <div class="one">Service Date:</div>
+            <div class="two info">{{Carbon\Carbon::parse($data->service_date)->format('d F Y')}}</div><br/><br/>
+
+            <div class="one">No. of Person:</div>
+            <div class="two info">{{count($customers)}}</div><br/><br/>
+
+            <div class="one">Thanks for your booking.</div>
+
+
+
+
+            
         </div>
     </div>
 </body>
