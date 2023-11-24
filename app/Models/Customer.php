@@ -14,4 +14,16 @@ class Customer extends Model
     protected $casts = [
         'is_corporate_customer' => 'boolean'
     ];
+
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class,'id','customer_id');
+    }
+
+    public function items()
+    {
+        return $this->hasManyThrough(BookingItem::class,Booking::class,'customer_id','id','id');
+    }
+
 }

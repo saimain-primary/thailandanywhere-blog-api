@@ -34,6 +34,8 @@ Route::get('/bookings/{id}/receipt', [BookingController::class, 'printReceipt'])
 Route::get('/reservations/{id}/receipt', [ReservationController::class, 'printReservation']);
 Route::get('/hotel-reservation/{id}/receipt', [ReservationController::class, 'printReservationHotel']);
 
+Route::get('/customer-sale',[ReportController::class,'getCustomerSale']);
+
 Route::get('/super', function () {
     return 'this is super admin only';
 })->middleware(['auth:sanctum', 'abilities:*']);
