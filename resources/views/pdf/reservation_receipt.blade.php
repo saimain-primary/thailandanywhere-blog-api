@@ -92,7 +92,7 @@
     <div id="watermark">
         <img src="{{ public_path() . '/assets/attraction_template.jpg' }}" height="100%" width="100%" />
     </div>
-    
+
     <div>
         <div style="margin-top: 430px;
         padding: 0px 23px">
@@ -180,7 +180,7 @@
     @if ($data->payment_status === 'not_paid') color:red; @endif">
     {{ ucwords(str_replace('_', ' ', $data->payment_status)) }}
 </td>
-                        
+
                     </tr>
                 </tbody>
             </table>
