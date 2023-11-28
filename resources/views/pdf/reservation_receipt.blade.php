@@ -140,7 +140,7 @@
                     <tr>
                         <td style="width:30%;font-size:13px;padding-bottom:12px!important">Quantity:
                         </td>
-                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{count($customers)}}
+                        <td style="width:70%;font-size:13px;font-weight:bold;padding-bottom:12px!important">{{$data->quantity}}
                         </td>
                     </tr>
                     <tr>
