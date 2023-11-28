@@ -33,6 +33,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/bookings/{id}/receipt', [BookingController::class, 'printReceipt']);
 Route::get('/reservations/{id}/receipt', [ReservationController::class, 'printReservation']);
 Route::get('/hotel-reservation/{id}/receipt', [ReservationController::class, 'printReservationHotel']);
+Route::get('/vantour-reservation/{id}/receipt', [ReservationController::class, 'printReservationVantour']);
 
 Route::get('/super', function () {
     return 'this is super admin only';
