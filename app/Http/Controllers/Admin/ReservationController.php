@@ -304,7 +304,6 @@ class ReservationController extends Controller
         {
             abort(404);
         }
-
         $data = new BookingItemResource($booking);
 
         $hotels[] = $booking->booking->hotel;
