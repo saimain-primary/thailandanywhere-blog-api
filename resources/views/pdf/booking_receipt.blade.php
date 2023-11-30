@@ -190,6 +190,35 @@
                         <th>AMOUNT</th>
                     </tr>
                     @endif
+                    @if ($index == 8)
+            </table>
+            <div class="break-before"></div>
+            <table class="body-table" style="max-height: 100px !important; margin-top:300px;">
+                <tbody>
+                    <tr>
+                        <th>SERVICE DATE</th>
+                        <th>SERVICE</th>
+                        <th style="max-width:140px">DESCRIPTION</th>
+                        <th>QTY</th>
+                        <th>RATE</th>
+                        <th>AMOUNT</th>
+                    </tr>
+                    @endif
+                    @if ($index == 16)
+            </table>
+            <div class="break-before"></div>
+            <table class="body-table" style="max-height: 100px !important; margin-top:300px;">
+                <tbody>
+                    <tr>
+                        <th>SERVICE DATE</th>
+                        <th>SERVICE</th>
+                        <th style="max-width:140px">DESCRIPTION</th>
+                        <th>QTY</th>
+                        <th>RATE</th>
+                        <th>AMOUNT</th>
+                    </tr>
+                    @endif
+
                     <tr>
                         <td>{{ $row->service_date }}</td>
                         <td style="max-width: 100px;">{{ $row->product->name }} </br>
