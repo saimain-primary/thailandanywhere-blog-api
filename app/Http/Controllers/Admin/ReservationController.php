@@ -294,6 +294,46 @@ class ReservationController extends Controller
 
     }
 
+    public
+    function printReservationHotel(Request $request, string $id)
+    {
+
+        $booking = BookingItem::find($id);
+
+        if($booking == '')
+        {
+            abort(404);
+        }
+        $data = new BookingItemResource($booking);
+
+        $hotels[] = $booking->booking->hotel;
+
+        $pdf = Pdf::setOption([
+            'fontDir' => public_path('/fonts')
+        ])->loadView('pdf.reservation_hotel_receipt', compact('data','hotels'));
+
+        return $pdf->stream();
+
+    }
+    public function printReservationVantour(Request $request, string $id){
+        $booking = BookingItem::find($id);
+
+        if($booking == '')
+        {
+            abort(404);
+        }
+
+        $data = new BookingItemResource($booking);
+
+        $hotels[] = $booking->booking->vantour;
+
+        $pdf = Pdf::setOption([
+            'fontDir' => public_path('/fonts')
+        ])->loadView('pdf.reservation_vantour', compact('data','hotels'));
+
+        return $pdf->stream();
+    }
+
 
     /**
      * Update the specified resource in storage.
