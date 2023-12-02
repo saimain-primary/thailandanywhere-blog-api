@@ -22,6 +22,7 @@ use App\Models\ReservationCustomerPassport;
 use App\Models\ReservationExpenseReceipt;
 use App\Models\ReservationInfo;
 use App\Models\ReservationSupplierInfo;
+use App\Models\ReservationAssociatedCustomer;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -452,6 +453,7 @@ class ReservationController extends Controller
                 }
             }
 
+          
 
         } else {
             $findInfo->customer_feedback = $request->customer_feedback ?? $findInfo->customer_feedback;
@@ -594,6 +596,19 @@ class ReservationController extends Controller
                 ReservationCustomerPassport::create(['booking_item_id' => $findInfo->booking_item_id, 'file' => $fileData['fileName']]);
             }
         }
+
+        if($request->is_associated)
+        {
+            ReservationAssociatedCustomer::create([
+                'booking_item_id' => $findInfo->booking_item_id,
+                'name' => $request->customer_name,
+                'phone' => $request->customer_phone,
+                'passport' => $request->customer_passport_number,
+            ]);
+
+            BookingItem::where('id',$findInfo->booking_item_id)->update(['is_associated'=>'1']);
+        }
+
 
         return $this->success(new BookingItemResource($bookingItem), 'Successfully updated');
     }
