@@ -340,6 +340,7 @@ class ReservationController extends Controller
             'payment_status' => $request->payment_status ?? $find->payment_status,
             'exchange_rate' => $request->exchange_rate ?? $find->exchange_rate,
             'reservation_status' => $request->reservation_status ?? $find->reservation_status,
+            'slip_code' => $request->slip_code ?? $find->slip_code,
             'expense_amount' => $request->expense_amount ?? $find->expense_amount,
             'comment' => $request->comment ?? $find->comment,
         ];
