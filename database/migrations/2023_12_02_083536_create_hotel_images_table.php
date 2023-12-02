@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Room;
+use App\Models\Hotel;
 
 
 return new class extends Migration
@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('room_images', function (Blueprint $table) {
+        Schema::create('hotel_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Room::class, 'room_id');
+            $table->foreignIdFor(Hotel::class, 'hotel_id');
             $table->string('image');
             $table->softDeletes();
             $table->timestamps();
@@ -27,7 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('room_images');
-
+        Schema::dropIfExists('hotel_images');
     }
 };

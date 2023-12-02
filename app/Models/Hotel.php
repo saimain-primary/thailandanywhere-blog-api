@@ -28,4 +28,9 @@ class Hotel extends Model
         return $this->hasMany(HotelContract::class, 'hotel_id');
     }
 
+    public function images(): HasMany
+    {
+        return $this->hasMany(HotelImage::class, 'hotel_id');
+    }
+
 }

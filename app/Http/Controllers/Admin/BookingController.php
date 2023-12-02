@@ -156,7 +156,8 @@ class BookingController extends Controller
             'past_user_id' => $request->past_user_id,
             'past_crm_id' => $request->past_crm_id,
             'created_by' => Auth::id(),
-            'reservation_status' => "awaiting"
+            'reservation_status' => "awaiting",
+            'payment_notes' => $request->payment_notes
         ];
 
         $save = Booking::create($data);
@@ -283,6 +284,7 @@ class BookingController extends Controller
             'balance_due_date' => $request->balance_due_date ?? $find->balance_due_date,
             'discount' => $request->discount ?? $find->discount,
             "reservation_status" => 'awaiting',
+            'payment_notes' => $request->payment_notes
         ];
 
         $find->update($data);
