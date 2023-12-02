@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('reservation_associated_customers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Hotel::class, 'hotel_id');
-            $table->string('image');
-            $table->softDeletes();
+            $table->unsignedBigInteger('booking_item_id');
+            $table->string('name');
+            $table->string('phone');
+            $table->string('passport');
             $table->timestamps();
         });
     }
