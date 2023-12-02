@@ -94,6 +94,7 @@ class BookingItemResource extends JsonResource
             'associated_customer' => AssociatedCustomerResource::collection($this->associatedCustomer),
             'slip_code' => $this->slip_code,
             'is_inclusive' => $this->is_inclusive,
+            'is_associated' => $this->is_associated,
 //            'paid_slip' => $this->paid_slip ? config('app.url') . Storage::url('images/' . $this->paid_slip) : null,
             'created_at' => $this->created_at->format('d-m-Y H:i:s'),
             'updated_at' => $this->updated_at->format('d-m-Y H:i:s'),
