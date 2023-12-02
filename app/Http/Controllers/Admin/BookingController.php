@@ -168,6 +168,14 @@ class BookingController extends Controller
             }
         }
 
+        /*
+
+             Booking::whereIn('crm_id',function($query) {
+                $query->select('crm_id')->from('bookings')->groupBy('crm_id')->havingRaw('count(*) > 1');
+             })->pluck('crm_id');
+
+        */
+
         foreach ($request->items as $key => $item) {
             $data = [
                 'booking_id' => $save->id,

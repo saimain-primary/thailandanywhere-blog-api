@@ -6,13 +6,17 @@ use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
 use App\Http\Resources\RoomResource;
 use App\Models\Room;
+use App\Models\RoomImage;
 use App\Traits\HttpResponses;
+use App\Traits\ImageManager;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class RoomController extends Controller
 {
-    use HttpResponses;
-    /**
+    use ImageManager;
+    use HttpResponses;    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
@@ -21,7 +25,6 @@ class RoomController extends Controller
         $search = $request->query('search');
 
         $query = Room::query();
-
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%");
@@ -55,7 +58,16 @@ class RoomController extends Controller
             'extra_price' => $request->extra_price,
             'room_price' => $request->room_price,
             'description' => $request->description,
+            'max_person'  => $request->max_person
         ]);
+
+        if ($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                RoomImage::create(['room_id' => $save->id, 'image' => $fileData['fileName']]);
+            };
+        }
+
 
         return $this->success(new RoomResource($save), 'Successfully created', 200);
     }
@@ -75,6 +87,7 @@ class RoomController extends Controller
      */
     public function update(UpdateRoomRequest $request, Room $room)
     {
+        
         $room->update([
             'name' => $request->name ?? $room->name,
             'hotel_id' => $request->hotel_id ?? $room->hotel_id,
@@ -82,7 +95,15 @@ class RoomController extends Controller
             'description' => $request->description ?? $room->description,
             'extra_price' => $request->extra_price ?? $room->extra_price,
             'room_price' => $request->room_price ?? $room->room_price,
+            'max_person' => $request->max_person
         ]);
+
+        if ($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                RoomImage::create(['room_id' => $room->id, 'image' => $fileData['fileName']]);
+            };
+        }
 
         return $this->success(new RoomResource($room), 'Successfully updated', 200);
     }
@@ -92,6 +113,16 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
+        $room_images = RoomImage::where('room_id','=',$room->id)->get();
+
+        foreach($room_images as $room_image){
+
+            Storage::delete('public/images/' . $room_image->image);
+
+        }
+
+        RoomImage::where('room_id',$room->id)->delete();
+
         $room->delete();
         return $this->success(null, 'Successfully deleted', 200);
     }
