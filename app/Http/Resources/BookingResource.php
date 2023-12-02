@@ -41,6 +41,7 @@ class BookingResource extends JsonResource
             'discount' => $this->discount,
             'comment' => $this->comment,
             'reservation_status' => $this->reservation_status,
+            'payment_notes' => $this->payment_notes,
             'balance_due' => $this->balance_due,
             'balance_due_date' => $this->balance_due_date,
             'created_by' => $this->createdBy,

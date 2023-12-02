@@ -6,10 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\Booking;
 use App\Models\BookingItem;
+use App\Models\Customer;
+
 use App\Http\Resources\AdminResource;
+use App\Http\Resources\CustomerSaleResource;
+
 use App\Http\Controllers\Controller;
 use App\Traits\HttpResponses;
 use App\Http\Resources\BookingResource;
+use App\Http\Resources\BookingItemResource;
 
 
 use DB;
@@ -442,7 +447,24 @@ public function getEachUserSaleCount()
 //     return $this->success($responseData, 'Sales Count');
 // }
 
+public function getCustomerSale()
+{
+    $customers = Customer::with(['items' => function($q) { 
+        $q->select(DB::raw('SUBSTR(product_type,12)as product')
+    ); 
+      }])->get();
 
+    foreach($customers as $s)
+    {
+        $data[] = array(
+            'name' => $s->name,
+            'items' => $s->items
+        );
+    }
+
+    return $this->success($data, 'Customers Sale');
+
+}
 
 
 }

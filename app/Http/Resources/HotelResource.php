@@ -28,6 +28,7 @@ class HotelResource extends JsonResource
             'place' => $this->place,
             'rooms' => $this->rooms,
             'contacts' => HotelContractResource::collection($this->contracts),
+            'images' => HotelImageResource::collection($this->images),
             'deleted_at' => $this->deleted_at,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,

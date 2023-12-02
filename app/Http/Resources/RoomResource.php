@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+
 class RoomResource extends JsonResource
 {
     /**
@@ -22,6 +23,7 @@ class RoomResource extends JsonResource
             'room_price' => $this->room_price,
             'cost' => $this->cost,
             'description' => $this->description,
+            'images' => RoomImageResource::collection($this->images),
             'deleted_at' => $this->deleted_at,
             'updated_at' => $this->updated_at,
             'updated_at' => $this->updated_at,

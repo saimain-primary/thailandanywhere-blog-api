@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hotel;
+use App\Models\HotelImage;
 use App\Traits\ImageManager;
 use Illuminate\Http\Request;
 use App\Models\HotelContract;
@@ -73,6 +74,13 @@ class HotelController extends Controller
             HotelContract::insert($contractArr);
         }
 
+        if ($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                HotelImage::create(['hotel_id' => $save->id, 'image' => $fileData['fileName']]);
+            };
+        }
+
         return $this->success(new HotelResource($save), 'Successfully created', 200);
 
     }
@@ -115,6 +123,13 @@ class HotelController extends Controller
             }
 
             HotelContract::insert($contractArr);
+        }
+
+        if ($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $fileData = $this->uploads($image, 'images/');
+                HotelImage::create(['hotel_id' => $hotel->id, 'image' => $fileData['fileName']]);
+            };
         }
 
         return $this->success(new HotelResource($hotel), 'Successfully updated', 200);
