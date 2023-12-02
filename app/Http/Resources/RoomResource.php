@@ -24,6 +24,7 @@ class RoomResource extends JsonResource
             'cost' => $this->cost,
             'description' => $this->description,
             'images' => RoomImageResource::collection($this->images),
+            'max_person' => $this->max_person,
             'deleted_at' => $this->deleted_at,
             'updated_at' => $this->updated_at,
             'updated_at' => $this->updated_at,

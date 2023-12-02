@@ -206,6 +206,7 @@ class BookingController extends Controller
                 'checkin_date' => isset($item['checkin_date']) ? $item['checkin_date'] : null,
                 'checkout_date' => isset($item['checkout_date']) ? $item['checkout_date'] : null,
                 'reservation_status' => $item['reservation_status'] ?? "awaiting",
+                'slip_code' => $request->slip_code,
                 'is_inclusive' => $item['reservation_status'] == 'undefined' ? "1" : "0" ,
             ];
 
@@ -338,6 +339,7 @@ class BookingController extends Controller
                     'checkin_date' => isset($item['checkin_date']) ? $item['checkin_date'] : null,
                     'checkout_date' => isset($item['checkout_date']) ? $item['checkout_date'] : null,
                     'reservation_status' => $item['reservation_status'] ?? "awaiting",
+                    'slip_code' => $request->slip_code,
                     'is_inclusive' => $item['reservation_status'] == 'undefined' ? "1" : "0" ,
                 ];
 
