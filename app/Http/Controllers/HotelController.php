@@ -130,6 +130,11 @@ class HotelController extends Controller
                 $fileData = $this->uploads($image, 'images/');
                 HotelImage::create(['hotel_id' => $hotel->id, 'image' => $fileData['fileName']]);
             };
+        }else{
+            foreach ($hotel->images as $image) {
+                Storage::delete('public/images/' . $image->image);
+                $image->delete();
+            }
         }
 
         return $this->success(new HotelResource($hotel), 'Successfully updated', 200);
@@ -140,6 +145,16 @@ class HotelController extends Controller
      */
     public function destroy(Hotel $hotel)
     {
+        $hotel_images = HotelImage::where('room_id','=',$room->id)->get();
+
+        foreach($hotel_images as $hotel_image){
+
+            Storage::delete('public/images/' . $hotel_image->image);
+
+        }
+
+        HotelImage::where('room_id',$room->id)->delete();
+
         $hotel->delete();
         return $this->success(null, 'Successfully deleted', 200);
     }

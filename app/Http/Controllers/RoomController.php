@@ -103,6 +103,11 @@ class RoomController extends Controller
                 $fileData = $this->uploads($image, 'images/');
                 RoomImage::create(['room_id' => $room->id, 'image' => $fileData['fileName']]);
             };
+        }else{
+             foreach ($room->images as $image) {
+                Storage::delete('public/images/' . $image->image);
+                $image->delete();
+            }
         }
 
         return $this->success(new RoomResource($room), 'Successfully updated', 200);
