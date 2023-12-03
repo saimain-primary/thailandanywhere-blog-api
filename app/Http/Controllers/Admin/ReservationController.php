@@ -307,11 +307,11 @@ class ReservationController extends Controller
         }
         $data = new BookingItemResource($booking);
 
-        $hotels[] = $booking->booking->hotel;
+        $hotel[] = $booking->booking->hotel;
 
         $pdf = Pdf::setOption([
             'fontDir' => public_path('/fonts')
-        ])->loadView('pdf.reservation_hotel_receipt', compact('data','hotels'));
+        ])->loadView('pdf.reservation_hotel_receipt', compact('data','hotel'));
 
         return $pdf->stream();
 

@@ -107,30 +107,30 @@
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Booking ID:</td>
                         <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">{{ $data->crm_id }}</td>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Trip Name:</td>
-                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">Bankok Day Trip</td>
+                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">{{$data->product->name}}</td>
                     </tr>
                     <tr>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Reservation ID:</td>
                         <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">{{ preg_match('/_(\d+)$/', $data->crm_id, $matches) ? $matches[1] : '' }}</td>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Car Type:</td>
-                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">Van</td>
+                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">{{$data->car->name}}</td>
                     </tr>
                     {{--  --}}
                     <tr>
                         <th style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">Customer Detail</th>
                         <td></td>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Service Date:</td>
-                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">25 Nov 2023</td>
+                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">{{Carbon\Carbon::parse($data->service_date)->format('d F Y')}}</td>
                     </tr>
                     <tr>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Customer Name:</td>
-                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">Kyaw Min Oo</td>
+                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">{{$data->booking->customer->name}}</td>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Pick up time:</td>
-                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">06:00 am</td>
+                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">{{$data->pickup_time ? $data->pickup_time : '-'}}</td>
                     </tr>
                     <tr>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Contact:</td>
-                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">+959 21323</td>
+                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">{{$data->booking->customer->phone_number}}</td>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Pick up location:</td>
                         <td></td>
                     </tr>
@@ -139,16 +139,16 @@
                         <th style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">Payment & Expense</th>
                         <td></td>
                         <td colspan="2" rowspan="2" style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">
-                            address address address address address address address address
+                           {{$data->pickup_location ? $data->pickup_location : '-'}}
                         </td>
                     </tr>
                     <tr>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Vendor Name:</td>
-                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">Victor Service</td>
+                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important"></td>
                     </tr>
                     <tr>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Expense to Driver:</td>
-                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">3200 thb
+                        <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">
                         </td>
                         <td style="width:50%;font-size:16px;padding-bottom:12px!important">Route Plan:</td>
                     </tr>
@@ -157,7 +157,7 @@
                         <td style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important;color:green">fully_paid
                         </td>
                         <td colspan="2" rowspan="3" style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">
-                            address address address address address address address address address address address address address address address address
+                           {{$data->route_plan ? $data->route_plan : '-'}}
                         </td>
                     </tr>
                     <tr>
@@ -178,7 +178,7 @@
                         <td></td>
                         <td></td>
                         <td colspan="2" style="width:50%;font-size:16px;font-weight:bold;padding-bottom:12px!important">
-                            English Speaking Driver
+                           {{$data->special_request ? $data->special_request : '-'}}
                         </td>
                     </tr>
 
