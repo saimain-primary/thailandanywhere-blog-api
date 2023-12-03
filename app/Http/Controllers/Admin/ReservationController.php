@@ -599,8 +599,10 @@ class ReservationController extends Controller
                     'passport' => $request->customer_passport_number,
                 ]);
 
-                BookingItem::where('id',$findInfo->booking_item_id)->update(['is_associated'=>'1']);
             }
+
+            BookingItem::where('id',$findInfo->booking_item_id)->update(['is_associated'=>'1']);
+
 
             
 
