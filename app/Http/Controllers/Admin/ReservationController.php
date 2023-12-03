@@ -597,18 +597,37 @@ class ReservationController extends Controller
             }
         }
 
-        if($request->is_associated)
+        if($request->is_associated == 1)
         {
-            ReservationAssociatedCustomer::create([
-                'booking_item_id' => $findInfo->booking_item_id,
-                'name' => $request->customer_name,
-                'phone' => $request->customer_phone,
-                'passport' => $request->customer_passport_number,
-            ]);
+            if(ReservationAssociatedCustomer::where('booking_item_id','=',$findInfo->booking_item_id)->count() > 0)
+            {
+                ReservationAssociatedCustomer::where('booking_item_id','=',$findInfo->booking_item_id)->update([
+                    'name' => $request->customer_name,
+                    'phone' => $request->customer_phone,
+                    'passport' => $request->customer_passport_number,
+                ]);
 
-            BookingItem::where('id',$findInfo->booking_item_id)->update(['is_associated'=>'1']);
+            }else{
+
+                ReservationAssociatedCustomer::create([
+                    'booking_item_id' => $findInfo->booking_item_id,
+                    'name' => $request->customer_name,
+                    'phone' => $request->customer_phone,
+                    'passport' => $request->customer_passport_number,
+                ]);
+
+                BookingItem::where('id',$findInfo->booking_item_id)->update(['is_associated'=>'1']);
+            }
+
+            
+
+        }else if($request->is_assciated == 0)
+        {
+            ReservationAssociatedCustomer::where('booking_item_id',$findInfo->booking_item_id)->delete();
+
+            BookingItem::where('id',$findInfo->booking_item_id)->update(['is_associated'=>'0']);
+
         }
-
 
         return $this->success(new BookingItemResource($bookingItem), 'Successfully updated');
     }
