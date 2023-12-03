@@ -604,7 +604,7 @@ class ReservationController extends Controller
 
             
 
-        }else if($request->is_assciated == 0)
+        }else if($request->is_associated == 0)
         {
             ReservationAssociatedCustomer::where('booking_item_id',$findInfo->booking_item_id)->delete();
 
